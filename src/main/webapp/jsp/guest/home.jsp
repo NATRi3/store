@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginform.css" type="text/css"/>
     <link href="${pageContext.request.contextPath}/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -27,6 +28,16 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/fragment/header.jsp" %>
+<c:if test="${requestScope.message!=null}">
+    <div id="my-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <br>
+        <fmt:message key="${requestScope.message}" bundle="${error}"/>
+        <br>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+</c:if>
 <div>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -35,22 +46,19 @@
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner" role="listbox">
-            <!-- Slide One - Set the background image for this slide in the line below -->
-            <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
+            <div class="carousel-item active" style="background-image: url('${pageContext.request.contextPath}/images/slide-bar1.jpg')">
                 <div class="carousel-caption d-none d-md-block">
                     <h3>First Slide</h3>
                     <p>This is a description for the first slide.</p>
                 </div>
             </div>
-            <!-- Slide Two - Set the background image for this slide in the line below -->
-            <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+            <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/images/slide-bar2.jpg')">
                 <div class="carousel-caption d-none d-md-block">
                     <h3>Second Slide</h3>
                     <p>This is a description for the second slide.</p>
                 </div>
             </div>
-            <!-- Slide Three - Set the background image for this slide in the line below -->
-            <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+            <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/images/slide-bar3.jpg')">
                 <div class="carousel-caption d-none d-md-block">
                     <h3>Third Slide</h3>
                     <p>This is a description for the third slide.</p>
@@ -68,155 +76,102 @@
     </div>
 </div>
 <div class="container">
-
-    <h1 class="my-4">Welcome to Modern Business</h1>
-
-    <!-- Marketing Icons Section -->
+    <h1 class="my-4"><fmt:message key="home.social" bundle="${text}"/> </h1>
     <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="box-part text-center">
+                <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
+                <div class="title">
+                    <h4>Instagram</h4>
                 </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                <div class="text">
+                    <span><fmt:message key="home.instagram" bundle="${text}"/></span>
                 </div>
+                <a style="text-decoration:none; color: #0062cc;" href="#">Learn More</a>
             </div>
         </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis ipsam eos, nam perspiciatis natus commodi similique totam consectetur praesentium molestiae atque exercitationem ut consequuntur, sed eveniet, magni nostrum sint fuga.</p>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="box-part text-center">
+                <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
+                <div class="title">
+                    <h4>Twitter</h4>
                 </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                <div class="text">
+                    <span><fmt:message key="home.twitter" bundle="${text}"/></span>
                 </div>
+                <a style="text-decoration:none; color: #0062cc;" href="#">Learn More</a>
             </div>
         </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="box-part text-center">
+                <i class="fa fa-facebook fa-3x" aria-hidden="true"></i>
+                <div class="title">
+                    <h4>Facebook</h4>
                 </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                <div class="text">
+                    <span><fmt:message key="home.facebook" bundle="${text}"/></span>
                 </div>
+                <a style="text-decoration:none; color: #0062cc;" href="#">Learn More</a>
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
-    <!-- Portfolio Section -->
-    <h2>Portfolio Heading</h2>
-
-    <div class="row">
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project One</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt, dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Two</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Three</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure perspiciatis mollitia recusandae vero vel quam!</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Four</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Five</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Six</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates, nemo repellat fugiat excepturi! Nemo, esse.</p>
-                </div>
-            </div>
-        </div>
+    <h2><fmt:message key="home.news" bundle="${text}"/></h2>
+    <div id="NEWS" class="row">
+        <script>
+            $(document).ready ( function(){
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/async?command=get_fresh_news&news_amount=6",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(res) {
+                        $.each(res, function (idx,news){
+                            var contentID = document.getElementById("NEWS");
+                            var newTBDiv = document.createElement("div");
+                            newTBDiv.setAttribute("class","col-lg-4 col-sm-6 portfolio-item");
+                            newTBDiv.innerHTML =
+                                "<div class='card h-100'>"+
+                                "<img class='card-img-top' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+news.imageName+"' alt=''>" +
+                                "<div class='card-body'>"+
+                                    "<h4 class='card-title'>"+
+                                        "<a>"+news.title+"</a>"+
+                                    "</h4>"+
+                                    "<p class='card-text'>"+
+                                        news.info+
+                                    "</p>"+
+                                "</div>"+
+                                "</div>";
+                            contentID.appendChild(newTBDiv);
+                        });
+                    },
+                    error: function (){
+                        alert("error");
+                    }
+                });
+            });
+        </script>
     </div>
-    <!-- /.row -->
 
-    <!-- Features Section -->
     <div class="row">
         <div class="col-lg-6">
-            <h2>Modern Business Features</h2>
-            <p>The Modern Business template by Start Bootstrap includes:</p>
-            <ul>
-                <li>
-                    <strong>Bootstrap v4</strong>
-                </li>
-                <li>jQuery</li>
-                <li>Font Awesome</li>
-                <li>Working contact form with validation</li>
-                <li>Unstyled page elements for easy customization</li>
-            </ul>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia dolorum ducimus unde.</p>
+            <h2><fmt:message key="home.about_us" bundle="${text}"/></h2>
+            <p><fmt:message key="home.about" bundle="${text}"/></p>
         </div>
         <div class="col-lg-6">
-            <img class="img-fluid rounded" src="http://placehold.it/700x450" alt="">
+            <img class="img-fluid rounded" src="${pageContext.request.contextPath}/images/page/shop.jpg" alt="">
         </div>
     </div>
-    <!-- /.row -->
 
     <hr>
 
-    <!-- Call to Action Section -->
-    <div class="row mb-4">
+    <%--<div class="row mb-4">
         <div class="col-md-8">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
+            <p></p>
         </div>
         <div class="col-md-4">
             <a class="btn btn-lg btn-secondary btn-block" href="#">Call to Action</a>
         </div>
-    </div>
+    </div>--%>
 
 </div>
-<!-- /.container -->
 </body>
 </html>

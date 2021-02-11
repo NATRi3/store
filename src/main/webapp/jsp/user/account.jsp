@@ -35,13 +35,24 @@
           <div class="row">
               <div class="col-md-4">
                   <div class="profile-img">
-                      <img id="accountImg" src="imageServlet?command=user&image_name=${sessionScope.currentUser.imageName}" alt="${sessionScope.currentUser.imageName}"/>
+                      <img class="img-thumbnail" width="120" height="120" id="accountImg" alt="${sessionScope.currentUser.imageName}"
+                                src="${pageContext.request.contextPath}/async?command=get_image&image_name=${sessionScope.currentUser.imageName}"/>
                       <div class="file btn btn-lg btn-primary">
                           <fmt:message key="account.change_img" bundle="${text}"/>
-                          <form id="uploadForm" action="${pageContext.request.contextPath}/async?command=upload_image" method="post" enctype="multipart/form-data">
-                              <input type="file" name="file" onchange="document.getElementById('uploadForm').submit()"/>
+                          <form name="uploadForm" action="${pageContext.request.contextPath}/controller?command=upload_image&image_command=user&ctoken=${sessionScope.stoken}" method="post" enctype="multipart/form-data">
+                              <input type="file" name="file" onchange="document.uploadForm.submit()"/>
                           </form>
                       </div>
+                  </div>
+                  <div class="profile-work">
+                      <form method="post" action="${pageContext.request.contextPath}/controller">
+                          <input type="hidden" name="command" value="get_orders"/>
+                          <input class="btn-light" type="submit" value="<fmt:message key="account.orders" bundle="${text}"/>">
+                      </form>
+                      <form method="post" action="${pageContext.request.contextPath}/controller">
+                          <input type="hidden" name="command" value="get_orders"/>
+                          <input class="btn-light" type="submit" value="<fmt:message key="account.change_pass" bundle="${text}"/>">
+                      </form>
                   </div>
               </div>
               <div class="col-md-6">
@@ -65,26 +76,6 @@
                           </li>
                       </ul>
                   </div>
-              </div>
-              <form method="get" action="${pageContext.request.contextPath}/controller" class="col-md-2">
-                  <input type="hidden" name="command" value="logout">
-                  <input type="submit" class="profile-edit-btn" value="<fmt:message key="header.logout" bundle="${text}"/>"/>
-              </form>
-          </div><br>
-          <div class="row">
-              <div class="col-md-4">
-                  <div class="profile-work">
-                      <form method="post" action="${pageContext.request.contextPath}/controller">
-                          <input type="hidden" name="command" value="get_orders"/>
-                          <input class="btn-light" type="submit" value="<fmt:message key="account.orders" bundle="${text}"/>">
-                      </form>
-                      <form method="post" action="${pageContext.request.contextPath}/controller">
-                          <input type="hidden" name="command" value="get_orders"/>
-                          <input class="btn-light" type="submit" value="<fmt:message key="account.change_pass" bundle="${text}"/>">
-                      </form>
-                  </div>
-              </div>
-              <div class="col-md-8">
                   <div class="tab-content profile-tab" id="myTabContent">
                       <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
                           <div class="row">
@@ -124,6 +115,11 @@
                       </div>
                   </div>
               </div>
+              <form method="get" action="${pageContext.request.contextPath}/controller" class="col-md-2">
+                  <input type="hidden" name="command" value="logout">
+                  <input type="submit" class="profile-edit-btn" value="<fmt:message key="header.logout" bundle="${text}"/>"/>
+              </form>
+              <br>
           </div>
         </div>
     </div>

@@ -13,6 +13,6 @@ public interface BaseDao<K> {
     List<K> findAll() throws DaoException;
     Optional<K> findEntityById (Long id) throws DaoException;
     boolean delete (Long id) throws DaoException;
-    K update(K k) throws DaoException;
+    boolean update(K k) throws DaoException;
     K create (K k) throws DaoException;
 }

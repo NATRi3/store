@@ -13,4 +13,8 @@ public interface UserDao {
     boolean delete(String email, String password) throws DaoException;
 
     User createUser(User user, String password) throws DaoException;
+
+    Optional<User> findUserByEmail(String email) throws DaoException;
+
+    void updatePassword(User user, String password) throws DaoException;
 }

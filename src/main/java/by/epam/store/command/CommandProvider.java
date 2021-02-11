@@ -11,7 +11,7 @@ public class CommandProvider {
         try {
             if(command!=null) {
                 Command resultCommand =
-                        TypeCommand.valueOf(command.toUpperCase()).getCommand();
+                        TypeCommand.valueOf(command.toUpperCase()).get();
                 optionalCommand = Optional.of(resultCommand);
             }
         }catch (IllegalArgumentException e){

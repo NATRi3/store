@@ -1,5 +1,7 @@
 package by.epam.store.exception;
 
+import java.util.function.Supplier;
+
 public class ServiceException extends Exception{
     public ServiceException() {
     }
@@ -15,4 +17,5 @@ public class ServiceException extends Exception{
     public ServiceException(Throwable cause) {
         super(cause);
     }
+
 }

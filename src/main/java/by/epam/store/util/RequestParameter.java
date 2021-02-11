@@ -17,10 +17,21 @@ public class RequestParameter {
     public static final String CHANGE_PASSWORD_OLD = "old_password";
     public static final String CHANGE_PASSWORD_NEW = "new_password";
     public static final String CHANGE_PASSWORD_NEW_REPEAT = "new_password_repeat";
-    public static final String GENDER = "gender";
-    public static final String TYPE_CLOTH = "type_cloth";
+    public static final String TYPE_PRODUCT = "type_product";
     public static final String CURRENT_PAGE = "currentPage";
     public static final String CLIENT_TOKEN = "ctoken";
+    public static final String TYPE_SORT = "type_sort";
+    public static final String ID_COLLECTION = "id_collection";
+    public static final String BEGIN_PAGINATION = "begin_pagination";
+    public static final String PRODUCT_AMOUNT = "amount_product";
+    public static final String IMAGE_COMMAND = "image_command";
+    public static final String ID_PRODUCT = "id_product";
+    public static final String PRODUCT = "product";
+    public static final String TYPE_STATUS = "type_status";
+    public static final String NEWS_AMOUNT = "news_amount";
+    public static final String ID_NEWS = "id_news";
+    public static final String NEWS_TITLE = "news_title";
+    public static final String NEWS_INFO = "news_info";
 
     private RequestParameter(){ }
 }

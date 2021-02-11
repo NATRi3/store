@@ -3,27 +3,35 @@ package by.epam.store.command;
 
 import by.epam.store.command.impl.*;
 
-public enum TypeCommand {
-    GET_LIST_PRODUCT(new RedirectToShopCommand()),
-    REDIRECT_TO_CART(new RedirectToCartCommand()),
-    DELETE_ACCOUNT(new DeleteAccountCommand()),
-    REDIRECT_TO_ACCOUNT(new RedirectToAccountCommand()),
-    REDIRECT_TO_REGISTRATION(new RedirectToRegistrationCommand()),
-    REDIRECT_TO_LOGIN(new RedirectToLoginCommand()),
+import java.util.function.Supplier;
+
+public enum TypeCommand implements Supplier<Command> {
+    REDIRECT_TO_SINGLE_PRODUCT(new RedirectToSingleProductCommand()),
     ACTIVATION(new ActivationCommand()),
-    CHANGE_LOCALE(new ChangeLocaleCommand()),
     REGISTRATION(new RegistrationCommand()),
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
-    UPLOAD_IMAGE(new UploadFileCommand());
+    ADD_NEWS(new AddNewsCommand()),
+    ADD_PRODUCT(new AddProductCommand()),
+    CHANGE_NEWS(new ChangeNewsCommand()),
+    CHANGE_PRODUCT(new ChangeProductCommand()),
+    CHANGE_NEWS_IMAGE(new ChangeNewsImageCommand()),
+    CHANGE_PRODUCT_IMAGE(new ChangeProductImageCommand()),
+    UPLOAD_IMAGE(new UploadFileCommand()),
+    DELETE_ACCOUNT(new DeleteAccountCommand()),
+    DELETE_NEWS(new DeleteNewsCommand()),
+    REMOVE_PRODUCT_FROM_CART(new RemoveProductFromCartCommand()),
+    FORGOT_PASSWORD(new ForgotPasswordCommand()),
+    CHANGE_LOCALE(new ChangeLocaleCommand()),
+    ERROR_NOT_FOUND(new NotFoundCommand());
 
-    private Command command;
+    private final Command command;
 
     TypeCommand(Command command) {
         this.command = command;
     }
-
-    public Command getCommand(){
+@Override
+    public Command get(){
         return command;
     }
 }

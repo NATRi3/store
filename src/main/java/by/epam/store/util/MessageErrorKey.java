@@ -15,6 +15,7 @@ public class MessageErrorKey {
     public static final String ERROR_MESSAGE_RELOGIN_PLEASE = "message.relogin_please";
     public static final String ERROR_UPLOAD_FILE = "message.error_upload";
     public static final String ERROR_MESSAGE_WRONG_FILE_TYPE = "message.wrong_file_type";
+    public static final String ERROR_UNKNOWN_COLLECTION = "message.unknown_collection";
     public static final String MAIL_REGISTRATION = "mail.registration";
     public static final String MAIL_ACTIVATE_ACCOUNT = "mail.activate_account";
     public static final String MAIL_NEWS = "mail.news";
@@ -32,6 +33,12 @@ public class MessageErrorKey {
     public static final String TEXT_REGISTRATION_SUBMIT_REGISTRATION ="registration.submitregistration";
     public static final String TEXT_LANGUAGE_VALUE = "language.value";
     public static final String TEXT_LANGUAGE_SUBMIT = "language.submit";
+    public static final String SUCCESSFUL_CHANGE_PASSWORD = "message.successful_change_password";
+    public static final String SUCCESSFUL_ADD_TO_CART = "message.successful_add_to_cart";
+    public static final String ERROR_UNKNOWN_PRODUCT = "message.unknown_product";
+    public static final String PRODUCT_NOT_ACTIVE = "message.product_not_active";
+    public static final String SUCCESSFUL_CHANGE_PRODUCT = "message.successful_change_product";
+    public static final String ERROR_UNKNOWN_NEWS = "message.unknown_news";
 
     private MessageErrorKey(){ }
 }

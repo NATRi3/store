@@ -8,15 +8,19 @@ import java.util.TimerTask;
 public class CheckConnectionTimerTask extends TimerTask {
     @Override
     public void run() {
+        CustomConnectionPool instance = CustomConnectionPool.getInstance();
+        CustomConnectionPool.lockConnection.lock();
+        CustomConnectionPool.timeTaskIsWork.set(true);
         while (CustomConnectionPool.getInstance().getSize()<CustomConnectionPool.POOL_SIZE) {
             try {
-                CustomConnectionPool.getInstance().closeConnection(new ProxyConnection(ConnectionCreator.getConnection()));
+                ProxyConnection newConnection = new ProxyConnection(ConnectionCreator.getConnection());
+                instance.closeConnection(newConnection);
             } catch (SQLException e) {
                 log.warn(e);
+
             }
         }
-        CustomConnectionPool.lockConnection.lock();
-        CustomConnectionPool.condition.signalAll();
+        CustomConnectionPool.timeTaskIsWork.set(false);
         CustomConnectionPool.lockConnection.unlock();
     }
 }

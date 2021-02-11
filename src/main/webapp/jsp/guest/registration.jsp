@@ -10,11 +10,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.currentLocale}" scope="session"/>
 <fmt:setBundle basename="property.text" var="text"/>
+<fmt:setBundle basename="property.error" var="error"/>
 <html>
 <head>
     <title>Registration</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginform.css" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -34,20 +37,25 @@
                         <form method="post" action="${pageContext.request.contextPath}/controller">
                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                             <h1><fmt:message key="header.registration" bundle="${text}"/></h1>
-                            <c:if test="${requestScope.message==null}">
+                            <c:choose>
+                            <c:when test="${requestScope.message==null}">
                                 <p class ="text-muted"> <fmt:message bundle="${text}" key="registration.title"/></p>
-                            </c:if>
-                            <p class ="error">${requestScope.message}</p>
+                            </c:when>
+                            <c:when test="${requestScope.message!=null}">
+                                <p class ="has-error"><fmt:message key="${requestScope.message}" bundle="${error}"/> </p>
+                            </c:when>
+                            </c:choose>
                             <input type="hidden" name="command" value="registration"/>
-                            <input type="text" name="name" required
-                                   placeholder="<fmt:message bundle="${text}" key="registration.name"/>">
-                            <input type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+                            <input type="text" name="name" required placeholder="<fmt:message bundle="${text}" key="registration.name"/>">
+                            <input data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>"
+                                   type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
                                    placeholder="<fmt:message bundle="${text}" key="registration.email"/>">
-                            <input type="password" name="password"
-                                   placeholder="<fmt:message bundle="${text}" key="registration.password"/>">
+                            <input data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
+                                   type="password" name="password"
+                                   placeholder="<fmt:message bundle="${text}" key="registration.password"/>" required>
                             <input type="password" name="repeat_password"
                                    placeholder="<fmt:message bundle="${text}" key="registration.repeat"/>"/>
-                            <input type="submit" value=<fmt:message bundle="${text}" key="registration.submitregistration"/>>
+                            <input type="submit" value="<fmt:message bundle="${text}" key="registration.submitregistration"/>" required>
                         </form>
                         <form action="${pageContext.request.contextPath}/jsp/guest/login.jsp">
                             <input type="submit" value="<fmt:message bundle="${text}" key="registration.login"/>">
@@ -59,4 +67,18 @@
     </div>
 </div>
 </body>
+<style>
+    input + .tooltip > .tooltip-inner {
+        border-right: 5px solid black;
+        background-color: rgba(0,0,0,0.13);
+        color: #FFFFFF;
+        padding: 15px;
+        font-size: 20px;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </html>

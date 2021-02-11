@@ -4,28 +4,28 @@ import by.epam.store.entity.type.TypeRole;
 import by.epam.store.util.PagePath;
 
 import java.util.HashMap;
+import java.util.Set;
 
-public class JspAccessMap extends HashMap<TypeRole, String[]> {
+public class JspAccessMap extends HashMap<TypeRole, Set<String>> {
     private static JspAccessMap INSTANCE;
 
     private JspAccessMap(){
-        String[] adminJsp = new String[]{
-                PagePath.ACCOUNT_PAGE,PagePath.CART_PAGE,PagePath.MAIN_PAGE
-        };
-        put(TypeRole.ADMIN,adminJsp);
-        String[] userJsp = new String[]{
-                PagePath.ACCOUNT_PAGE,PagePath.CART_PAGE,PagePath.MAIN_PAGE
-        };
-        put(TypeRole.CLIENT,userJsp);
-        String[] storageJsp = new String[]{
-                PagePath.ACCOUNT_PAGE,PagePath.CART_PAGE,PagePath.MAIN_PAGE
-        };
-        put(TypeRole.STORAGE,storageJsp);
-        String[] guestJsp = new String[]{
-                PagePath.LOGIN_PAGE,PagePath.ACTIVATION_PAGE,PagePath.SHOP_PAGE,PagePath.MAIN_PAGE,
-                PagePath.REGISTRATION_PAGE
-        };
-        put(TypeRole.GUEST,guestJsp);
+        put(TypeRole.ADMIN,
+                Set.of(PagePath.ACCOUNT,PagePath.MAIN,PagePath.SHOP,
+                        PagePath.PAGE_404,PagePath.PAGE_500,PagePath.SINGLE_PRODUCT,
+                        PagePath.ADMIN_PANEL,PagePath.ADMIN_PANEL_USERS,PagePath.ADMIN_PANEL_NEWS,
+                        PagePath.ADMIN_PANEL_COLLECTION));
+        put(TypeRole.MANAGER,
+                Set.of(PagePath.ACCOUNT,PagePath.CART,PagePath.MAIN,PagePath.SHOP,
+                        PagePath.PAGE_404,PagePath.PAGE_500,PagePath.SINGLE_PRODUCT,
+                        PagePath.PRODUCTS));
+        put(TypeRole.CLIENT,
+                Set.of(PagePath.ACCOUNT,PagePath.CART,PagePath.MAIN,PagePath.SHOP,
+                        PagePath.PAGE_404,PagePath.PAGE_500,PagePath.SINGLE_PRODUCT));
+        put(TypeRole.GUEST,
+                Set.of(PagePath.LOGIN,PagePath.SHOP,PagePath.MAIN,PagePath.REGISTRATION,
+                        PagePath.FORGOT_PASSWORD,PagePath.PAGE_404,PagePath.PAGE_500,
+                        PagePath.SINGLE_PRODUCT));
     }
 
     public static JspAccessMap getINSTANCE() {

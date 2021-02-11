@@ -9,18 +9,18 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${log_pattern}"/>
         </Console>
-        <RollingFile name="File" fileName="log/app.log" append="true"
+        <!--<RollingFile name="File" fileName="log/app.log" append="true"
                      filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
             <PatternLayout pattern="${log_pattern}"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="100 KB"/>
             </Policies>
-        </RollingFile>
+        </RollingFile>-->
     </Appenders>
     <Loggers>
         <Root level="INFO">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
+        <!--<AppenderRef ref="File"/>-->
         </Root>
     </Loggers>
 </Configuration>

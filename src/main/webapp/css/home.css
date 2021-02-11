@@ -1,5 +1,5 @@
 body {
-    background-image: url("/images/page/back.jpg");
+    background: rgba(0,0,0,0.13);
     padding-top: 56px;
 }
 
@@ -15,4 +15,24 @@ body {
 
 .portfolio-item {
     margin-bottom: 30px;
+}
+span{
+    font-size:15px;
+}
+.box{
+    padding:60px 0px;
+}
+
+.box-part{
+    background:#FFF;
+    border-radius:0;
+    padding:60px 10px;
+    margin:30px 0px;
+}
+.text{
+    margin:20px 0px;
+}
+
+.fa{
+    color:#4183D7;
 }

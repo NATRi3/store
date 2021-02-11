@@ -25,7 +25,20 @@ public class DataBaseColumn {
     public static final String PRODUCT_INFO = "info";
     public static final String PRODUCT_STATUS = "status";
     public static final String PRODUCT_PRICE = "price";
+    public static final String PRODUCT_IMAGE = "image";
+    public static final String PRODUCT_ID_COLLECTION = "id_collection";
     public static final String FEEDBACK = "feedback";
-
+    public static final String ACCOUNT_ADDRESS = "address";
+    public static final String ACCOUNT_PHONE = "phone";
+    public static final String ID_NEWS = "id_news";
+    public static final String NEWS_TITLE = "title";
+    public static final String NEWS_INFO = "info";
+    public static final String NEWS_ID_COLLECTION = "id_collection";
+    public static final String NEWS_DATE = "date";
+    public static final String NEWS_IMAGE = "image";
+    public static final String ID_COLLECTION = "id_collection";
+    public static final String COLLECTION_INFO = "info";
+    public static final String COLLECTION_NAME = "name";
+    public static final String COLLECTION_DATE = "date";
     private DataBaseColumn(){ }
 }

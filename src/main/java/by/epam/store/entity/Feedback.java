@@ -12,5 +12,5 @@ public class Feedback {
     private String feedback;
     private byte evaluation;
     private long idProduct;
-    private long idUser;
+    private User user;
 }

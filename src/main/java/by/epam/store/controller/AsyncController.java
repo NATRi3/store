@@ -32,8 +32,6 @@ public class AsyncController extends HttpServlet {
             command.get().execute(request, response);
         } else {
             response.sendError(404);
-            //TODO 404error
         }
-
     }
 }

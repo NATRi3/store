@@ -1,0 +1,161 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: ssykh
+  Date: 25.01.2021
+  Time: 22:27
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="${sessionScope.currentLocale}" scope="session"/>
+<fmt:setBundle basename="property.text" var="text"/>
+<fmt:setBundle basename="property.error" var="error"/>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginform.css" type="text/css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="${pageContext.request.contextPath}/component/jquery/jquery.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/component/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/component/jquery.validate.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+        <%@ include file="/WEB-INF/fragment/header.jsp" %>
+        <!--Section: Block Content-->
+        <section>
+
+            <!--Grid row-->
+            <div class="row">
+
+                <!--Grid column-->
+                <div class="col-lg-8">
+
+                    <!-- Card -->
+                    <div class="card wish-list mb-3">
+                        <div class="card-body">
+                            <c:choose>
+                                <c:when test="${sessionScope.cart.products.size()==0}">
+                                    <h5 class="mb-4">
+                                        <fmt:message key="cart.cart_empty" bundle="${text}"/>
+                                        <br>
+                                        <a class="" href="${pageContext.request.contextPath}/jsp/guest/shop.jsp">
+                                            <fmt:message key="cart.start_shop" bundle="${text}"/>
+                                        </a>
+                                    </h5>
+                                </c:when>
+                                <c:when test="${sessionScope.cart.products.size()>0}">
+                                    <h5 class="mb-4">
+                                        <fmt:message key="cart.cart" bundle="${text}"/>
+                                        (<span>${sessionScope.cart.totalAmount}</span>
+                                        <fmt:message key="cart.items" bundle="${text}"/>)
+                                    </h5>
+                                    <c:forEach items="${sessionScope.cart.products.keySet()}" var="product" >
+                                        <hr class="mb-4">
+                                        <div class="row mb-4">
+                                        <div class="col-md-5 col-lg-3 col-xl-3">
+                                            <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                                                <img class="img-fluid w-100"
+                                                     src="${pageContext.request.contextPath}/async?command=get_image&image_name=${product.imageName}" alt="Sample">
+                                            </div>
+                                        </div>
+                                            <div class="col-md-7 col-lg-9 col-xl-9">
+                                            <div>
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <h5>${product.name}</h5>
+                                                        <p class="mb-3 text-muted text-uppercase small">${product.info}</p>
+                                                    </div>
+                                                    <div>
+                                                        <div class="def-number-input number-input safari_only mb-0 w-100">
+                                                            <input class="quantity" min="0" name="quantity" value="${sessionScope.cart.products.get(product)}" type="number">
+                                                            <button onclick="" <%--TODO--%>
+                                                                    class="btn-primary">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <a href="${pageContext.request.contextPath}/controller?command=remove_product_from_cart&id_product=${product.id}"
+                                                           type="button" class="card-link-secondary small text-uppercase mr-3"><i
+                                                                class="fas fa-trash-alt mr-1"></i> Remove item </a>
+                                                    </div>
+                                                    <p class="mb-0"><span><strong>${product.price}$</strong></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </c:forEach>
+                                    <hr class="mb-4">
+                                    <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
+                                        items to your cart does not mean booking them.</p>
+
+                                </div>
+                            </div>
+                            <!-- Card -->
+
+                            <!-- Card -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+
+                                    <h5 class="mb-4">Expected shipping delivery</h5>
+
+                                    <p class="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
+                                </div>
+                            </div>
+                            <!-- Card -->
+
+
+                        </div>
+                        <!--Grid column-->
+
+                        <!--Grid column-->
+                        <div class="col-lg-4">
+
+                            <!-- Card -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+
+                                    <h5 class="mb-3">The total amount of</h5>
+
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Temporary amount
+                                            <span>$25.98</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Shipping
+                                            <span>Gratis</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                            <div>
+                                                <strong>The total amount of</strong>
+                                            </div>
+                                            <span><strong>$${sessionScope.cart.totalPrice}</strong></span>
+                                        </li>
+                                    </ul>
+
+                                    <button type="button" class="btn btn-primary btn-block waves-effect waves-light">go to checkout</button>
+
+                                </div>
+                            </div>
+
+                    </c:when>
+                </c:choose>
+                </div>
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+        </section>
+        <!--Section: Block Content-->
+</body>
+</html>

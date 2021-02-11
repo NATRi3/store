@@ -10,7 +10,6 @@ import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class DeleteAccountCommand implements Command {
@@ -23,10 +22,10 @@ public class DeleteAccountCommand implements Command {
         try {
             if(userService.deleteUser(user.getEmail(),password)) {
                 request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_SUCCESSFUL_DELETE);
-                return PagePath.LOGIN_PAGE;
+                return PagePath.LOGIN;
             } else {
                 request.setAttribute(RequestParameter.MESSAGE,MessageErrorKey.ERROR_MESSAGE_WRONG_EMAIL_OR_PASS);
-                return PagePath.ACCOUNT_PAGE;
+                return PagePath.ACCOUNT;
             }
         } catch (ServiceException e) {
             logger.info(e);

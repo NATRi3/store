@@ -1,7 +1,7 @@
 package by.epam.store.entity;
 
-import by.epam.store.entity.type.TypeAccess;
 import by.epam.store.entity.type.TypeRole;
+import by.epam.store.entity.type.TypeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,18 +14,16 @@ import java.util.Date;
 @Data
 public class User {
     private long id;
-    private String name;
     private String email;
-    private Date registerDate;
-    private String imageName;
-    private TypeAccess access;
     private TypeRole role;
+    private String name;
+    private String imageName;
+    private TypeStatus access;
+    private Date registerDate;
 
-
-    public User(long id, String name, String email,  TypeRole role) {
-        this.id = id;
+    public User( String name, String email, TypeRole role) {
         this.name = name;
         this.email = email;
-        this.role =role;
+        this.role = role;
     }
 }

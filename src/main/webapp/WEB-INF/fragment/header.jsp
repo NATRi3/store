@@ -6,52 +6,80 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <form name="redirectHomeForm" method="GET" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="redirect_to_home">
-                    <a class="nav-link" href="javascript:document.redirectHomeForm.submit()">
-                        <fmt:message key="header.home" bundle="${text}"/>
-                    </a>
-                </form>
+                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/guest/home.jsp">
+                    <fmt:message key="header.home" bundle="${text}"/>
+                </a>
             </li>
             <li class="nav-item">
-                <form name="redirectShopForm" method="GET" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="redirect_to_shop">
-                    <a class="nav-link" href="javascript:document.redirectShopForm.submit()">
-                        <fmt:message key="header.shop" bundle="${text}"/>
-                    </a>
-                </form>
+                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/guest/shop.jsp">
+                    <fmt:message key="header.shop" bundle="${text}"/>
+                </a>
             </li>
             <li class="nav-item">
-                <form name="redirectAboutForm" method="GET" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="redirect_to_about">
-                    <a class="nav-link" href="javascript:document.redirectAboutForm.submit()">
-                        <fmt:message key="header.about" bundle="${text}"/>
-                    </a>
-                </form>
+                <A class="nav-link" href="#">
+                    <fmt:message key="header.about" bundle="${text}"/>
+                </A>
             </li>
-            <li class="nav-item">
-                <form name="submitForm" method="GET" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="change_locale">
-                    <input type="hidden" name="currentPage" value="${pageContext.request.requestURI}">
-                    <input type="hidden" name="newLocale" value="<fmt:message key="language.value" bundle="${text}"/>">
-                    <A class="nav-link" href="javascript:document.submitForm.submit()">
-                        <fmt:message key="language.submit" bundle="${text}"/>
-                    </A>
-                </form>
-            </li>
-            <c:if test="${sessionScope.currentUser.id!=-1}">
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="imageServlet?command=user&image_name=${sessionScope.currentUser.imageName}" alt="${sessionScope.currentUser.imageName}">
-                        Profile
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navDropDownLink">
-                        <a class="dropdown-item" href="#"><fmt:message key="header.account" bundle="${text}"/></a>
-                        <a class="dropdown-item" href="#"><fmt:message key="header.logout" bundle="${text}"/></a>
-                    </div>
-                </li>
-            </c:if>
-            </ul>
+            <c:choose>
+                <c:when test="${!sessionScope.currentUser.role.toString().equals('GUEST')}">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="img-thumbnail" width="30" height="30" id="accountImg" alt="${sessionScope.currentUser.imageName}"
+                                 src="${pageContext.request.contextPath}/async?command=get_image&image_name=${sessionScope.currentUser.imageName}"/>
+                                ${sessionScope.currentUser.name}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navDropDownLink">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/jsp/user/account.jsp">
+                                <fmt:message key="header.account" bundle="${text}"/>
+                            </a>
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=logout">
+                                <fmt:message key="header.logout" bundle="${text}"/>
+                            </a>
+                        </div>
+                    </li>
+                    <c:choose>
+                        <c:when test="${sessionScope.currentUser.role.toString().equals('MANAGER')}">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/storage/storage-panel.jsp">
+                                    <fmt:message key="header.storage_panel" bundle="${text}"/>
+                                </a>
+                            </li>
+                        </c:when>
+                        <c:when test="${sessionScope.currentUser.role.toString().equals('ADMIN')}">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/admin/admin-panel.jsp">
+                                    <fmt:message key="header.admin_panel" bundle="${text}"/>
+                                </a>
+                            </li>
+                        </c:when>
+                        <c:when test="${sessionScope.currentUser.role.toString().equals('CLIENT')}">
+                            <li class="nav-item">
+                                <a id="CART" href="${pageContext.request.contextPath}/jsp/user/cart-page.jsp" class="nav-link">
+                                    <fmt:message key="header.view_cart" bundle="${text}"/>
+                                    <span id="cartAmount">${sessionScope.cart.totalAmount}</span>
+                                </a>
+                            </li>
+                        </c:when>
+                    </c:choose>
+                </c:when>
+                <c:when test="${sessionScope.currentUser.role.toString().equals('GUEST')}">
+                    <li class="nav-item" >
+                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/guest/login.jsp">
+                            <fmt:message key="header.login" bundle="${text}"/>
+                        </a>
+                    </li>
+                </c:when>
+            </c:choose>
+
+        </ul>
+        <form class="navbar-nav" name="submitForm" method="GET" action="${pageContext.request.contextPath}/controller">
+            <input type="hidden" name="command" value="change_locale">
+            <input type="hidden" name="currentPage" value="${pageContext.request.requestURI}">
+            <input type="hidden" name="newLocale" value="<fmt:message key="language.value" bundle="${text}"/>">
+            <A class="nav-link" href="javascript:document.submitForm.submit()">
+                <fmt:message key="language.submit" bundle="${text}"/>
+            </A>
+        </form>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="<fmt:message key="header.search_product" bundle="${text}"/>" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">

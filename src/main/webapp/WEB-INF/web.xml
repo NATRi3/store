@@ -26,6 +26,10 @@
         <filter-name>AccessCommandFilter</filter-name>
         <filter-class>by.epam.store.controller.filter.AccessCommandFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>AccessAsyncCommandFilter</filter-name>
+        <filter-class>by.epam.store.controller.filter.AccessAsyncCommandFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -36,7 +40,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>DoublePostingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/controller</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AccessJspFilter</filter-name>
@@ -45,5 +49,9 @@
     <filter-mapping>
         <filter-name>AccessCommandFilter</filter-name>
         <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AccessAsyncCommandFilter</filter-name>
+        <url-pattern>/async</url-pattern>
     </filter-mapping>
 </web-app>

@@ -1,12 +1,20 @@
 package by.epam.store.command;
 
-import by.epam.store.command.asyncimpl.ActivateProductCommand;
-import by.epam.store.command.asyncimpl.AddProductCommand;
-import by.epam.store.command.asyncimpl.DeactivateProductCommand;
+import by.epam.store.command.asyncimpl.*;
 
 public enum  TypeCommandAsync {
+    BLOCK_PRODUCT(new BlockProductCommand()),
+    UNBLOCK_PRODUCT(new UnblockProductCommand()),
+    GET_LIST_PRODUCT_FEEDBACK(new GetListProductFeedbackCommand()),
+    GET_LIST_PRODUCT_RANDOM(new GetListProductRandomCommand()),
+    GET_LIST_COLLECTION(new GetListProductCollectionsCommand()),
+    GET_LIST_NEWS(new GetListNewsCommand()),
+    GET_FRESH_NEWS(new GetFreshNewsCommand()),
+    GET_SHOP_LIST_PRODUCT(new GetShopListProductCommand()),
+    GET_LIST_PRODUCT_BY_COLLECTION(new GetListProductByCollectionCommand()),
+    GET_IMAGE(new GetImageCommand()),
     DEACTIVATE_PRODUCT(new DeactivateProductCommand()),
-    ADD_PRODUCT(new AddProductCommand()),
+    ADD_PRODUCT_TO_CART(new AddProductToCartCommand()),
     ACTIVATE_PRODUCT(new ActivateProductCommand());
     private CommandAsync command;
 

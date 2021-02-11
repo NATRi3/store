@@ -15,14 +15,15 @@ public class DoublePostingPreventingFilter implements Filter {
     @Override
     public void init(FilterConfig fg) throws ServletException {
     }
-    HttpSession session = null ;
+
     @Override
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest)req;
+        HttpSession session;
         if(request.getMethod().equals("GET")){
             session = request.getSession(true);
-            session.setAttribute("stoken", new Random().nextInt(10000));
+            session.setAttribute(SessionAttribute.SERVER_TOKEN, new Random().nextInt(10000));
             chain.doFilter(req, res);
         }else{
             session = request.getSession();
@@ -32,10 +33,9 @@ public class DoublePostingPreventingFilter implements Filter {
                 session.setAttribute(SessionAttribute.SERVER_TOKEN,  new Random().nextInt(10000));
                 chain.doFilter(req, res);
             } else {
-                System.out.println("Tokens: "+serverToken+req.getParameter(RequestParameter.CLIENT_TOKEN));
+                log.info("Tokens: "+serverToken+"-"+req.getParameter(RequestParameter.CLIENT_TOKEN));
                 session.setAttribute(SessionAttribute.SERVER_TOKEN,  new Random().nextInt(10000));
                 HttpServletResponse response = (HttpServletResponse) res;
-                System.out.println((String) session.getAttribute(SessionAttribute.PAGE));
                 response.sendRedirect(request.getContextPath()+session.getAttribute(SessionAttribute.PAGE));
             }
         }

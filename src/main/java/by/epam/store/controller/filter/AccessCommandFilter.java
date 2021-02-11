@@ -13,10 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 @Log4j2
 public class AccessCommandFilter implements Filter {
-    private static Map<TypeRole,String[]> commandRoleAccess;
+    private static Map<TypeRole, Set<String>> commandRoleAccess;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -30,24 +31,23 @@ public class AccessCommandFilter implements Filter {
         requestCommand = request.getParameter(RequestParameter.COMMAND);
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        boolean access = false;
-        for(Map.Entry<TypeRole,String[]> entry:commandRoleAccess.entrySet()){
+        for(Map.Entry<TypeRole,Set<String>> entry:commandRoleAccess.entrySet()){
             if (user.getRole().equals(entry.getKey())) {
-                for (String command : entry.getValue()) {
-                    if (requestCommand==null||requestCommand.contains(command)) {
-                        access = true;
-                        break;
+                if (entry.getValue().contains(requestCommand)) {
+                    filterChain.doFilter(servletRequest,servletResponse);
+                } else {
+                    log.info("Wrong access " + requestCommand + user.getRole());
+                    RequestDispatcher dispatcher;
+                    if(user.getRole().equals(TypeRole.GUEST)) {
+                        request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_LOGIN_PLEASE);
+                        dispatcher = request.getRequestDispatcher(PagePath.LOGIN);
+                    } else {
+                        request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_WRONG_ACCESS);
+                        dispatcher = request.getRequestDispatcher(PagePath.MAIN);
                     }
+                    dispatcher.forward(servletRequest, servletResponse);//TODO redirect
                 }
             }
-        }
-        if(access){
-            filterChain.doFilter(servletRequest,servletResponse);
-        } else {
-            log.info("wrong access "+requestCommand + user.toString());
-            request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_WRONG_ACCESS);
-            RequestDispatcher dispatcher = request.getRequestDispatcher(PagePath.MAIN_PAGE);
-            dispatcher.forward(servletRequest, servletResponse);
         }
     }
 

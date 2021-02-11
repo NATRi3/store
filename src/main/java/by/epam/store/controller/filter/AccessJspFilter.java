@@ -6,15 +6,17 @@ import by.epam.store.util.MessageErrorKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
+import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
-
+import java.util.Set;
+@Log4j2
 public class AccessJspFilter implements Filter {
-    private static Map<TypeRole,String[]> jspRoleAccess;
+    private static Map<TypeRole,Set<String>> jspRoleAccess;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         jspRoleAccess = JspAccessMap.getINSTANCE();
@@ -26,25 +28,24 @@ public class AccessJspFilter implements Filter {
         String requestUri = request.getRequestURI().replace(request.getContextPath(),"");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        boolean access = false;
-        for(Map.Entry<TypeRole,String[]> entry:jspRoleAccess.entrySet()){
+        for(Map.Entry<TypeRole, Set<String>> entry:jspRoleAccess.entrySet()){
             if(user.getRole().equals(entry.getKey())) {
-                for (String uri : entry.getValue()) {
-                    if (requestUri.contains(uri)) {
-                        session.setAttribute(SessionAttribute.PAGE,uri);
-                        access = true;
-                        break;
+                if (entry.getValue().contains(requestUri)) {
+                    session.setAttribute(SessionAttribute.PAGE,requestUri);
+                    filterChain.doFilter(servletRequest,servletResponse);
+                }else {
+                    log.info("Wrong access " + requestUri + user.getRole());
+                    RequestDispatcher dispatcher;
+                    if(user.getRole().equals(TypeRole.GUEST)) {
+                        request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_LOGIN_PLEASE);
+                        dispatcher = request.getRequestDispatcher(PagePath.LOGIN);
+                    } else {
+                        request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_WRONG_ACCESS);
+                        dispatcher = request.getRequestDispatcher(PagePath.MAIN);
                     }
+                    dispatcher.forward(servletRequest, servletResponse);
                 }
             }
-        }
-        if(access){
-            filterChain.doFilter(servletRequest,servletResponse);
-        }else {
-            System.out.println("wrong access "+requestUri +"----"+ user.getRole());
-            request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_WRONG_ACCESS);
-            RequestDispatcher dispatcher = request.getRequestDispatcher(PagePath.MAIN_PAGE);
-            dispatcher.forward(servletRequest, servletResponse);
         }
     }
 

@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LogoutCommand implements Command {
@@ -17,6 +16,6 @@ public class LogoutCommand implements Command {
         HttpSession session = request.getSession();
         String locale = session.getAttribute(SessionAttribute.LOCALE).toString();
         session.invalidate();
-        return PagePath.LOGIN_PAGE;
+        return PagePath.LOGIN;
     }
 }

@@ -5,14 +5,12 @@ import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
+import by.epam.store.service.TypeSort;
 import by.epam.store.util.MessageErrorKey;
 import lombok.extern.log4j.Log4j2;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +18,27 @@ import java.util.Optional;
 public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDao {
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
-        "SELECT id_products,name,info,price,status FROM products";
+        "SELECT id_products,name,info,price,status,image,id_collection,AVG(t1.evaluation) as 'evaluation' from " +
+                    "products LEFT JOIN (SELECT id_product,evaluation FROM feedback) as t1 on id_products=t1.id_product";
     private static final String SQL_INSERT_PRODUCT =
-        "INSERT INTO products (`name`, `info`,`price`)VALUES (?, ?, ?)";
+        "INSERT INTO products (`name`, `info`,`price`,`id_collection`)VALUES (?, ?, ?,?)";
     public static final String SQL_SELECT_BY_ID =
-            "SELECT id_products,name,info,price,status FROM products WHERE id_products=?";
+            "SELECT id_products,name,info,price,status,image,id_collection,AVG(t1.evaluation) as 'evaluation' from " +
+                    "products LEFT JOIN (SELECT id_product,evaluation FROM feedback) as t1 on id_products=t1.id_product WHERE id_products=?";
     private static final String SQL_UPDATE_PRODUCT_BY_ID =
-        "UPDATE products SET name = ? AND info = ? AND price = ? AND status = ? WHERE id_products = ?";
-    private static final String SQL_UPDATE_STATUS_BY_ID = "UPDATE products SET status = ? WHERE id_products=?";
+        "UPDATE products SET name = ?, info = ?, price = ?, status = ?, image=? WHERE id_products = ?";
+    private static final String SQL_UPDATE_STATUS_BY_ID =
+            "UPDATE products SET status = ? WHERE id_products=?";
+    public static final String SQL_SELECT_SORTED_COLLECTION_PRODUCT =
+            "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM products LEFT JOIN " +
+                    "(SELECT id_product,AVG(evaluation) as evaluation from feedback) as f on f.id_product=id_products " +
+                    "WHERE status=? and id_collection LIKE ? order by %s limit 12 offset ? ";
+    public static final String SQL_SELECT_SORTED_COLLECTION_PRODUCT_COUNT =
+            "SELECT count() FROM products WHERE status=? and id_collection LIKE ?";
+    public static final String SQL_SELECT_RANDOM_PRODUCT =
+            "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM products LEFT JOIN " +
+                    "(SELECT id_product,AVG(evaluation) as evaluation from feedback) as f on f.id_product=id_products " +
+                    "WHERE status='ACTIVE' order by rand() limit ? ";
 
 
     @Override
@@ -37,16 +48,12 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)){
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
-                long id = resultSet.getInt(DataBaseColumn.ID_PRODUCT);
-                String name = resultSet.getString(DataBaseColumn.PRODUCT_NAME);
-                String info = resultSet.getString(DataBaseColumn.PRODUCT_INFO);
-                BigDecimal price = resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE);
-                TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.PRODUCT_STATUS));
-                products.add(new Product(id,name,info,price,status));
+                Optional<Product> optionalProduct = getProductFormResultSet(resultSet);
+                optionalProduct.ifPresent(products::add);
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
         }
         return products;
     }
@@ -58,14 +65,8 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)){
             statement.setLong(1,id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                long idProduct = resultSet.getInt(DataBaseColumn.ID_PRODUCT);
-                String name = resultSet.getString(DataBaseColumn.PRODUCT_NAME);
-                String info = resultSet.getString(DataBaseColumn.PRODUCT_INFO);
-                BigDecimal price = resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE);
-                TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.PRODUCT_STATUS));
-                Product product = new Product(idProduct,name,info,price,status);
-                optionalProduct = Optional.of(product);
+            if (resultSet.next()){
+                optionalProduct = getProductFormResultSet(resultSet);
             }
         } catch (SQLException e) {
             log.error(e);
@@ -95,6 +96,47 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
         }
         return result;
     }
+
+    @Override
+    public List<Product> findCollectionProductAndSort(int begin, TypeStatus status, String idCollection, String typeSort)
+            throws DaoException {
+        String sql = String.format(SQL_SELECT_SORTED_COLLECTION_PRODUCT,typeSort);
+        List<Product> result = new ArrayList<>();
+        try(Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1,status.toString());
+            statement.setString(2,idCollection);
+            statement.setInt(3,begin);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                Optional<Product> optionalProduct = getProductFormResultSet(resultSet);
+                optionalProduct.ifPresent(result::add);
+            }
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+        }
+        return result;
+    }
+
+    @Override
+     public List<Product> findRandomProduct(int amount) throws DaoException {
+        try(Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_RANDOM_PRODUCT)){
+            statement.setInt(1,amount);
+            ResultSet resultSet = statement.executeQuery();
+            List<Product> result = new ArrayList<>();
+            while (resultSet.next()){
+                Optional<Product> optionalProduct = getProductFormResultSet(resultSet);
+                optionalProduct.ifPresent(result::add);
+            }
+            return result;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+        }
+    }
+
     @Override
     public Product create(Product product) throws DaoException {
         try (Connection connection = getConnection();
@@ -102,6 +144,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             statement.setString(1, product.getName());
             statement.setString(2, product.getInfo());
             statement.setBigDecimal(3, product.getPrice());
+            statement.setLong(4,product.getIdCollection());
             statement.executeUpdate();
             return product;
         } catch (SQLException e) {
@@ -111,19 +154,40 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
     }
 
     @Override
-    public Product update(Product product) throws DaoException {
+    public boolean update(Product product) throws DaoException {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PRODUCT_BY_ID)){
             statement.setString(1, product.getName());
             statement.setString(2, product.getInfo());
             statement.setBigDecimal(3, product.getPrice());
             statement.setString(4, String.valueOf(product.getStatus()));
-            statement.setLong(5, product.getId());
-            statement.executeUpdate();
-            return product;
+            statement.setString(5, product.getImageName());
+            statement.setLong(6, product.getId());
+            return statement.executeUpdate()==1;
         } catch (SQLException e) {
             log.error(e);
             throw new DaoException(e);
+        }
+    }
+
+    private Optional<Product> getProductFormResultSet(ResultSet resultSet) throws SQLException {
+        if(resultSet.getString(DataBaseColumn.ID_PRODUCT)!=null) {
+            long id = resultSet.getLong(DataBaseColumn.ID_PRODUCT);
+            String name = resultSet.getString(DataBaseColumn.PRODUCT_NAME);
+            String info = resultSet.getString(DataBaseColumn.PRODUCT_INFO);
+            TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.PRODUCT_STATUS));
+            BigDecimal price = resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE);
+            String image = resultSet.getString(DataBaseColumn.PRODUCT_IMAGE);
+            long idCollection = resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION);
+            String rating;
+            if(resultSet.getString(DataBaseColumn.FEEDBACK_EVALUATION)!=null) {
+                rating = String.valueOf(resultSet.getByte(DataBaseColumn.FEEDBACK_EVALUATION))+"/10";
+            } else {
+                rating = "Нет оценок";
+            }
+            return Optional.of(new Product(id, name, info, status, price, image, idCollection, rating));
+        } else {
+            return Optional.empty();
         }
     }
 

@@ -14,12 +14,16 @@ public class Product {
     private long id;
     private String name;
     private String info;
-    private BigDecimal price;
     private TypeStatus status;
+    private BigDecimal price;
+    private String imageName;
+    private long idCollection;
+    private String rating;
 
-    public Product(String name, String info, BigDecimal price, long id_user, String imageName) {
+    public Product(String name, String info, BigDecimal price, long idCollection) {
         this.name = name;
         this.info = info;
         this.price = price;
+        this.idCollection = idCollection;
     }
 }

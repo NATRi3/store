@@ -9,7 +9,6 @@ import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
@@ -22,11 +21,11 @@ public class LoginCommand implements Command {
         try {
             User user = userService.login(email,password);
             session.setAttribute(SessionAttribute.USER, user);
-            return PagePath.MAIN_PAGE;
+            return PagePath.MAIN;
         } catch (ServiceException e) {
             logger.info(e.getMessage());
             request.setAttribute(RequestParameter.MESSAGE, e.getMessage());
-            return PagePath.LOGIN_PAGE;
+            return PagePath.LOGIN;
         }
     }
 }

@@ -37,8 +37,8 @@ public class OrderDao implements BaseDao<Order> {
     }
 
     @Override
-    public Order update(Order order) throws DaoException {
-        return null;
+    public boolean update(Order order) throws DaoException {
+        return false;
     }
 
     @Override
