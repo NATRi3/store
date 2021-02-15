@@ -2,11 +2,8 @@ package by.epam.store.controller.filter;
 
 import by.epam.store.entity.User;
 import by.epam.store.entity.type.TypeRole;
-import by.epam.store.util.MessageErrorKey;
-import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
-import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.*;
@@ -40,9 +37,9 @@ public class AccessAsyncCommandFilter implements Filter {
                     log.info("Wrong access " + requestCommand + user.getRole());
                     HttpServletResponse response = (HttpServletResponse) servletResponse;
                     if(user.getRole().equals(TypeRole.GUEST)){
-                        response.sendError(403);
+                        response.sendError(402);
                     } else {
-                        response.sendError(601);
+                        response.sendError(403);
                     }
                 }
             }

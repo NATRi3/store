@@ -2,7 +2,7 @@ package by.epam.store.util;
 
 public class PagePath {
     public static final String ADMIN_PANEL = "/jsp/admin/admin-panel.jsp";
-    public static final String ADMIN_PANEL_USERS = "/jsp/admin/admin-panel-users.jsp";
+    public static final String ADMIN_PANEL_USERS = "/jsp/admin/admin-panel-user.jsp";
     public static final String ADMIN_PANEL_NEWS = "/jsp/admin/admin-panel-news.jsp";
     public static final String ADMIN_PANEL_COLLECTION = "/jsp/admin/admin-panel-collection.jsp";
     public static final String FORGOT_PASSWORD = "/jsp/guest/forgot-password.jsp";

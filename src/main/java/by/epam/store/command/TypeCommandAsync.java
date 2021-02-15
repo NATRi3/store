@@ -1,16 +1,17 @@
 package by.epam.store.command;
 
-import by.epam.store.command.asyncimpl.*;
+import by.epam.store.command.async.*;
 
 public enum  TypeCommandAsync {
+    SEARCH_PRODUCT(new SearchProductCommand()),
     BLOCK_PRODUCT(new BlockProductCommand()),
     UNBLOCK_PRODUCT(new UnblockProductCommand()),
+    GET_LIST_USERS_BY_ROLE_STATUS(new GetListUsersByRoleAndStatus()),
     GET_LIST_PRODUCT_FEEDBACK(new GetListProductFeedbackCommand()),
     GET_LIST_PRODUCT_RANDOM(new GetListProductRandomCommand()),
     GET_LIST_COLLECTION(new GetListProductCollectionsCommand()),
     GET_LIST_NEWS(new GetListNewsCommand()),
     GET_FRESH_NEWS(new GetFreshNewsCommand()),
-    GET_SHOP_LIST_PRODUCT(new GetShopListProductCommand()),
     GET_LIST_PRODUCT_BY_COLLECTION(new GetListProductByCollectionCommand()),
     GET_IMAGE(new GetImageCommand()),
     DEACTIVATE_PRODUCT(new DeactivateProductCommand()),

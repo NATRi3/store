@@ -34,11 +34,10 @@ public class DataBaseColumn {
     public static final String NEWS_TITLE = "title";
     public static final String NEWS_INFO = "info";
     public static final String NEWS_ID_COLLECTION = "id_collection";
-    public static final String NEWS_DATE = "date";
+    public static final String DATE = "date";
     public static final String NEWS_IMAGE = "image";
     public static final String ID_COLLECTION = "id_collection";
     public static final String COLLECTION_INFO = "info";
     public static final String COLLECTION_NAME = "name";
-    public static final String COLLECTION_DATE = "date";
     private DataBaseColumn(){ }
 }

@@ -7,10 +7,8 @@ import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.util.MessageKey;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,13 +20,13 @@ import java.util.Optional;
 public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedback> {
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
-            "SELECT id_feedback, feedback, evaluation, id_product, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account";
+            "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account";
     private static final String SQL_SELECT_ALL_BY_PRODUCT_ID =
-            "SELECT id_feedback, feedback, evaluation, id_product, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account WHERE id_product=?";
+            "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account WHERE id_product=?";
     private static final String SQL_SELECT_BY_ID =
             "SELECT id_feedback, feedback, evaluation, id_product, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account WHERE id_feedback=?";
     private static final String SQL_CREATE =
-            "INSERT INTO feedback SET feedback=? AND evaluation=? AND id_product=? AND id_account=?";
+            "INSERT INTO feedback SET feedback=?, evaluation=?, id_product=?, id_account=?, date=?";
 
     @Override
     public List<Feedback> findAll() throws DaoException {
@@ -42,7 +40,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
         }
         return feedbacks;
     }
@@ -60,7 +58,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
         }
         return feedbacks;
     }
@@ -76,7 +74,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
         }
         return optionalFeedback;
     }
@@ -99,15 +97,12 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             statementUpdate.setInt(2,feedback.getEvaluation());
             statementUpdate.setLong(3,feedback.getIdProduct());
             statementUpdate.setLong(4,feedback.getUser().getId());
+            statementUpdate.setLong(5,feedback.getDate().getTime());
             statementUpdate.executeUpdate();
-            ResultSet resultSet = statementUpdate.getGeneratedKeys();
-            if(resultSet.next()){
-                feedback.setId(resultSet.getLong(1));
-            }
             return feedback;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
         }
     }
 
@@ -121,11 +116,12 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             String name = resultSet.getString(DataBaseColumn.ACCOUNT_NAME);
             String email = resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL);
             String image = resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE);
+            Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
             TypeStatus access = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS));
             TypeRole role = TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE));
             java.util.Date dateRegister = new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE));
             User user = new User(idUser,email,role,name,image,access,dateRegister);
-            return Optional.of(new Feedback(id, feedback, evaluation, idProduct, user));
+            return Optional.of(new Feedback(id, feedback, evaluation, idProduct, user, date));
         } else {
             return Optional.empty();
         }

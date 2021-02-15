@@ -1,4 +1,4 @@
-package by.epam.store.command.asyncimpl;
+package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
 import by.epam.store.entity.Product;

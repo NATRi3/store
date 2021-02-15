@@ -13,7 +13,7 @@
 <fmt:setBundle basename="property.error" var="error"/>
 <html>
 <head>
-    <title>Shop</title>
+    <title>ADMINPANEL</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginform.css" type="text/css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css" type="text/css">
@@ -28,65 +28,89 @@
 </head>
 <body>
 <div class="container">
-
+    <c:if test="${requestScope.error_message!=null}">
+        <c:choose>
+            <c:when test="${requestScope.error_message.contains('successful')}">
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
-        <br>
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div style="background-color: #FFFFFF" class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Products</h1>
-                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-user.jsp"><h1 class="page-header">Users</h1> </a>
-                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-news.jsp"><h1 class="page-header">News</h1> </a>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel.jsp"><h1 class="page-header"><fmt:message key='admin.products' bundle='${text}'/></h1></a>
+                        <h1 class="page-header"><fmt:message key='admin.users' bundle='${text}'/></h1>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-news.jsp"><h1 class="page-header"><fmt:message key='admin.news' bundle='${text}'/></h1> </a>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-collection.jsp"><h1 class="page-header"><fmt:message key='admin.collections' bundle='${text}'/></h1></a>
                     </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                DataTables Advanced Tables
                                 <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ADDPRODUCTMODAL'>
-                                    ADD PRODUCT
+                                    <fmt:message key='admin.add_product' bundle='${text}'/>
                                 </button>
-                                <div class='modal fade' id='ADDPRODUCTMODAL' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                <div class='modal fade' id='ADDPRODUCTMODAL' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='false'>
                                     <div class='modal-dialog' role='document'>
                                         <div class='modal-content'>
                                             <form method="post" action="${pageContext.request.contextPath}/controller">
                                                 <div class='modal-header'>
-                                                    <h5 class='modal-title'>Add product menu</h5>
+                                                    <h5 class='modal-title'><fmt:message key='admin.menu_add_product' bundle='${text}'/></h5>
                                                 </div>
                                                 <div class='modal-body'>
                                                     <input type='hidden' name='command' value='add_product'>
                                                     <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
-                                                    <label>NAME</label>
-                                                    <input class='form-control' type='text' name='name_product' placeholder="" required/>
-                                                    <label>INFO</label>
-                                                    <input class='form-control' type='text' name='info_product' placeholder="" required/>
-                                                    <label>PRICE</label>
-                                                    <input class='form-control' type='text' name='price_product' placeholder="" required pattern="\d*+(\.\d{2})?"/>
-                                                    <label>Collection</label>
+                                                    <label><fmt:message key='admin.name' bundle='${text}'/></label>
+                                                    <input class='form-control' type='text' name='name_product' value="${requestScope.name_product}" required/>
+                                                    <label><fmt:message key='admin.info' bundle='${text}'/></label>
+                                                    <input class='form-control' type='text' name='info_product' value="${requestScope.info_product}" required/>
+                                                    <label><fmt:message key='admin.price' bundle='${text}'/></label>
+                                                    <input class='form-control' type='text' name='price_product' value="${requestScope.price_product}" required pattern="\d*+(\.\d{2})?"/>
+                                                    <label><fmt:message key='admin.collection' bundle='${text}'/></label>
                                                     <select name="id_collection" id="selectorCollection">
 
                                                     </select>
                                                 </div>
-                                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-                                                <input type='submit' value='Save changes' class='btn btn-primary'/>
+                                                <button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>
+                                                <input type='submit' value='<fmt:message key='button.save_changes' bundle='${text}'/>' class='btn btn-primary'/>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                                 <label>
                                     <select onchange="changeSorting(this.value)" name="typeSort" size=1>
-                                        <option value="name">name</option>
-                                        <option value="name DESC">name desc</option>
-                                        <option value="price DESC">price desc</option>
-                                        <option value="price">price</option>
+                                        <option value="CLIENT"><fmt:message key='sort.client' bundle='${text}'/></option>
+                                        <option value="MANAGER"><fmt:message key='sort.manager' bundle='${text}'/></option>
                                     </select>
                                 </label>
                                 <label>
                                     <select onchange="changeStatus(this.value)" name="typeStatus" size=1>
-                                        <option value="ACTIVE">active</option>
-                                        <option value="BLOCKED">blocked</option>
-                                        <option value="NONACTIVE">nonactive</option>
+                                        <option value="ACTIVE"><fmt:message key='sort.active' bundle='${text}'/></option>
+                                        <option value="BLOCKED"><fmt:message key='sort.blocked' bundle='${text}'/></option>
+                                        <option value="NONACTIVE"><fmt:message key='sort.nonactive' bundle='${text}'/></option>
                                     </select>
                                 </label>
                             </div>
@@ -96,11 +120,10 @@
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                         <tr>
-                                            <th>Image</th>
-                                            <th>NAME</th>
-                                            <th>INFO</th>
-                                            <th>PRICE</th>
-                                            <th>RATING</th>
+                                            <th><fmt:message key='admin.id' bundle='${text}'/></th>
+                                            <th><fmt:message key='admin.image' bundle='${text}'/></th>
+                                            <th><fmt:message key='admin.email' bundle='${text}'/></th>
+                                            <th><fmt:message key='admin.name' bundle='${text}'/></th>
                                             <th></th>
                                         </tr>
                                         </thead>
@@ -136,15 +159,22 @@
                     contentID.appendChild(newTBDiv);
                 });
             },
-            error(error){
-                alert(error);
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         });
     });
-    let amounts = 10;
-    let sorting = 'name';
-    function changeSorting(sort){
-        sorting = sort;
+    let role = 'CLIENT';
+    function changeRole(newRole){
+        role =newRole;
         getListProduct(0,0);
     }
     let status = 'ACTIVE';
@@ -152,184 +182,133 @@
         status=typeStatus;
         getListProduct(0,0);
     }
-    function getListProduct(begin,collection){
+    function getListProduct(begin){
         $.ajax({
             url: "${pageContext.request.contextPath}/async?" +
-                "command=get_list_product_by_collection&id_collection="+collection+
-                "&type_sort="+sorting+"&begin_pagination="+begin+"&type_status="+status,
+                "command=get_list_users_by_role_status"+
+                "&type_role="+role+"&begin_pagination="+begin+"&type_status="+status,
             type: 'GET',
             dataType: 'json',
             success: function (res){
                 var contentID = document.getElementById("table");
                 contentID.innerHTML = "";
-                if(amounts>=20) {
+                if(begin>=10) {
                     var previous = document.createElement("button");
                     previous.setAttribute("class", "btn-primary");
-                    previous.setAttribute("onclick", "getListProduct(" + (amounts-res.length*2) + ","+collection+")")
+                    previous.setAttribute("onclick", "getListProduct(" + (begin-10) + ","+collection+")")
                     previous.innerHTML = "PREVIOS";
                     contentID.appendChild(previous);
                 }
                 if(res.length===10) {
                     var next = document.createElement("button");
                     next.setAttribute("class", "btn-primary");
-                    next.setAttribute("onclick", "getListProduct(" + (amounts + res.length) + "," + collection + "))");
+                    next.setAttribute("onclick", "getListProduct(" + (begin + 10) + "," + collection + ")");
                     next.innerHTML = "NEXT";
                     contentID.appendChild(next);
                 }
-                $.each(res, function (idx,product){
+                $.each(res, function (idx,user){
                     var newTBDiv = document.createElement("tr");
                     newTBDiv.setAttribute("class","odd gradeX");
-                    newTBDiv.setAttribute("id","product"+product.id);
+                    newTBDiv.setAttribute("id","user"+user.id);
                     newTBDiv.innerHTML =
+                        "<td>"+user.id+"</td>"+
                         "<td>"+
                         "<div class='profile-img'>"+
                         "<img class='img-thumbnail' width='100' height='100' id='accountImg' alt=''"+
-                        "src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"'/>"+
-                        "<form name='uploadForm"+product.id+"'"+
-                        "action='${pageContext.request.contextPath}/controller?command=change_product_image&id_product="+product.id+"&ctoken=${sessionScope.stoken}'"+
-                        "method='post' enctype='multipart/form-data'>"+
-                        "<input class='btn btn-primary' type='file' name='file' onchange='document.uploadForm"+product.id+".submit()'/>"+
-                        "</form>"+
+                        "src='${pageContext.request.contextPath}/async?command=get_image&image_name="+user.imageName+"'/>"+
                         "</div>"+
-                        "<td>"+product.name+"</td>"+
-                        "<td>"+product.info+"</td>"+
-                        "<td>"+product.price+"</td>"+
-                        "<td class='center'>"+product.rating+"</td>"+
-                        "<td class='center' id='delete"+product.id+"'>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#statusModal"+product.id+"'>"+
-                        "Status"+
-                        "</button>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#changeModal"+product.id+"'>"+
-                        "Change"+
-                        "</button>"+
                         "</td>"+
-                        "<div class='modal fade' id='changeModal"+product.id+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
-                        "</div>"+
-                        "<div class='modal fade' id='statusModal"+product.id+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+                        "<td>"+user.email+"</td>"+
+                        "<td>"+user.name+"</td>"+
+                        "<td class='center' id='blocked"+user.id+"'>"+
+                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#statusModal"+user.id+"'>"+
+                        "<fmt:message key='admin.change_status' bundle='${text}'/>"+
+                        "</button>"+
+                        "</td id = 'userBtnBlock"+user.id+"'>"+
                         "</div>";
                     contentID.appendChild(newTBDiv);
-                    var newForm = document.createElement('form');
-                    newForm.setAttribute("name","productForm"+product.id+"");
-                    newForm.setAttribute("action","${pageContext.request.contextPath}/controller")
-                    newForm.setAttribute("method","POST");
-                    newForm.innerHTML =
-                        "<div class='modal-dialog' role='document'>"+
-                        "<div class='modal-content' id='forForm"+product.id+"'>"+
-                        "<div class='modal-header'>"+
-                        "<h5 class='modal-title' id='exampleModalLabel'>Change Product Menu</h5>"+
-                        "</div>"+
-                        "<div class='modal-body'>"+
-                        "<input type='hidden' name='command' value='change_product'>"+
-                        "<input type='hidden' name='id_product' value='"+product.id+"'>"+
-                        "<label>"+product.name+"</label><br>"+
-                        "<input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>"+
-                        "<label>INFO</label><input class='form-control' aria-label='INFO' type='text' name='info_product' value='"+product.info+"'/>"+
-                        "<label>PRICE</label><input class='form-control' aria-label='PRICE' type='text' name='price_product' value='"+product.price+"'/>"+
-                        "</div>"+
-                        "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
-                        "<input type='submit' value='Save changes' class='btn btn-primary'/>"+
-                        "</div>"+
-                        "</div>";
-                    document.getElementById("changeModal"+product.id).appendChild(newForm);
-                    var newFormStatus = document.createElement('div');
-                    newFormStatus.setAttribute("class","modal-dialog");
-                    newFormStatus.setAttribute("role","document");
-                    if (product.status==='ACTIVE'){
-                        newFormStatus.innerHTML =
-                            "<div class='modal-content' >"+
-                            "<div class='modal-header'>"+
-                            "<h5 class='modal-title' id='exampleModalLabel'>Change Status "+product.name+"</h5>"+
-                            "</div>"+
-                            "<div class='modal-body'>"+
-                            "<button class='btn btn-primary' data-dismiss='modal' onclick='nonactiveProduct("+product.id+")' >NONACTIVE</button>"+
-                            "<button class='btn btn-primary' data-dismiss='modal' onclick='blockProduct("+product.id+")'>BLOCKED</button>"+
-                            "</div>"+
-                            "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
-                            "</div>";
-                    }else {
-                        if(product.status==='BLOCKED'){
-                            newFormStatus.innerHTML =
-                                "<div class='modal-content' >"+
-                                "<div class='modal-header'>"+
-                                "<h5 class='modal-title' id='exampleModalLabel'>Change Status "+product.name+"</h5>"+
-                                "</div>"+
-                                "<div class='modal-body'>"+
-                                "<button class='btn btn-primary' data-dismiss='modal' onclick='unblockProduct("+product.id+")'>UNBLOCK</button>"+
-                                "</div>"+
-                                "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
-                                "</div>";
-                        } else {
-                            newFormStatus.innerHTML =
-                                "<div class='modal-content' >"+
-                                "<div class='modal-header'>"+
-                                "<h5 class='modal-title' id='exampleModalLabel'>Change Status "+product.name+"</h5>"+
-                                "</div>"+
-                                "<div class='modal-body'>"+
-                                "<button class='btn btn-primary' data-dismiss='modal' onclick='activeProduct("+product.id+")' >ACTIVE</button>"+
-                                "<button class='btn btn-primary' data-dismiss='modal' onclick='blockProduct("+product.id+")'>BLOCKED</button>"+
-                                "</div>"+
-                                "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
-                                "</div>";
-                        }
+                    if (user.status==='ACTIVE'){
+                        var newFormStatus = document.createElement('button');
+                        newFormStatus.setAttribute("class","btn btn-primary");
+                        newFormStatus.setAttribute("onclick","blockProduct("+user.id+")");
+                        newFormStatus.innerHTML = "<fmt:message key='admin.block' bundle='${text}'/>";
+                        document.getElementById("userBtnBlock"+user.id).appendChild(newFormStatus);
                     }
-                    document.getElementById("statusModal"+product.id).appendChild(newFormStatus);
-                    amounts = begin;
                 });
             },
-            error(error) {
-                alert(error);
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         });
     }
-    function blockProduct(product){
+    function blockUser(userId){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=block_product&id_product="+product,
+            url: "${pageContext.request.contextPath}/async",
             type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            data: "command=block_user&id_user="+userId,
+            statusCode:{
+                200: function(){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
     }
-    function unblockProduct(product){
+    function unblockUser(userId){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=unblock_product&id_product="+product,
-            type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
+            data: "command=unblock_user&id_user="+userId,
+            statusCode: {
+                200: function (){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
     }
-    function nonactiveProduct(product){
+    function deleteUser(userId){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=deactivate_product&id_product="+product,
-            type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
-            }
-        })
-    }
-    function activeProduct(product){
-        $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=activate_product&id_product="+product,
-            type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
+            data: "command=deactivate_product&id_product="+userId,
+            statusCode:{
+                200: function (){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
     }

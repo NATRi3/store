@@ -25,9 +25,39 @@
     <script src="${pageContext.request.contextPath}/component/jquery/jquery.js" type="text/javascript"></script>
     <script src="${pageContext.request.contextPath}/component/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${pageContext.request.contextPath}/component/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js" type="text/javascript"></script>
 </head>
 <body>
-
+<div class="container">
+    <c:if test="${requestScope.error_message!=null}">
+        <c:choose>
+            <c:when test="${requestScope.error_message.contains('successful')}">
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <!--Section: Block Content-->
         <section>
@@ -74,11 +104,14 @@
                                                         <p class="mb-3 text-muted text-uppercase small">${product.info}</p>
                                                     </div>
                                                     <div>
+                                                        <form action="${pageContext.request.contextPath}/controller" >
                                                         <div class="def-number-input number-input safari_only mb-0 w-100">
-                                                            <input class="quantity" min="0" name="quantity" value="${sessionScope.cart.products.get(product)}" type="number">
-                                                            <button onclick="" <%--TODO--%>
-                                                                    class="btn-primary">Submit</button>
+                                                            <input type="hidden" name="command" value="add_amount_product_to_cart">
+                                                            <input type="hidden" name="id_product" value="${product.id}">
+                                                            <input class="quantity" min="0" name="amount_product" value="${sessionScope.cart.products.get(product)}" type="number">
+                                                            <button type="submit" class="btn-primary">Submit</button>
                                                         </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-between align-items-center">
@@ -99,18 +132,6 @@
 
                                 </div>
                             </div>
-                            <!-- Card -->
-
-                            <!-- Card -->
-                            <div class="card mb-3">
-                                <div class="card-body">
-
-                                    <h5 class="mb-4">Expected shipping delivery</h5>
-
-                                    <p class="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
-                                </div>
-                            </div>
-                            <!-- Card -->
 
 
                         </div>
@@ -126,14 +147,6 @@
                                     <h5 class="mb-3">The total amount of</h5>
 
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                            Temporary amount
-                                            <span>$25.98</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                            Shipping
-                                            <span>Gratis</span>
-                                        </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                                             <div>
                                                 <strong>The total amount of</strong>
@@ -142,8 +155,39 @@
                                         </li>
                                     </ul>
 
-                                    <button type="button" class="btn btn-primary btn-block waves-effect waves-light">go to checkout</button>
-
+                                    <button type="button" class="btn btn-primary btn-block waves-effect waves-light" data-toggle="modal" data-target="#exampleModal">
+                                        Create order
+                                    </button>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form action="${pageContext.request.contextPath}/controller" method="post">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                </div>
+                                                    <input type="hidden" name="command" value="create_order">
+                                                    <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
+                                                    <input type="text" class="form-control" name="address" value="${requestScope.address}">
+                                                    <input type="tel" class="form-control" id="phone" name="phone" value="${requestScope.phone}" placeholder="+375 (99) 99 99 999">
+                                                    <script src="${pageContext.request.contextPath}/js/jquery.maskedinput.zip"></script>
+                                                    <script>
+                                                        $(function(){
+                                                            $("#phone").mask("+375(99)999-99-99");
+                                                        });
+                                                    </script>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -157,5 +201,40 @@
 
         </section>
         <!--Section: Block Content-->
+</div>
 </body>
+<script type="text/javascript">
+    function mask(inputName, mask, evt) {
+        try {
+            var text = document.getElementById(inputName);
+            var value = text.value;
+            try {
+                var e = (evt.which) ? evt.which : event.keyCode;
+                if ( e == 46 || e == 8 ) {
+                    text.value = "";
+                    return;
+                }
+            } catch (e1) {}
+            var literalPattern=/[0\*]/;
+            var numberPattern=/[0-9]/;
+            var newValue = "";
+            for (var vId = 0, mId = 0 ; mId < mask.length ; ) {
+                if (mId >= value.length)
+                break;
+                if (mask[mId] == '0' && value[vId].match(numberPattern) == null) {
+                    break;
+                }
+                while (mask[mId].match(literalPattern) == null) {
+                    if (value[vId] == mask[mId])
+                        break;
+                    newValue += mask[mId++];
+                }
+                newValue += value[vId++];
+                mId++;
+            }
+            text.value = newValue;
+        } catch(e) {}
+    }
+</script>
+
 </html>

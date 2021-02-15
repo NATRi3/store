@@ -38,8 +38,19 @@
                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                             <h1><fmt:message key="login.login" bundle="${text}"/></h1>
                             <p class ="text-muted"> <fmt:message bundle="${text}" key="login.title"/></p>
-                            <c:if test="${requestScope.message!=null}">
-                                <p class ="has-error"><fmt:message key="${requestScope.message}" bundle="${error}"/> </p>
+                            <c:if test="${requestScope.error_message!=null}">
+                                <c:choose>
+                                    <c:when test="${requestScope.error_message.contains('successful')}">
+                                        <div class="alert alert-success" role="alert">
+                                            <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert alert-danger" role="alert">
+                                            <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <input type="hidden" name="command" value="login"/>
                             <input type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
@@ -63,7 +74,7 @@
 <script>
     $(document).ready(function(){
         $('form').submit(function(){
-            $(this).find('input[type=submit], button[type=submit]').prop('disabled', true);
+            $(this).find('input[type=submit]').prop('disabled', true);
         })
     });
 </script>

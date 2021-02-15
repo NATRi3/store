@@ -28,7 +28,34 @@
 </head>
 <body>
 <div class="container">
-
+    <c:if test="${requestScope.error_message!=null}">
+        <c:choose>
+            <c:when test="${requestScope.error_message.contains('successful')}">
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <br>
@@ -38,8 +65,8 @@
                     <div class="col-lg-12">
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel.jsp"><h1 class="page-header"><fmt:message key='admin.products' bundle='${text}'/></h1> </a>
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-user.jsp"><h1 class="page-header"><fmt:message key='admin.users' bundle='${text}'/></h1> </a>
-                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-collection.jsp"><h1 class="page-header"><fmt:message key='admin.collections' bundle='${text}'/></h1> </a>
                         <h1 class="page-header"><fmt:message key='admin.news' bundle='${text}'/></h1>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-collection.jsp"><h1 class="page-header"><fmt:message key='admin.collections' bundle='${text}'/></h1> </a>
                     </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">
@@ -212,8 +239,16 @@
                     amounts = begin;
                 });
             },
-            error(error) {
-                alert(error);
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         });
     }

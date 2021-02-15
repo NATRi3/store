@@ -28,15 +28,33 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/fragment/header.jsp" %>
-<c:if test="${requestScope.message!=null}">
-    <div id="my-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <br>
-        <fmt:message key="${requestScope.message}" bundle="${error}"/>
-        <br>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-        </button>
-    </div>
+<c:if test="${requestScope.error_message!=null}">
+    <c:choose>
+        <c:when test="${requestScope.error_message.contains('successful')}">
+            <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <br>
+                    <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                    <br>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <br>
+                    <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                    <br>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+        </c:otherwise>
+    </c:choose>
 </c:if>
 <div>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -48,20 +66,16 @@
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active" style="background-image: url('${pageContext.request.contextPath}/images/slide-bar1.jpg')">
                 <div class="carousel-caption d-none d-md-block">
-                    <h3>First Slide</h3>
-                    <p>This is a description for the first slide.</p>
                 </div>
             </div>
             <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/images/slide-bar2.jpg')">
                 <div class="carousel-caption d-none d-md-block">
-                    <h3>Second Slide</h3>
-                    <p>This is a description for the second slide.</p>
+                    <h3></h3>
+                    <p></p>
                 </div>
             </div>
             <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/images/slide-bar3.jpg')">
                 <div class="carousel-caption d-none d-md-block">
-                    <h3>Third Slide</h3>
-                    <p>This is a description for the third slide.</p>
                 </div>
             </div>
         </div>
@@ -143,8 +157,16 @@
                             contentID.appendChild(newTBDiv);
                         });
                     },
-                    error: function (){
-                        alert("error");
+                    statusCode:{
+                        402: function (){
+                            window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                        },
+                        500: function (){
+                            window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                        },
+                        403: function (){
+                            window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                        }
                     }
                 });
             });

@@ -2,7 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.entity.Cart;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
@@ -22,7 +22,7 @@ public class RemoveProductFromCartCommand implements Command {
             cart.deleteProduct(id);
         } catch (NumberFormatException e){
             log.warn(e);
-            request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_UNKNOWN_PRODUCT);
+            request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UNKNOWN_PRODUCT);
         }
         return PagePath.CART;
     }

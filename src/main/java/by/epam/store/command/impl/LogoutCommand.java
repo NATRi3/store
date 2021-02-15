@@ -14,7 +14,6 @@ public class LogoutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String locale = session.getAttribute(SessionAttribute.LOCALE).toString();
         session.invalidate();
         return PagePath.LOGIN;
     }

@@ -3,6 +3,7 @@ package by.epam.store.entity;
 import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,5 +26,19 @@ public class User {
         this.name = name;
         this.email = email;
         this.role = role;
+    }
+
+    public User(String email) {
+        this.email = email;
+    }
+
+    public void setParametersForm(User user){
+        this.setId(user.getId());
+        this.setEmail(user.getEmail());
+        this.setImageName(user.getImageName());
+        this.setAccess(user.getAccess());
+        this.setRole(user.getRole());
+        this.setName(user.getName());
+        this.setRegisterDate(user.getRegisterDate());
     }
 }

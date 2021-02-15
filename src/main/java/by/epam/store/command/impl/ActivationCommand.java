@@ -1,8 +1,9 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
+import by.epam.store.command.ServiceCreator;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.service.impl.UserService;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.PagePath;
 import org.apache.logging.log4j.LogManager;
@@ -12,16 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ActivationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ActivationCommand.class);
+    private static final UserService userService = ServiceCreator.getInstance().getUserService();
     @Override
     public String execute(HttpServletRequest request) {
         String code = request.getParameter(RequestParameter.ACTIVATION_CODE);
         try {
-            userService.activate(code);
-            request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.MAIL_ACTIVATE_ACCOUNT);
+            String message = userService.activate(code);
+            request.setAttribute(RequestParameter.MESSAGE, message);
+            return PagePath.LOGIN;
         } catch (ServiceException e) {
             logger.info(e);
-            request.setAttribute(RequestParameter.MESSAGE,e.getMessage());
+            return PagePath.PAGE_500;
         }
-        return PagePath.LOGIN;
     }
 }

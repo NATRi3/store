@@ -1,36 +1,46 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
-import by.epam.store.entity.User;
+import by.epam.store.command.ServiceCreator;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.service.impl.UserService;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.PagePath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 public class RegistrationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegistrationCommand.class);
+    private static final UserService userService = ServiceCreator.getInstance().getUserService();
     @Override
     public String execute(HttpServletRequest request) {
-        String name = request.getParameter(RequestParameter.NAME);
-        String email = request.getParameter(RequestParameter.EMAIL);
-        String password = request.getParameter(RequestParameter.PASSWORD);
-        String repeatPassword = request.getParameter(RequestParameter.REPEAT_PASSWORD);
-        String description = request.getParameter("description");
-        String data = request.getParameter("data");
-        System.out.println(name);
+        String page;
+        Map<String ,String> parameters = new HashMap<>();
+        parameters.put(RequestParameter.NAME,request.getParameter(RequestParameter.NAME));
+        parameters.put(RequestParameter.EMAIL, request.getParameter(RequestParameter.EMAIL));
+        parameters.put(RequestParameter.PASSWORD, request.getParameter(RequestParameter.PASSWORD));
+        parameters.put(RequestParameter.REPEAT_PASSWORD, request.getParameter(RequestParameter.REPEAT_PASSWORD));
         try {
-            User newUser = userService.registerClient(name,email,password,repeatPassword);
-            request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_SUCCESSFUL_REGISTRATION);
-            logger.info(newUser.getEmail()+" "+MessageErrorKey.ERROR_MESSAGE_SUCCESSFUL_REGISTRATION);
-            return PagePath.LOGIN;
+            Optional<String> optionalMessage = userService.registerClient(parameters);
+            if(optionalMessage.isPresent()){
+                request.setAttribute(RequestParameter.MESSAGE, optionalMessage.get());
+                page = PagePath.REGISTRATION;
+                for(Map.Entry<String,String> entry: parameters.entrySet()){
+                    request.setAttribute(entry.getKey(),entry.getValue());
+                }
+            }else {
+                page = PagePath.LOGIN;
+            }
         } catch (ServiceException e) {
-            logger.info(e.getMessage());
+            logger.info(e);
             request.setAttribute(RequestParameter.MESSAGE,e.getMessage());
-            return PagePath.REGISTRATION;
+            page = PagePath.REGISTRATION;
         }
+        return page;
     }
 }

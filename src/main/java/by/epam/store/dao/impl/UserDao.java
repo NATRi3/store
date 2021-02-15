@@ -6,7 +6,7 @@ import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.util.MessageKey;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.*;
@@ -20,12 +20,13 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     private static final String SQL_SELECT_ALL =
             "SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts";
     private static final String SQL_SELECT_EMAIL_BY_EMAIL ="SELECT email FROM store.accounts WHERE email = ?";
-    private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD ="SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts WHERE email = ? AND password = ?";
+    private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD ="SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts WHERE binary email = ? AND binary password = ?";
     private static final String SQL_SELECT_BY_ID = "SELECT name,email,register_date, image,id_accounts,access,role FROM store.accounts WHERE id_accounts = ?";
     private static final String SQL_INSERT_USER = "INSERT INTO store.accounts (`email`, `name`, `register_date`, `password`,`role`)VALUES (?,?,?,?,?);";
     private static final String SQL_DELETE_USER ="DELETE FROM store.accounts WHERE email=? AND password=?";
     private static final String SQL_UPDATE = "UPDATE store.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
     public static final String SQL_UPDATE_PASSWORD ="UPDATE store.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
+    private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts WHERE role=? and access=?  LIMIT 10 OFFSET ?";
 
     @Override
     public List<User> findAll() throws DaoException {
@@ -38,7 +39,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             }
         } catch (SQLException e) {
             log.info(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return result;
     }
@@ -50,7 +51,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
         }catch (SQLException e) {
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
     @Override
@@ -66,7 +67,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             }
         }catch (SQLException e) {
             log.info(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return result;
     }
@@ -84,7 +85,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             return result;
         }catch (SQLException e) {
             log.info(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
 
@@ -103,7 +104,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
 
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
 
@@ -124,7 +125,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             return user;
         }catch (SQLException ex) {
             log.error(ex);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(ex);
         }
     }
 
@@ -141,7 +142,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             return optionalUser;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
 
@@ -154,7 +155,27 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             statement.executeUpdate();
         }catch (SQLException ex) {
             log.error(ex);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(ex);
+        }
+    }
+
+    @Override
+    public List<User> findUserByRoleAndStatus(TypeRole role, TypeStatus status, int begin) throws DaoException {
+
+        try(Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ROLE_STATUS)) {
+            statement.setString(1,role.toString());
+            statement.setString(2,status.toString());
+            statement.setInt(3,begin);
+            ResultSet resultSet = statement.executeQuery();
+            List<User> resultUserFromDB = new ArrayList<>();
+            while (resultSet.next()){
+                resultUserFromDB.add(createUserFormResultSet(resultSet));
+            }
+            return resultUserFromDB;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
         }
     }
 
@@ -172,7 +193,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             return statement.executeUpdate()==1;
         }catch (SQLException ex) {
             log.error(ex);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(ex);
         }
     }
 

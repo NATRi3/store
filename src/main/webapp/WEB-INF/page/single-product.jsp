@@ -38,7 +38,7 @@
                     <div class="row">
                         <div class="col-md-5 mb-4 mb-md-0">
                             <div class="view zoom z-depth-2 rounded">
-                                <img class="img-fluid w-100" src="${pageContext.request.contextPath}/async?command=get_image&image_name=${requestScope.product.imageName}" alt="Sample">
+                                <img  src="${pageContext.request.contextPath}/async?command=get_image&image_name=${requestScope.product.imageName}" alt="Sample" height="400">
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -86,19 +86,42 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">//FEEDBACK</h3>
                                 </div>
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="Enter here for tweet..." rows="3"></textarea>
-                                    </div>
-                                    <a href="javascript:void(0)" class="btn btn-info btn-sm pull-right waves-effect waves-light">
-                                        Tweet
-                                    </a>
-                                    <div class="clearfix"></div>
-                                    <hr class="margin-bottom-10">
-                                    <ul id="lastComment" class="list-group list-group-dividered list-group-full">
+                                <form action="${pageContext.request.contextPath}/controller" method="post">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <input type="hidden" name="command" value="create_feedback">
+                                            <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
+                                            <input type="hidden" name="id_product" value="${requestScope.product.id}">
+                                            <textarea name="feedback" class="form-control" placeholder="Enter here for tweet..." rows="3"></textarea>
+                                        </div>
+                                        <input type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light" value="Tweet">
+                                        <div class="clearfix"><div class="form-group" id="rating-ability-wrapper">
+                                            <label class="control-label" for="rating">
+                                                <input type="hidden" id="selected_rating" name="evaluation" value="" required="required">
+                                            </label>
+                                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="1" id="rating-star-1">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="2" id="rating-star-2">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="3" id="rating-star-3">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="4" id="rating-star-4">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="5" id="rating-star-5">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        </div>
+                                        <hr class="margin-bottom-10">
+                                        <ul id="lastComment" class="list-group list-group-dividered list-group-full">
 
-                                    </ul>
-                                </div>
+                                        </ul>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     <div class="col-md-12 ">
@@ -128,17 +151,19 @@
                 var contentID = document.getElementById("recommended");
                     $.each(res, function (idx,product){
                         var newTBDiv = document.createElement("div");
-                        newTBDiv.setAttribute("class","col-md-6 col-lg-3 mb-4");
+                        newTBDiv.setAttribute("class","block");
                         newTBDiv.innerHTML =
                             "<div>"+
-                            "<div class='view zoom z-depth-2 rounded'>"+
-                            "<img class='img-fluid w-100' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"' alt='Sample'>"+
+                            "<div class='top'>"+
+                            "<h5 class='mb-0'>"+product.name+"</h5>"+
+                            "</div>"+
+                            "<div class='middle'>"+
                             "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"+
+                            "<img height='300' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"' alt='Sample'>"+
                             "<div class='mask waves-effect waves-light'></div>"+
                             "</a>"+
                             "</div>"+
-                            "<div class='text-center pt-4'>"+
-                            "<h5 class='mb-0'>"+product.name+"</h5>"+
+                            "<div class='bottom'>"+
                             "<h6 class='mb-3'>$"+product.price+"</h6>"+
                             "<button type='button' class='btn btn-primary btn-sm mr-1 waves-effect waves-light'>"+
                                 "<fmt:message key='shop.add_to_cart' bundle='${text}'/></button>"+
@@ -149,11 +174,17 @@
                     });
             },
             statusCode:{
+                404: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error404.jsp";
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
                 500: function (){
                     window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
                 },
-                404: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error404.jsp";
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
                 }
             }
         });
@@ -179,27 +210,94 @@
                     $.each(res, function (idx,feedback){
                         var newTBDiv = document.createElement("li");
                         newTBDiv.innerHTML =
-                            "<div class='media'>"+
+                            "<div class='media' id='feedbackRemove'"+feedback.id+">"+
                                 "<div class='media-left'>"+
                                 "<a class='avatar avatar-online' href='javascript:void(0)'>"+
                                     "<img src='${pageContext.request.contextPath}/async?command=get_image&image_name="+feedback.user.imageName+"' alt=''>"+
                                 "</a>"+
                                 "</div>"+
-                                "<div class='media-body'>"+
+                                "<div class='media-body' id='feedback'"+feedback.id+">"+
                                 "<small class='text-muted pull-right'>"+feedback.date+"</small>"+
-                                "<h4 class='media-heading'>"+feedback.user.name+"("+feedback.evaluation+"/10)"+"</h4>"+
+                                "<h4 class='media-heading'>"+feedback.user.name+"("+feedback.evaluation+"/5)"+"</h4>"+
                                 "<div>"+feedback.feedback+"</div>"+
                                 "</div>"+
                             "</div>";
                         contentID.appendChild(newTBDiv);
+                        if(${sessionScope.currentUser.role.equals('ADMIN')}){
+                            var newDelBtn = document.createElement("button");
+                            newDelBtn.setAttribute("onclick","deleteFeedback("+feedback.id+")");
+                            newDelBtn.setAttribute("class","btn-primary");
+                            newTBDiv.innerHTML ="delete";
+                            contentID.appendChild(newTBDiv);
+                        }
                     });
+                }
+            },
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
                 }
             }
         })
     })
+    function deleteFeedback(id){
+        $.ajax({
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
+            data: "command=delete_feedback&id_feedback="+id,
+            statusCode:{
+                200: function (){
+                    document.getElementById("feedbackRemove"+id).remove();
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
+            }
+        })
+    }
+    jQuery(document).ready(function($){
+
+        $(".btnrating").on('click',(function(e) {
+
+            var previous_value = $("#selected_rating").val();
+
+            var selected_value = $(this).attr("data-attr");
+            $("#selected_rating").val(selected_value);
+
+            $(".selected-rating").empty();
+            $(".selected-rating").html(selected_value);
+
+            for (i = 1; i <= selected_value; ++i) {
+                $("#rating-star-"+i).toggleClass('btn-warning');
+                $("#rating-star-"+i).toggleClass('btn-default');
+            }
+
+            for (ix = 1; ix <= previous_value; ++ix) {
+                $("#rating-star-"+ix).toggleClass('btn-warning');
+                $("#rating-star-"+ix).toggleClass('btn-default');
+            }
+
+        }));
+    });
 </script>
 </body>
 <style>
+    .rating-header {
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
     .card{
         display: flex;
     }
@@ -291,6 +389,87 @@
         margin-bottom: -1px;
         background-color: #fff;
         border: 1px solid transparent;
+    }
+    .top {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 10px;
+    }
+    .top ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    .top a {
+        color: #9e9e9e;
+    }
+    .top a:hover {
+        color: #c7ccdb;
+    }
+    .converse {
+        padding: 2px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+    .middle {
+        margin-bottom: 40px;
+    }
+    .middle img {
+        width: 100%;
+    }
+    .bottom {
+        text-align: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+    }
+    .heading {
+        font-size: 17px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        letter-spacing: 0;
+    }
+    .info {
+        font-size: 14px;
+        color: #969696;
+        margin-bottom: 10px;
+    }
+    .style {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    .old-price {
+        color: #f00;
+        text-decoration: line-through;
+    }
+    .block {
+        margin: 20px;
+        border-radius: 4px;
+        width: 280px;
+        min-height: 430px;
+        background: #fff;
+        padding: 23px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        box-shadow: 0 2px 55px rgba(0,0,0,0.1);
     }
 </style>
 </html>

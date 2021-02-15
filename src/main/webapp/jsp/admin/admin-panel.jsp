@@ -13,7 +13,7 @@
 <fmt:setBundle basename="property.error" var="error"/>
 <html>
 <head>
-    <title>Shop</title>
+    <title>ADMINPANEL</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginform.css" type="text/css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css" type="text/css">
@@ -28,10 +28,36 @@
 </head>
 <body>
 <div class="container">
-
+    <c:if test="${requestScope.error_message!=null}">
+        <c:choose>
+            <c:when test="${requestScope.error_message.contains('successful')}">
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
-        <br>
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div style="background-color: #FFFFFF" class="row">
@@ -47,22 +73,22 @@
                                 <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ADDPRODUCTMODAL'>
                                     <fmt:message key='admin.add_product' bundle='${text}'/>
                                 </button>
-                                <div class='modal fade' id='ADDPRODUCTMODAL' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                <div class='modal fade' id='ADDPRODUCTMODAL' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='false'>
                                     <div class='modal-dialog' role='document'>
                                         <div class='modal-content'>
                                             <form method="post" action="${pageContext.request.contextPath}/controller">
-                                            <div class='modal-header'>
-                                                <h5 class='modal-title'><fmt:message key='admin.menu_add_product' bundle='${text}'/></h5>
-                                            </div>
+                                                <div class='modal-header'>
+                                                    <h5 class='modal-title'><fmt:message key='admin.menu_add_product' bundle='${text}'/></h5>
+                                                </div>
                                                 <div class='modal-body'>
                                                     <input type='hidden' name='command' value='add_product'>
                                                     <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
                                                     <label><fmt:message key='admin.name' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='name_product' placeholder="" required/>
+                                                    <input class='form-control' type='text' name='name_product' value="${requestScope.name_product}" required/>
                                                     <label><fmt:message key='admin.info' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='info_product' placeholder="" required/>
+                                                    <input class='form-control' type='text' name='info_product' value="${requestScope.info_product}" required/>
                                                     <label><fmt:message key='admin.price' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='price_product' placeholder="" required pattern="\d*+(\.\d{2})?"/>
+                                                    <input class='form-control' type='text' name='price_product' value="${requestScope.price_product}" required pattern="\d*+(\.\d{2})?"/>
                                                     <label><fmt:message key='admin.collection' bundle='${text}'/></label>
                                                     <select name="id_collection" id="selectorCollection">
 
@@ -136,8 +162,16 @@
                     contentID.appendChild(newTBDiv);
                 });
             },
-            error(error){
-                alert(error);
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         });
     });
@@ -168,7 +202,7 @@
                     previous.innerHTML = "PREVIOS";
                     contentID.appendChild(previous);
                 }
-                if(res.length===10) {
+                if(res.length===12) {
                     var next = document.createElement("button");
                     next.setAttribute("class", "btn-primary");
                     next.setAttribute("onclick", "getListProduct(" + (begin + 10) + "," + collection + ")");
@@ -274,62 +308,116 @@
                     document.getElementById("statusModal"+product.id).appendChild(newFormStatus);
                 });
             },
-            error(error) {
-                alert(error);
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         });
     }
     function blockProduct(product){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=block_product&id_product="+product,
-            type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
+            data: "command=block_product&id_product="+product,
+            statusCode:{
+                200: function (){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
     }
     function unblockProduct(product){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=unblock_product&id_product="+product,
-            type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
+            data: "command=unblock_product&id_product="+product,
+            statusCode:{
+                200: function (){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
     }
     function nonactiveProduct(product){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=deactivate_product&id_product="+product,
-            type: 'GET',
-            dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
+            data: "command=deactivate_product&id_product="+product,
+            statusCode:{
+                200: function (){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
     }
     function activeProduct(product){
         $.ajax({
-            url: "${pageContext.request.contextPath}/async?command=activate_product&id_product="+product,
-            type: 'GET',
+            url: "${pageContext.request.contextPath}/async",
+            type: 'POST',
             dataType: 'text',
-            success: function (text){
-                getListProduct(0,0);
-            },
-            error(error){
-                alert(error);
+            data: "command=activate_product&id_product="+product,
+            statusCode:{
+                200: function (){
+                    getListProduct(0,0);
+                },
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         })
+    }
+    function viewMessage(text){
+        var newDivMessage = document.createElement("div");
+        newDivMessage.setAttribute("class","messages");
+        newDivMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+        newDivMessage.innerHTML =
+            "<div id='my-alert-error' class='alert alert-danger alert-dismissible fade show' role='alert'>"+
+            "<br>"+ text + "<br>"+
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+            "<span aria-hidden='true'>×</span>"+
+        "</button>"+
+        "</div>";
+        document.body.appendChild(newDivMessage);
     }
     $(document).ready ( function(){
         getListProduct(0,0);

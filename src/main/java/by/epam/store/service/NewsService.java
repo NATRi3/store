@@ -1,22 +1,20 @@
 package by.epam.store.service;
 
+import by.epam.store.dao.impl.NewsDao;
 import by.epam.store.entity.News;
 import by.epam.store.exception.ServiceException;
 import org.apache.commons.fileupload.FileItem;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public interface NewsService {
-    public List<News> getFreshNews(String count) throws ServiceException;
-
+    static final NewsDao newsDao = DaoCreator.getInstance().getNewsDao();
+    List<News> getFreshNews(String count) throws ServiceException;
     List<News> getSortNews(String typeSort, String begin) throws ServiceException;
-
-    void deleteNews(String id) throws ServiceException;
-
-    void createNews(String title, String info) throws ServiceException;
-
-    void changeImage(String id, List<FileItem> fileItems) throws ServiceException;
-
-    void changeNews(String id, String title, String info) throws ServiceException;
-
+    String deleteNews(String id) throws ServiceException;
+    Optional<String> createNews(Map<String, String> parameters) throws ServiceException;
+    String changeImage(String id, List<FileItem> fileItems) throws ServiceException;
+    String changeNews(Map<String, String> parameters) throws ServiceException;
 }

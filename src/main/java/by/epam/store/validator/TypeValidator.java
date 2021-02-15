@@ -1,5 +1,6 @@
 package by.epam.store.validator;
 
+import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.service.TypeSort;
 
@@ -12,6 +13,9 @@ public class TypeValidator {
             TypeStatus.BLOCKED.toString());
     private static final Set<String> typeNewsSort = Set.of(TypeSort.DATE.toString(),TypeSort.DATEDESC.toString(),
             TypeSort.TITLE.toString(),TypeSort.TITLEDESC.toString());
+    private static Set<String> typeRole = Set.of(TypeRole.CLIENT.toString(),TypeRole.ADMIN.toString(),
+            TypeRole.GUEST.toString(),TypeRole.MANAGER.toString());
+
     public static boolean isTypeProductSort(String sort){
         if(sort==null)return false;
         return typeProductSort.contains(sort);
@@ -23,5 +27,10 @@ public class TypeValidator {
     public static boolean isTypeNewsSort(String sort){
         if(sort==null)return false;
         return typeNewsSort.contains(sort);
+    }
+
+    public static boolean isTypeRole(String role) {
+        if(role==null) return false;
+        return typeRole.contains(role);
     }
 }

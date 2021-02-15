@@ -28,7 +28,34 @@
 </head>
 <body>
 <div class="container">
-
+    <c:if test="${requestScope.error_message!=null}">
+        <c:choose>
+            <c:when test="${requestScope.error_message.contains('successful')}">
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
+                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <br>
+                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
+                        <br>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <br>
@@ -128,20 +155,21 @@
                 }
                 $.each(res, function (idx,product){
                     var newTBDiv = document.createElement("div");
-                    newTBDiv.setAttribute("class","col-lg-4 col-md-6 mb-4");
+                    newTBDiv.setAttribute("class","block");
                     newTBDiv.innerHTML =
-                        "<div class='card h-100'>" +
-                        "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"+
-                        "<img class='card-img-top' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"' alt=''></a>" +
-                        "<div class='card-body'>" +
+                        "<div class='top'>" +
                         "<h4 class='card-title'>" +
                         "<a href='#'>" + product.name + "</a>" +
                         "</h4>" +
+                        "</div>" +
+                        "<div class='middle'>"+
+                        "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"+
+                        "<img height='300' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"' alt='Sample'>"+
+                        "<div class='mask waves-effect waves-light'></div>"+
+                        "</a>"+
+                        "<div class='bottom'>" +
                         "<h5>" + product.price + "$</h5>" +
                         "<p class='card-text'><fmt:message key="admin.rating" bundle="${text}"/> : " + product.rating+ "</p>"+
-                        "</div>" +
-                        "<div class='card-footer'>" +
-                        "<small class='text-muted'>"+
                         "<button class='btn-primary' onclick='addToCart(" + product.id + ")'>" +
                         "<fmt:message key='shop.add_to_cart' bundle='${text}'/>"+
                         "</button>"+
@@ -150,9 +178,21 @@
                         "</div>";
                     contentID.appendChild(newTBDiv);
                 });
+            },
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
             }
         });
     }
+    var totalAmountCart = ${sessionScope.cart.getTotalAmount()};
     function addToCart(id){
         $.ajax({
             url: "${pageContext.request.contextPath}/async?" +
@@ -160,23 +200,91 @@
             type: 'GET',
             dataType: 'text',
             success: function (){
+                totalAmountCart++;
                 var CART = document.getElementById("CART");
-                CART.innerHTML = "<fmt:message key='header.view_cart' bundle='${text}'/>"+
-                    "<span>${sessionScope.cart.getTotalAmount()}</span>";
+                CART.innerHTML = "<fmt:message key='header.view_cart' bundle='${text}'/> "+
+                    "<span>"+totalAmountCart+"</span>";
             },
             statusCode:{
-                403: function (){
+                402: function (){
                     window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
                 },
-                601: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/user/cart-page.jsp";
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
                 }
             }
-
         })
     }
     $(document).ready ( function(){
         getListProduct(0,0);
     });
 </script>
+<style>
+    .converse {
+        padding: 2px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+    .middle {
+        margin-bottom: 40px;
+    }
+    .middle img {
+        width: 100%;
+    }
+    .bottom {
+        text-align: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+    }
+    .heading {
+        font-size: 17px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        letter-spacing: 0;
+    }
+    .info {
+        font-size: 14px;
+        color: #969696;
+        margin-bottom: 10px;
+    }
+    .style {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    .old-price {
+        color: #f00;
+        text-decoration: line-through;
+    }
+    .block {
+        margin: 20px;
+        border-radius: 4px;
+        width: 280px;
+        min-height: 430px;
+        background: #fff;
+        padding: 23px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        box-shadow: 0 2px 55px rgba(0,0,0,0.1);
+    }
+</style>
 </html>

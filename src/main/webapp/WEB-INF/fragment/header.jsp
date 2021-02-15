@@ -80,11 +80,47 @@
                 <fmt:message key="language.submit" bundle="${text}"/>
             </A>
         </form>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="<fmt:message key="header.search_product" bundle="${text}"/>" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                <fmt:message key="header.search" bundle="${text}"/>
-            </button>
-        </form>
+        <div class="form-inline my-2 my-lg-0">
+            <input id="search" class="form-control mr-sm-2" type="search" placeholder="<fmt:message key="header.search_product" bundle="${text}"/>" aria-label="Search">
+            <ul id="resultSearch">
+
+            </ul>
+        </div>
     </div>
 </nav>
+<script>
+    $(document).ready(function() {
+        var $result = $('#search_box-result');
+
+        $('#search').on('keyup', function(){
+            var search = $(this).val();
+            if ((search != '') && (search.length > 1)){
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/async?command=search_product",
+                    type: 'POST',
+                    data: {'search': search},
+                    success: function(result){
+                        $.each(result, function (idx,product) {
+                            var newTBDiv = document.createElement("li");
+                            newTBDiv.innerHTML =
+                                "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"
+                                +product.name+
+                                "</a>";
+                            document.getElementById("resultSearch").appendChild(newTBDiv);
+                        })
+                    }
+                });
+            } else {
+                $result.html('');
+                $result.fadeOut(100);
+            }
+        });
+
+        $(document).on('click', function(e){
+            if (!$(e.target).closest('.search_box').length){
+                $result.html('');
+                $result.fadeOut(100);
+            }
+        });
+    });
+</script>

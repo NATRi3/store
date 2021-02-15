@@ -5,7 +5,8 @@ public class RequestParameter {
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
     public static final String COMMAND = "command";
-    public static final String MESSAGE = "message";
+    public static final String MESSAGE = "error_message";
+    public static final String SUCCESS_MESSAGE = "success_message";
     public static final String REPEAT_PASSWORD = "repeat_password";
     public static final String NEW_LOCALE = "newLocale";
     public static final String ACTIVATION_CODE = "activation_code";
@@ -32,6 +33,12 @@ public class RequestParameter {
     public static final String ID_NEWS = "id_news";
     public static final String NEWS_TITLE = "news_title";
     public static final String NEWS_INFO = "news_info";
+    public static final String PHONE = "phone";
+    public static final String ADDRESS = "address";
+    public static final String FEEDBACK = "feedback";
+    public static final String EVALUATION = "evaluation";
+    public static final String TYPE_ROLE = "type_role";
+    public static final String SEARCH = "search";
 
     private RequestParameter(){ }
 }

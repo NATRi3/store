@@ -11,7 +11,17 @@ import java.util.Map;
 @Data
 public class Order {
     private long id;
-    private long id_user;
+    private long idUser;
+    private String phone;
+    private String address;
     private BigDecimal price;
     private Map<Long,Integer> product;
+
+    public Order(long userId, String phone, String address, BigDecimal price, Map<Long, Integer> product) {
+        this.idUser = userId;
+        this.phone = phone;
+        this.address = address;
+        this.price = price;
+        this.product = product;
+    }
 }

@@ -2,7 +2,7 @@ package by.epam.store.controller.filter;
 
 import by.epam.store.entity.User;
 import by.epam.store.entity.type.TypeRole;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
@@ -37,10 +37,10 @@ public class AccessJspFilter implements Filter {
                     log.info("Wrong access " + requestUri + user.getRole());
                     RequestDispatcher dispatcher;
                     if(user.getRole().equals(TypeRole.GUEST)) {
-                        request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_LOGIN_PLEASE);
+                        request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_MESSAGE_LOGIN_PLEASE);
                         dispatcher = request.getRequestDispatcher(PagePath.LOGIN);
                     } else {
-                        request.setAttribute(RequestParameter.MESSAGE, MessageErrorKey.ERROR_MESSAGE_WRONG_ACCESS);
+                        request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_MESSAGE_WRONG_ACCESS);
                         dispatcher = request.getRequestDispatcher(PagePath.MAIN);
                     }
                     dispatcher.forward(servletRequest, servletResponse);

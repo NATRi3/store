@@ -2,10 +2,9 @@ package by.epam.store.dao.impl;
 
 import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.News;
-import by.epam.store.entity.Product;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.util.MessageKey;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.*;
@@ -52,7 +51,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
         }
         return optionalNews;
     }
@@ -65,7 +64,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return statement.executeUpdate()==1;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
         }
     }
 
@@ -99,7 +98,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return news;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
         }
     }
 
@@ -116,7 +115,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return result;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
         }
     }
 
@@ -135,7 +134,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return result;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
         }
     }
 
@@ -144,7 +143,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             long id = resultSet.getLong(DataBaseColumn.ID_NEWS);
             String title = resultSet.getString(DataBaseColumn.NEWS_TITLE);
             String info = resultSet.getString(DataBaseColumn.NEWS_INFO);
-            Date date = new Date(resultSet.getLong(DataBaseColumn.NEWS_DATE));
+            Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
             String image = resultSet.getString(DataBaseColumn.NEWS_IMAGE);
             News news = new News(id, title, info, image, date);
             return Optional.of(news);

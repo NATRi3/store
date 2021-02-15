@@ -12,6 +12,7 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
 
     private AsyncCommandAccessMap(){
         put(TypeRole.ADMIN, Set.of(
+                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_NEWS.toString().toLowerCase(),
                 TypeCommandAsync.BLOCK_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.UNBLOCK_PRODUCT.toString().toLowerCase(),
@@ -22,8 +23,10 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
                 TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.toString().toLowerCase(),
                 TypeCommandAsync.GET_FRESH_NEWS.toString().toLowerCase(),
-                TypeCommandAsync.GET_IMAGE.toString().toLowerCase()));
+                TypeCommandAsync.GET_IMAGE.toString().toLowerCase(),
+                TypeCommandAsync.GET_LIST_USERS_BY_ROLE_STATUS.toString().toLowerCase()));
         put(TypeRole.MANAGER,Set.of(
+                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
@@ -33,6 +36,7 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
                 TypeCommandAsync.DEACTIVATE_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.ADD_PRODUCT_TO_CART.toString().toLowerCase()));
         put(TypeRole.CLIENT,Set.of(
+                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.toString().toLowerCase(),
@@ -41,6 +45,7 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
                 TypeCommandAsync.GET_IMAGE.toString().toLowerCase(),
                 TypeCommandAsync.ADD_PRODUCT_TO_CART.toString().toLowerCase()));
         put(TypeRole.GUEST,Set.of(
+                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.toString().toLowerCase(),

@@ -4,6 +4,6 @@ import by.epam.store.service.impl.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface Command extends BaseCommand{
+public interface Command{
     public String execute(HttpServletRequest request);
 }

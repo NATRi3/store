@@ -4,6 +4,7 @@ import by.epam.store.command.TypeCommand;
 import by.epam.store.command.TypeCommandAsync;
 import by.epam.store.entity.type.TypeRole;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 
 public class CommandAccessMap extends HashMap<TypeRole,Set<String>> {
@@ -18,7 +19,6 @@ public class CommandAccessMap extends HashMap<TypeRole,Set<String>> {
                 TypeCommand.LOGOUT.toString().toLowerCase(),
                 TypeCommand.UPLOAD_IMAGE.toString().toLowerCase(),
                 TypeCommand.ACTIVATION.toString().toLowerCase(),
-                TypeCommand.DELETE_ACCOUNT.toString().toLowerCase(),
                 TypeCommand.DELETE_NEWS.toString().toLowerCase(),
                 TypeCommand.ADD_PRODUCT.toString().toLowerCase(),
                 TypeCommand.ADD_NEWS.toString().toLowerCase(),
@@ -37,10 +37,12 @@ public class CommandAccessMap extends HashMap<TypeRole,Set<String>> {
                 TypeCommand.ACTIVATION.toString().toLowerCase(),
                 TypeCommand.UPLOAD_IMAGE.toString().toLowerCase(),
                 TypeCommand.REMOVE_PRODUCT_FROM_CART.toString().toLowerCase(),
-                TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.toString().toLowerCase()));
+                TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.toString().toLowerCase(),
+                TypeCommand.ADD_AMOUNT_PRODUCT_TO_CART.toString().toLowerCase(),
+                TypeCommand.CREATE_ORDER.toString().toLowerCase(),
+                TypeCommand.CREATE_FEEDBACK.toString().toLowerCase()));
         put(TypeRole.GUEST,Set.of(
                 TypeCommand.CHANGE_LOCALE.toString().toLowerCase(),
-                TypeCommand.DELETE_ACCOUNT.toString().toLowerCase(),
                 TypeCommand.LOGIN.toString().toLowerCase(),
                 TypeCommand.REGISTRATION.toString().toLowerCase(),
                 TypeCommand.ACTIVATION.toString().toLowerCase(),

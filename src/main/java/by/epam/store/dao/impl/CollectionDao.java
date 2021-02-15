@@ -4,7 +4,7 @@ import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.ProductCollection;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageErrorKey;
+import by.epam.store.util.MessageKey;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
@@ -29,7 +29,7 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
             return list;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageErrorKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
         }
     }
 
@@ -57,7 +57,7 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
         long id = resultSet.getLong(DataBaseColumn.ID_COLLECTION);
         String name = resultSet.getString(DataBaseColumn.COLLECTION_NAME);
         String info = resultSet.getString(DataBaseColumn.COLLECTION_INFO);
-        Date date = new Date(resultSet.getLong(DataBaseColumn.COLLECTION_DATE));
+        Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
         return new ProductCollection(id,name,info,date);
     }
 }
