@@ -1,19 +1,16 @@
 package by.epam.store.pool;
 
-import com.mysql.cj.jdbc.Driver;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.concurrent.BlockingQueue;
 
-@Log4j2
 public class ConnectionCreator {
+    private static final Logger log = LogManager.getLogger(ConnectionCreator.class);
     public static final String DB_PROPERTIES_FILE = "property/config.properties";
     private static final String DB_URL;
     public static final String user;

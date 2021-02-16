@@ -1,6 +1,8 @@
 package by.epam.store.pool;
 
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -14,8 +16,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-@Log4j2
 public class CustomConnectionPool {
+    private static final Logger log = LogManager.getLogger(CustomConnectionPool.class);
     private static CustomConnectionPool instance;
     private static final AtomicBoolean isInitialized = new AtomicBoolean(true);
     private final BlockingQueue<ProxyConnection> freeConnections;

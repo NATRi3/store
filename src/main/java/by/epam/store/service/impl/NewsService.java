@@ -9,17 +9,17 @@ import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Log4j2
 public class NewsService implements by.epam.store.service.NewsService {
-
+    private static final Logger log = LogManager.getLogger(NewsService.class);
     @Override
     public List<News> getFreshNews(String count) throws ServiceException {
         if(!NumberValidator.isNumberValid(count)){

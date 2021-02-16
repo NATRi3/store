@@ -1,11 +1,13 @@
 package by.epam.store.pool;
 
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.TimerTask;
-@Log4j2
+
 public class CheckConnectionTimerTask extends TimerTask {
+    private static final Logger log = LogManager.getLogger(CheckConnectionTimerTask.class);
     @Override
     public void run() {
         CustomConnectionPool instance = CustomConnectionPool.getInstance();
