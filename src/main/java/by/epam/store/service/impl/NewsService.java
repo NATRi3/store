@@ -84,7 +84,7 @@ public class NewsService implements by.epam.store.service.NewsService {
     }
 
     @Override
-    public String changeImage(String id, List<FileItem> fileItems) throws ServiceException {
+    public String changeImage(String id, List<FileItem> fileItems, String realPath) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_FILE_NOT_FOUND;
         try {
             if(NumberValidator.isNumberValid(id)) {
@@ -92,7 +92,7 @@ public class NewsService implements by.epam.store.service.NewsService {
                 if (optionalNews.isPresent()) {
                     News news = optionalNews.get();
                     for(FileItem fileItem: fileItems) {
-                        Optional<String> optional = FileUtil.saveFile(fileItem);
+                        Optional<String> optional = FileUtil.saveFile(fileItem,realPath);
                         if(optional.isPresent()){
                             String nameFile = optional.get();
                             news.setImageName(nameFile);

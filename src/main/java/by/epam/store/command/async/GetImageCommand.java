@@ -13,14 +13,12 @@ import java.nio.file.Paths;
 
 public class GetImageCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetImageCommand.class);
-    public static final String IMAGE_NEWS_PATH = "C://projectImg//";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String imageName = request.getParameter(RequestParameter.IMAGE_NAME);
-        String file = IMAGE_NEWS_PATH+imageName;
         try {
-            byte[] image = Files.readAllBytes(Paths.get(file));
+            byte[] image = Files.readAllBytes(Paths.get(imageName));
             response.setContentType("image/jpeg");
             response.setContentLength(image.length);
             response.getOutputStream().write(image);

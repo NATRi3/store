@@ -18,6 +18,6 @@ public interface UserService {
     User findUserById(long id) throws ServiceException;
     boolean updateById(User user) throws ServiceException;
     Optional<String> changePasswordSendForgotMailMessage(String email) throws ServiceException;
-    String changeAvatar(User user, List<FileItem> fileItems) throws ServiceException;
+    String changeAvatar(User user, List<FileItem> fileItems, String realPath) throws ServiceException;
     List<User> findUsersByRoleAndStatus(String role, String status, String begin) throws ServiceException;
 }

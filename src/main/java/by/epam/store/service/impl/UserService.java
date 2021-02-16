@@ -141,11 +141,11 @@ public class UserService implements by.epam.store.service.UserService {
     }
 
     @Override
-    public String changeAvatar(User user, List<FileItem> fileItems) throws ServiceException {
+    public String changeAvatar(User user, List<FileItem> fileItems,String realPath) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
             for(FileItem fileItem: fileItems) {
-                Optional<String> optional = FileUtil.saveFile(fileItem);
+                Optional<String> optional = FileUtil.saveFile(fileItem,realPath);
                 if(optional.isPresent()){
                     String nameFile = optional.get();
                     user.setImageName(nameFile);

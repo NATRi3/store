@@ -35,7 +35,8 @@ public class UploadFileCommand implements Command {
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
         upload.setSizeMax(FILE_MAX_SIZE);
         try {
-            userService.changeAvatar(user, upload.parseRequest(request));
+            String realPath = request.getServletContext().getRealPath("");
+            userService.changeAvatar(user, upload.parseRequest(request),realPath);
             session.setAttribute(SessionAttribute.USER, user);
         } catch (ServiceException e) {
             log.error(e);

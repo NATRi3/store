@@ -150,7 +150,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     }
 
     @Override
-    public String changeProductImage(String id, List<FileItem> fileItems) throws ServiceException {
+    public String changeProductImage(String id, List<FileItem> fileItems, String realPath) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
             if(NumberValidator.isNumberValid(id)) {
@@ -158,7 +158,7 @@ public class ProductService implements by.epam.store.service.ProductService {
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
                     for(FileItem fileItem: fileItems) {
-                        Optional<String> optional = FileUtil.saveFile(fileItem);
+                        Optional<String> optional = FileUtil.saveFile(fileItem,realPath);
                         if(optional.isPresent()) {
                             String newFileName = optional.get();
                             product.setImageName(newFileName);

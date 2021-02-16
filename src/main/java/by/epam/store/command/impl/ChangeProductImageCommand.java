@@ -34,7 +34,8 @@ public class ChangeProductImageCommand implements Command {
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
         upload.setSizeMax(FILE_MAX_SIZE);
         try {
-            String message = productService.changeProductImage(id,upload.parseRequest(request));
+            String realPath = request.getServletContext().getRealPath("");
+            String message = productService.changeProductImage(id,upload.parseRequest(request),realPath);
             request.setAttribute(RequestParameter.MESSAGE,message);
         } catch (ServiceException e) {
             log.error(e);
