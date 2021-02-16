@@ -12,7 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.dao.CollectionDao {
     private final static Logger log = LogManager.getLogger(CollectionDao.class);

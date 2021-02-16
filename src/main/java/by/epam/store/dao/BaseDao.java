@@ -1,7 +1,6 @@
 package by.epam.store.dao;
 
 import by.epam.store.exception.DaoException;
-import by.epam.store.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

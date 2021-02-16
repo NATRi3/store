@@ -3,7 +3,6 @@ package by.epam.store.dao;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
-import by.epam.store.service.TypeSort;
 
 import java.util.List;
 
