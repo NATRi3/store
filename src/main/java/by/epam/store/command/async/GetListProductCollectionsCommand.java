@@ -6,15 +6,16 @@ import by.epam.store.entity.ProductCollection;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductCollectionService;
 import com.google.gson.Gson;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@Log4j2
 public class GetListProductCollectionsCommand implements CommandAsync {
+    private final static Logger log = LogManager.getLogger(GetListProductCollectionsCommand.class);
     public static final ProductCollectionService productCollectionService = ServiceCreator.getInstance().getCollectionService();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

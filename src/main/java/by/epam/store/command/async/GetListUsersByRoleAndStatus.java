@@ -7,16 +7,16 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.UserService;
 import by.epam.store.util.RequestParameter;
 import com.google.gson.Gson;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@Log4j2
 public class GetListUsersByRoleAndStatus implements CommandAsync {
+    private final static Logger log = LogManager.getLogger(GetListUsersByRoleAndStatus.class);
     private static final UserService userService = ServiceCreator.getInstance().getUserService();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

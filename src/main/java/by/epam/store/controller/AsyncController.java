@@ -3,8 +3,6 @@ package by.epam.store.controller;
 import by.epam.store.command.CommandAsync;
 import by.epam.store.command.CommandProviderAsync;
 import by.epam.store.util.RequestParameter;
-import lombok.extern.log4j.Log4j2;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@Log4j2
 @WebServlet("/async")
 public class AsyncController extends HttpServlet {
     @Override

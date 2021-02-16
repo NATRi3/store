@@ -2,7 +2,8 @@ package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
 import by.epam.store.util.RequestParameter;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@Log4j2
 public class GetImageCommand implements CommandAsync {
+    private final static Logger log = LogManager.getLogger(GetImageCommand.class);
     public static final String IMAGE_NEWS_PATH = "C://projectImg//";
 
     @Override

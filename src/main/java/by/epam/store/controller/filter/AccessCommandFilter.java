@@ -6,7 +6,8 @@ import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-@Log4j2
 public class AccessCommandFilter implements Filter {
+    private final static Logger log = LogManager.getLogger(AccessCommandFilter.class);
     private static Map<TypeRole, Set<String>> commandRoleAccess;
 
     @Override

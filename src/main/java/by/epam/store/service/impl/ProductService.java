@@ -10,17 +10,17 @@ import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Log4j2
 public class ProductService implements by.epam.store.service.ProductService {
-
+    private final static Logger log = LogManager.getLogger(ProductService.class);
     @Override
     public Optional<Product> findProductById(String idProduct) throws ServiceException {
         try {
@@ -186,7 +186,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     public List<Product> findProductByName(String name) throws ServiceException {
         try{
             String searchName = '%'+name+'%';
-            return productDao.findProductByName(name);
+            return productDao.findProductByName(searchName);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException();

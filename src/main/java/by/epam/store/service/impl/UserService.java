@@ -9,18 +9,18 @@ import by.epam.store.util.*;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Log4j2
 public class UserService implements by.epam.store.service.UserService {
-
+    private final static Logger log = LogManager.getLogger(UserService.class);
     @Override
     public String activate(String code) throws ServiceException {
         try {

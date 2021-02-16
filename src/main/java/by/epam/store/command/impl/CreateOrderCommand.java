@@ -9,15 +9,16 @@ import by.epam.store.service.impl.OrderService;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-@Log4j2
 public class CreateOrderCommand implements Command {
+    private final static Logger log = LogManager.getLogger(CreateOrderCommand.class);
     private static final OrderService orderService = ServiceCreator.getInstance().getOrderService();
     @Override
     public String execute(HttpServletRequest request) {

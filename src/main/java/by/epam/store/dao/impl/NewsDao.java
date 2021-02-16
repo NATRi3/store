@@ -5,15 +5,17 @@ import by.epam.store.entity.News;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.util.MessageKey;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-@Log4j2
+
 public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
+    private final static Logger log = LogManager.getLogger(NewsDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
             "SELECT t2.id_news, t2.title,t2.info,t2.date,t2.image " +

@@ -82,12 +82,37 @@
         </form>
         <div class="form-inline my-2 my-lg-0">
             <input id="search" class="form-control mr-sm-2" type="search" placeholder="<fmt:message key="header.search_product" bundle="${text}"/>" aria-label="Search">
-            <ul id="resultSearch">
-
-            </ul>
         </div>
     </div>
 </nav>
+<ul class="search_result" id="resultSearch">
+
+</ul>
+<style>
+    .search_result{
+        top: 55px;
+        position: absolute;
+        left: 1300px;
+        z-index: 10;
+        background: #FFF;
+        border: 1px #ccc solid;
+        width: 400px;
+        border-radius: 4px;
+        max-height:300px;
+    }
+    .search_result li{
+        list-style: none;
+        padding: 5px 10px;
+        margin: 0 0 0 -40px;
+        color: #0896D3;
+        border-bottom: 1px #ccc solid;
+        cursor: pointer;
+        transition:0.3s;
+    }
+    .search_result li:hover{
+        background: rgba(0,0,0,0.13);
+    }
+</style>
 <script>
     $(document).ready(function() {
         var $result = $('#search_box-result');
@@ -100,6 +125,7 @@
                     type: 'POST',
                     data: {'search': search},
                     success: function(result){
+                        document.getElementById("resultSearch").innerHTML="";
                         $.each(result, function (idx,product) {
                             var newTBDiv = document.createElement("li");
                             newTBDiv.innerHTML =

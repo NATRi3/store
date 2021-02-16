@@ -1,17 +1,15 @@
 package by.epam.store.util;
 
-import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-@Log4j2
+
 public class SendMail {
+    private final static Logger log = LogManager.getLogger(SendMail.class);
     static final String SENDER_EMAIL_ADDRESS = "mailforwebproject31@gmail.com";
     private static final String SENDER_EMAIL_PASSWORD = "3114928Denis";
     private static final String SENDER_HOST = "smtp.gmail.com";

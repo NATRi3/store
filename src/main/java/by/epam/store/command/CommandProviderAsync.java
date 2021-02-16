@@ -1,12 +1,12 @@
 package by.epam.store.command;
 
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
-@Log4j2
 public class CommandProviderAsync {
-
+    private final static Logger log = LogManager.getLogger(CommandProviderAsync.class);
     public static Optional<CommandAsync> commandDefine(String command) {
         Optional<CommandAsync> optionalCommand = Optional.empty();
         try {

@@ -7,16 +7,17 @@ import by.epam.store.service.impl.NewsService;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 
-@Log4j2
 public class ChangeNewsImageCommand implements Command {
+    private final static Logger log = LogManager.getLogger(ChangeNewsImageCommand.class);
     private static final NewsService newsService = ServiceCreator.getInstance().getNewsService();
     private static final String SAVE_DIR = "C:/projectImg/";
     private static final int FILE_MAX_SIZE = 1024 * 1024;

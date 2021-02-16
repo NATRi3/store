@@ -6,15 +6,16 @@ import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageKey;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-@Log4j2
+
 public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
+    private final static Logger log = LogManager.getLogger(UserDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM accounts WHERE email=?";
     private static final String SQL_SELECT_ALL =

@@ -10,7 +10,8 @@ import by.epam.store.service.impl.ProductService;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +19,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@Log4j2
 public class AddProductToCartCommand implements CommandAsync {
+    private final static Logger log = LogManager.getLogger(AddProductToCartCommand.class);
     private static final ProductService productService = ServiceCreator.getInstance().getProductService();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

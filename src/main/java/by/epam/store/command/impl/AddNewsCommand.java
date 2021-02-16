@@ -6,15 +6,16 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.NewsService;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Log4j2
 public class AddNewsCommand implements Command {
+    private final static Logger log = LogManager.getLogger(AddNewsCommand.class);
     private static final NewsService newsService = ServiceCreator.getInstance().getNewsService();
     @Override
     public String execute(HttpServletRequest request) {

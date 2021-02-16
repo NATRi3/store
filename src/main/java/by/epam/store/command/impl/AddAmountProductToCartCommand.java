@@ -12,13 +12,15 @@ import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
 import by.epam.store.validator.NumberValidator;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
-@Log4j2
+
 public class AddAmountProductToCartCommand implements Command {
+    private final static Logger log = LogManager.getLogger(AddAmountProductToCartCommand.class);
     private static final ProductService productService = ServiceCreator.getInstance().getProductService();
     @Override
     public String execute(HttpServletRequest request) {

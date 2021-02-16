@@ -9,15 +9,17 @@ import by.epam.store.service.impl.FeedbackService;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-@Log4j2
+
 public class CreateFeedbackCommand implements Command {
+    private final static Logger log = LogManager.getLogger(CreateFeedbackCommand.class);
     private static final FeedbackService feedbackService = ServiceCreator.getInstance().getFeedbackService();
     @Override
     public String execute(HttpServletRequest request) {

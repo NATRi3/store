@@ -6,16 +6,17 @@ import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.util.MessageKey;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-@Log4j2
+
 public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDao {
+    private final static Logger log = LogManager.getLogger(ProductDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
             "SELECT id_products,name,info,price,status,image,id_collection,AVG(t1.evaluation) as 'evaluation' from " +
@@ -40,7 +41,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from feedback GROUP BY id_product)as t1)"+
             "as f on f.id_product=id_products WHERE status='ACTIVE' order by rand() limit ?";
     private static final String SQL_SELECT_BY_NAME = "SELECT id_products,name,info,image,id_collection,status,price" +
-            " FROM products WHERE name LIKE ? order by rand() limit 6 ";
+            " FROM products WHERE name LIKE ? limit 6 ";
 
 
     @Override
@@ -147,7 +148,14 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             ResultSet resultSet = statement.executeQuery();
             List<Product> resultList = new ArrayList<>();
             while(resultSet.next()){
-                getProductFormResultSet(resultSet).ifPresent(resultList::add);
+                long id = resultSet.getLong(DataBaseColumn.ID_PRODUCT);
+                String productName = resultSet.getString(DataBaseColumn.PRODUCT_NAME);
+                String info = resultSet.getString(DataBaseColumn.PRODUCT_INFO);
+                TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.PRODUCT_STATUS));
+                BigDecimal price = resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE);
+                String image = resultSet.getString(DataBaseColumn.PRODUCT_IMAGE);
+                long idCollection = resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION);
+                resultList.add(new Product(id,productName,info,status,price,image,idCollection));
             }
             return resultList;
         } catch (SQLException e) {

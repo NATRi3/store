@@ -9,12 +9,14 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
-@Log4j2
+
 public class OrderService implements by.epam.store.service.OrderService {
+    private final static Logger log = LogManager.getLogger(OrderService.class);
     @Override
     public String createOrder(Map<String, String> parameters, User user, Cart cart) throws ServiceException {
         try {

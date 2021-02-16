@@ -1,15 +1,9 @@
 package by.epam.store.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-@AllArgsConstructor
-@Data
 public class Cart {
     private Map<Product,Integer> products;
     private int totalAmount;
@@ -92,5 +86,29 @@ public class Cart {
         totalAmount = 0;
         totalPrice = BigDecimal.ZERO;
         products.clear();
+    }
+
+    public Map<Product, Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Map<Product, Integer> products) {
+        this.products = products;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

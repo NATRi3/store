@@ -5,7 +5,8 @@ import by.epam.store.entity.ProductCollection;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.util.MessageKey;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-@Log4j2
 public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.dao.CollectionDao {
+    private final static Logger log = LogManager.getLogger(CollectionDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM collection";
     @Override

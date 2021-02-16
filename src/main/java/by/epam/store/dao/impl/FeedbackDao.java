@@ -8,7 +8,8 @@ import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.util.MessageKey;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Log4j2
 public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedback> {
+    private final static Logger log = LogManager.getLogger(FeedbackDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
             "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account";

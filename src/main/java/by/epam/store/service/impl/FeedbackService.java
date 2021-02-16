@@ -8,15 +8,16 @@ import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Log4j2
 public class FeedbackService implements by.epam.store.service.FeedbackService {
+    private final static Logger log = LogManager.getLogger(FeedbackService.class);
     @Override
     public List<Feedback> getFeedbackByIdProduct(String idProduct) throws ServiceException {
         if(!NumberValidator.isNumberValid(idProduct)){

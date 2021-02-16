@@ -4,15 +4,16 @@ import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.Order;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Log4j2
 public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
+    private final static Logger log = LogManager.getLogger(OrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_CREATE_ORDER = "INSERT INTO orders SET id_account = ?, price = ?, phone=?, adress=?";
     private static final String SQL_CREATE_ORDER_PRODUCT = "INSERT INTO order_product SET id_order = ?, id_product = ?, product_amount=?";
