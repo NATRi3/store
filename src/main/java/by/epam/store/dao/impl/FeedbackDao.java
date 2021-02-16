@@ -21,11 +21,11 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     private final static Logger log = LogManager.getLogger(FeedbackDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
-            "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account";
+            "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account";
     private static final String SQL_SELECT_ALL_BY_PRODUCT_ID =
-            "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account WHERE id_product=?";
+            "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account WHERE id_product=?";
     private static final String SQL_SELECT_BY_ID =
-            "SELECT id_feedback, feedback, evaluation, id_product, id_accounts, email, name, role, image, access, register_date FROM feedback JOIN accounts a on a.id_accounts = feedback.id_account WHERE id_feedback=?";
+            "SELECT id_feedback, feedback, evaluation, id_product, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account WHERE id_feedback=?";
     private static final String SQL_CREATE =
             "INSERT INTO feedback SET feedback=?, evaluation=?, id_product=?, id_account=?, date=?";
 
@@ -41,7 +41,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return feedbacks;
     }
@@ -59,7 +59,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return feedbacks;
     }
@@ -75,7 +75,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return optionalFeedback;
     }
@@ -103,7 +103,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             return feedback;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
 

@@ -19,21 +19,21 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
             "SELECT t2.id_news, t2.title,t2.info,t2.date,t2.image " +
-                    "FROM (SELECT id_news FROM news group by id_news ORDER BY date DESC) as t1," +
-                    "LATERAL (SELECT id_news,title,info,date,image FROM news " +
+                    "FROM (SELECT id_news FROM l4tsmab3ywpoc8m0.news group by id_news ORDER BY date DESC) as t1," +
+                    "LATERAL (SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
                     "WHERE t1.id_news=news.id_news " +
                     "ORDER BY date DESC LIMIT ?) AS t2;";
     public static final String SQL_SELECT_AMOUNT_SORT_NEWS =
             "SELECT t2.id_news, t2.title,t2.info,t2.date,t2.image " +
-                    "FROM (SELECT id_news FROM news group by id_news ORDER BY %s) as t1," +
-                    "LATERAL (SELECT id_news,title,info,date,image FROM news " +
+                    "FROM (SELECT id_news FROM l4tsmab3ywpoc8m0.news group by id_news ORDER BY %s) as t1," +
+                    "LATERAL (SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
                     "WHERE t1.id_news=news.id_news " +
                     "ORDER BY %s LIMIT ? OFFSET ?) AS t2;";
-    private static final String SQL_DELETE_BY_ID = "DELETE FROM store.news WHERE id_news=?";
-    private static final String SQL_CREATE = "INSERT INTO store.news (title, info, date) VALUES (?,?,?) ";
+    private static final String SQL_DELETE_BY_ID = "DELETE FROM l4tsmab3ywpoc8m0.news WHERE id_news=?";
+    private static final String SQL_CREATE = "INSERT INTO l4tsmab3ywpoc8m0.news (title, info, date) VALUES (?,?,?) ";
     private static final String SQL_UPDATE_BY_ID =
-            "UPDATE news SET title = ?, info = ?, image = ? WHERE id_news = ?";
-    private static final String SQL_SELECT_BY_ID = "SELECT id_news, title, info, date, image FROM news WHERE id_news=?";
+            "UPDATE l4tsmab3ywpoc8m0.news SET title = ?, info = ?, image = ? WHERE id_news = ?";
+    private static final String SQL_SELECT_BY_ID = "SELECT id_news, title, info, date, image FROM l4tsmab3ywpoc8m0.news WHERE id_news=?";
 
 
     @Override
@@ -53,7 +53,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return optionalNews;
     }
@@ -66,7 +66,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return statement.executeUpdate()==1;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(e);
         }
     }
 
@@ -100,7 +100,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return news;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(e);
         }
     }
 
@@ -117,7 +117,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return result;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(e);
         }
     }
 
@@ -136,7 +136,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
             return result;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(e);
         }
     }
 

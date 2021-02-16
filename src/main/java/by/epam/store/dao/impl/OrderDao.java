@@ -15,8 +15,8 @@ import java.util.Optional;
 public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     private final static Logger log = LogManager.getLogger(OrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    private static final String SQL_CREATE_ORDER = "INSERT INTO orders SET id_account = ?, price = ?, phone=?, adress=?";
-    private static final String SQL_CREATE_ORDER_PRODUCT = "INSERT INTO order_product SET id_order = ?, id_product = ?, product_amount=?";
+    private static final String SQL_CREATE_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, adress=?";
+    private static final String SQL_CREATE_ORDER_PRODUCT = "INSERT INTO l4tsmab3ywpoc8m0.order_product SET id_order = ?, id_product = ?, product_amount=?";
 
     @Override
     public List<Order> findAll() throws DaoException {

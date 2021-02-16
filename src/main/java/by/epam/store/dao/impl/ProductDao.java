@@ -23,28 +23,28 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
             "SELECT id_products,name,info,price,status,image,id_collection,AVG(t1.evaluation) as 'evaluation' from " +
-                    "products LEFT JOIN (SELECT id_product,evaluation FROM feedback) as t1 on id_products=t1.id_product";
+                    "l4tsmab3ywpoc8m0.products LEFT JOIN (SELECT id_product,evaluation FROM l4tsmab3ywpoc8m0.feedback) as t1 on id_products=t1.id_product";
     private static final String SQL_INSERT_PRODUCT =
-            "INSERT INTO products (`name`, `info`,`price`,`id_collection`)VALUES (?, ?, ?,?)";
+            "INSERT INTO l4tsmab3ywpoc8m0.products (`name`, `info`,`price`,`id_collection`)VALUES (?, ?, ?,?)";
     public static final String SQL_SELECT_BY_ID =
             "SELECT id_products,name,info,price,status,image,id_collection,AVG(t1.evaluation) as 'evaluation' from " +
-                    "products LEFT JOIN (SELECT id_product,evaluation FROM feedback) as t1 on id_products=t1.id_product WHERE id_products=?";
+                    "l4tsmab3ywpoc8m0.products LEFT JOIN (SELECT id_product,evaluation FROM l4tsmab3ywpoc8m0.feedback) as t1 on id_products=t1.id_product WHERE id_products=?";
     private static final String SQL_UPDATE_PRODUCT_BY_ID =
-            "UPDATE products SET name = ?, info = ?, price = ?, status = ?, image=? WHERE id_products = ?";
+            "UPDATE l4tsmab3ywpoc8m0.products SET name = ?, info = ?, price = ?, status = ?, image=? WHERE id_products = ?";
     private static final String SQL_UPDATE_STATUS_BY_ID =
-            "UPDATE products SET status = ? WHERE id_products=?";
+            "UPDATE l4tsmab3ywpoc8m0.products SET status = ? WHERE id_products=?";
     public static final String SQL_SELECT_SORTED_COLLECTION_PRODUCT =
             "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM products LEFT JOIN"+
-            "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from feedback GROUP BY id_product)as t1)"+
+            "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from l4tsmab3ywpoc8m0.feedback GROUP BY id_product)as t1)"+
             "as f on f.id_product=id_products WHERE status=? and id_collection LIKE ? order by %s limit 12 offset ?";
     public static final String SQL_SELECT_SORTED_COLLECTION_PRODUCT_COUNT =
-            "SELECT count() FROM products WHERE status=? and id_collection LIKE ?";
+            "SELECT count() FROM l4tsmab3ywpoc8m0.products WHERE status=? and id_collection LIKE ?";
     public static final String SQL_SELECT_RANDOM_PRODUCT =
-            "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM products LEFT JOIN"+
-            "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from feedback GROUP BY id_product)as t1)"+
+            "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM l4tsmab3ywpoc8m0.products LEFT JOIN"+
+            "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from l4tsmab3ywpoc8m0.feedback GROUP BY id_product)as t1)"+
             "as f on f.id_product=id_products WHERE status='ACTIVE' order by rand() limit ?";
     private static final String SQL_SELECT_BY_NAME = "SELECT id_products,name,info,image,id_collection,status,price" +
-            " FROM products WHERE name LIKE ? limit 6 ";
+            " FROM l4tsmab3ywpoc8m0.products WHERE name LIKE ? limit 6 ";
 
 
     @Override
@@ -59,7 +59,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM,e);
+            throw new DaoException(e);
         }
         return products;
     }
@@ -76,7 +76,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return optionalProduct;
     }
@@ -98,7 +98,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             }
         } catch (SQLException e){
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return result;
     }
@@ -120,7 +120,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             }
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
         return result;
     }
@@ -139,7 +139,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             return result;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
 
@@ -163,7 +163,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             return resultList;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException();
+            throw new DaoException(e);
         }
     }
 

@@ -20,7 +20,7 @@ import java.util.Optional;
 public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.dao.CollectionDao {
     private final static Logger log = LogManager.getLogger(CollectionDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM collection";
+    public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
     @Override
     public List<ProductCollection> findAll() throws DaoException {
         try(Connection collection = connectionPool.getConnection();
@@ -33,7 +33,7 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
             return list;
         } catch (SQLException e) {
             log.error(e);
-            throw new DaoException(MessageKey.ERROR_MESSAGE_SERVER_PROBLEM);
+            throw new DaoException(e);
         }
     }
 

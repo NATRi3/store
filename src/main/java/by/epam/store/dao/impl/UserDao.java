@@ -19,17 +19,17 @@ import java.util.Optional;
 public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     private final static Logger log = LogManager.getLogger(UserDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    public static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM accounts WHERE email=?";
+    public static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE email=?";
     private static final String SQL_SELECT_ALL =
-            "SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts";
-    private static final String SQL_SELECT_EMAIL_BY_EMAIL ="SELECT email FROM store.accounts WHERE email = ?";
-    private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD ="SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts WHERE binary email = ? AND binary password = ?";
-    private static final String SQL_SELECT_BY_ID = "SELECT name,email,register_date, image,id_accounts,access,role FROM store.accounts WHERE id_accounts = ?";
-    private static final String SQL_INSERT_USER = "INSERT INTO store.accounts (`email`, `name`, `register_date`, `password`,`role`)VALUES (?,?,?,?,?);";
-    private static final String SQL_DELETE_USER ="DELETE FROM store.accounts WHERE email=? AND password=?";
-    private static final String SQL_UPDATE = "UPDATE store.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
-    public static final String SQL_UPDATE_PASSWORD ="UPDATE store.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
-    private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM store.accounts WHERE role=? and access=?  LIMIT 10 OFFSET ?";
+            "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts";
+    private static final String SQL_SELECT_EMAIL_BY_EMAIL ="SELECT email FROM l4tsmab3ywpoc8m0.accounts WHERE email = ?";
+    private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD ="SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE binary email = ? AND binary password = ?";
+    private static final String SQL_SELECT_BY_ID = "SELECT name,email,register_date, image,id_accounts,access,role FROM l4tsmab3ywpoc8m0.accounts WHERE id_accounts = ?";
+    private static final String SQL_INSERT_USER = "INSERT INTO l4tsmab3ywpoc8m0.accounts (`email`, `name`, `register_date`, `password`,`role`)VALUES (?,?,?,?,?);";
+    private static final String SQL_DELETE_USER ="DELETE FROM l4tsmab3ywpoc8m0.accounts WHERE email=? AND password=?";
+    private static final String SQL_UPDATE = "UPDATE l4tsmab3ywpoc8m0.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
+    public static final String SQL_UPDATE_PASSWORD ="UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
+    private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE role=? and access=?  LIMIT 10 OFFSET ?";
 
     @Override
     public List<User> findAll() throws DaoException {

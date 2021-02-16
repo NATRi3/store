@@ -11,11 +11,12 @@ import java.util.Properties;
 
 public class ConnectionCreator {
     private static final Logger log = LogManager.getLogger(ConnectionCreator.class);
-    public static final String DB_PROPERTIES_FILE = "property/config.properties";
+    private static final String DB_PROPERTIES_FILE = "property/config.properties";
+    private static final Properties property = new Properties();
     private static final String DB_URL;
-    public static final String user;
-    public static final String pass;
-    public static final Properties property = new Properties();
+    private static final String user;
+    private static final String pass;
+
     static {
         try {
             ClassLoader classLoader = ConnectionCreator.class.getClassLoader();
@@ -30,6 +31,7 @@ public class ConnectionCreator {
             throw new RuntimeException();
         }
     }
+
     private ConnectionCreator(){
     }
 

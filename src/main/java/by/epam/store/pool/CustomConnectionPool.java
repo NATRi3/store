@@ -4,7 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
@@ -87,6 +90,19 @@ public class CustomConnectionPool {
                 proxyConnection.reallyClose();
             } catch (InterruptedException | SQLException e) {
                log.warn(e);
+            }
+        }
+        deregisterDrivers();
+    }
+
+    private void deregisterDrivers() {
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
+            try {
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException exp) {
+                log.error("Error while deregister drivers", exp);
             }
         }
     }
