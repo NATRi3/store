@@ -9,5 +9,6 @@ import java.util.List;
 public interface CollectionService {
     static final CollectionDao collectionDao = DaoCreator.getInstance().getCollectionDao();
 
-    public List<ProductCollection> getAllProductCollections() throws ServiceException;
+    public List<ProductCollection> findAllProductCollectionsByStatus(String status) throws ServiceException;
+    public List<ProductCollection> findAllProductCollections() throws ServiceException;
 }

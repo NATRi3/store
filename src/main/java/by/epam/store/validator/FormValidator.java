@@ -154,9 +154,6 @@ public class FormValidator {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(isPhoneValid("+375(29)212-21-21"));
-    }
     private static boolean isPhoneValid(String phone) {
         if(phone==null) return false;
         return phone.matches(PHONE_REGEX);

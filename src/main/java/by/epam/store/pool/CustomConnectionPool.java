@@ -26,7 +26,7 @@ public class CustomConnectionPool {
     private static final Lock locking = new ReentrantLock();
     static final Lock lockConnection = new ReentrantLock();
     static final AtomicBoolean timeTaskIsWork = new AtomicBoolean(false);
-    static final int POOL_SIZE = 8;
+    static final int POOL_SIZE = 4;
     private static final Timer timerTask = new Timer();
     private CustomConnectionPool(){
         freeConnections = new LinkedBlockingQueue<>();
@@ -57,7 +57,6 @@ public class CustomConnectionPool {
     public Connection getConnection() throws SQLException {
         if(timeTaskIsWork.get()){
             lockConnection.lock();
-
             lockConnection.unlock();
         }
         try {
@@ -102,7 +101,7 @@ public class CustomConnectionPool {
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException exp) {
-                log.error("Error while deregister drivers", exp);
+                log.error(exp);
             }
         }
     }

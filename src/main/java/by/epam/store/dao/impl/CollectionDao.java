@@ -2,6 +2,7 @@ package by.epam.store.dao.impl;
 
 import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.ProductCollection;
+import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.util.MessageKey;
@@ -21,6 +22,8 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
     private final static Logger log = LogManager.getLogger(CollectionDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
+    public static final String SQL_SELECT_BY_STATUS = "SELECT id_collection, name, info, date, status FROM l4tsmab3ywpoc8m0.collection WHERE status=?";
+
     @Override
     public List<ProductCollection> findAll() throws DaoException {
         try(Connection collection = connectionPool.getConnection();
@@ -63,5 +66,22 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
         String info = resultSet.getString(DataBaseColumn.COLLECTION_INFO);
         Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
         return new ProductCollection(id,name,info,date);
+    }
+
+    @Override
+    public List<ProductCollection> findByStatus(TypeStatus typeStatus) throws DaoException {
+        try(Connection collection = connectionPool.getConnection();
+            PreparedStatement statement = collection.prepareStatement(SQL_SELECT_BY_STATUS)){
+            statement.setString(1,typeStatus.toString());
+            ResultSet resultSet = statement.executeQuery();
+            List<ProductCollection> list = new ArrayList<>();
+            while (resultSet.next()){
+                list.add(getProductCollectionFromResultSet(resultSet));
+            }
+            return list;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
     }
 }

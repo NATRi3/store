@@ -25,7 +25,7 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="img-thumbnail" width="30" height="30" id="accountImg" alt="${sessionScope.currentUser.imageName}"
-                                 src="${pageContext.request.contextPath}/async?command=get_image&image_name=${sessionScope.currentUser.imageName}"/>
+                                 src="${sessionScope.currentUser.imageName}"/>
                                 ${sessionScope.currentUser.name}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navDropDownLink">

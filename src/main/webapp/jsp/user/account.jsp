@@ -64,7 +64,7 @@
               <div class="col-md-4">
                   <div class="profile-img">
                       <img class="img-thumbnail" width="120" height="120" id="accountImg" alt="${sessionScope.currentUser.imageName}"
-                                src="${pageContext.request.contextPath}/async?command=get_image&image_name=${sessionScope.currentUser.imageName}"/>
+                                src="${sessionScope.currentUser.imageName}"/>
                       <div class="file btn btn-lg btn-primary">
                           <fmt:message key="account.change_img" bundle="${text}"/>
                           <form name="uploadForm" action="${pageContext.request.contextPath}/controller?command=upload_image&image_command=user&ctoken=${sessionScope.stoken}" method="post" enctype="multipart/form-data">

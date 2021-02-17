@@ -5,6 +5,7 @@ import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.ProductCollection;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductCollectionService;
+import by.epam.store.util.RequestParameter;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,8 +21,9 @@ public class GetListProductCollectionsCommand implements CommandAsync {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {
+            String status = request.getParameter(RequestParameter.TYPE_STATUS);
             try {
-                List<ProductCollection> collectionList = productCollectionService.getAllProductCollections();
+                List<ProductCollection> collectionList = productCollectionService.findAllProductCollections();
                 String json = new Gson().toJson(collectionList);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

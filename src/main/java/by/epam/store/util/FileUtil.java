@@ -12,7 +12,7 @@ public class FileUtil {
         Optional<String> resultFileName = Optional.empty();
         if (!fileItem.isFormField()) {
             if (FILE_TYPE.contains(fileItem.getContentType())) {
-                String nameNewFile = savePath+"\\"+FileNameGenerator.generate(fileItem.getName());
+                String nameNewFile = savePath+FileNameGenerator.generate(fileItem.getName());
                 File file = new File(nameNewFile);
                 fileItem.write(file);
                 resultFileName = Optional.of(nameNewFile);
