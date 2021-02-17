@@ -128,36 +128,6 @@
 </div>
 </body>
 <script>
-    $(document).ready ( function(){
-        $.ajax({
-            url: "${pageContext.request.contextPath}/async?" +
-                "command=get_list_collection&type_status="+status,
-            type: 'GET',
-            dataType: 'json',
-            success: function(res) {
-                var contentID = document.getElementById("selectorCollection");
-                $.each(res, function (idx,collection){
-                    var newTBDiv = document.createElement("option");
-                    newTBDiv.setAttribute("name","id_collection");
-                    newTBDiv.setAttribute("size",1);
-                    newTBDiv.setAttribute("value",""+collection.idCollection);
-                    newTBDiv.innerHTML = collection.name;
-                    contentID.appendChild(newTBDiv);
-                });
-            },
-            statusCode:{
-                402: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
-                },
-                500: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
-                },
-                403: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
-                }
-            }
-        });
-    });
     let status = 'ACTIVE';
     function changeStatus(typeStatus){
         status=typeStatus;
@@ -172,20 +142,6 @@
             success: function (res){
                 var contentID = document.getElementById("table");
                 contentID.innerHTML = "";
-                if(begin>=10) {
-                    var previous = document.createElement("button");
-                    previous.setAttribute("class", "btn-primary");
-                    previous.setAttribute("onclick", "getListProduct(" + (begin-10) + ","+collection+")")
-                    previous.innerHTML = "PREVIOS";
-                    contentID.appendChild(previous);
-                }
-                if(res.length===12) {
-                    var next = document.createElement("button");
-                    next.setAttribute("class", "btn-primary");
-                    next.setAttribute("onclick", "getListProduct(" + (begin + 10) + "," + collection + ")");
-                    next.innerHTML = "NEXT";
-                    contentID.appendChild(next);
-                }
                 $.each(res, function (idx,collection){
                     var newTBDiv = document.createElement("tr");
                     newTBDiv.setAttribute("class","odd gradeX");

@@ -164,7 +164,7 @@
                         "</div>" +
                         "<div class='middle'>"+
                         "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"+
-                        "<img height='300' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"' alt='Sample'>"+
+                        "<img height='300' src='"+product.imageName+"' alt='Sample'>"+
                         "<div class='mask waves-effect waves-light'></div>"+
                         "</a>"+
                         "<div class='bottom'>" +

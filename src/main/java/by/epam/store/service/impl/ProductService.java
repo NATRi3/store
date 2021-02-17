@@ -150,24 +150,18 @@ public class ProductService implements by.epam.store.service.ProductService {
     }
 
     @Override
-    public String changeProductImage(String id, List<FileItem> fileItems, String realPath) throws ServiceException {
+    public String changeProductImage(String id, String imageName) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
             if(NumberValidator.isNumberValid(id)) {
                 Optional<Product> optionalProduct = productDao.findEntityById(Long.valueOf(id));
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
-                    for(FileItem fileItem: fileItems) {
-                        Optional<String> optional = FileUtil.saveFile(fileItem,realPath);
-                        if(optional.isPresent()) {
-                            String newFileName = optional.get();
-                            product.setImageName(newFileName);
-                            if (productDao.update(product)) {
-                                resultMessage = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
-                            } else {
-                                resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
-                            }
-                        }
+                    product.setImageName(imageName);
+                    if (productDao.update(product)) {
+                        resultMessage = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
+                    } else {
+                        resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
                     }
                 } else {
                     resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;

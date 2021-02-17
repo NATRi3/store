@@ -84,26 +84,18 @@ public class NewsService implements by.epam.store.service.NewsService {
     }
 
     @Override
-    public String changeImage(String id, List<FileItem> fileItems, String realPath) throws ServiceException {
-        String resultMessage = MessageKey.ERROR_MESSAGE_FILE_NOT_FOUND;
+    public String changeImage(String id, String imageName) throws ServiceException {
+        String resultMessage;
         try {
             if(NumberValidator.isNumberValid(id)) {
                 Optional<News> optionalNews = newsDao.findEntityById(Long.valueOf(id));
                 if (optionalNews.isPresent()) {
                     News news = optionalNews.get();
-                    for(FileItem fileItem: fileItems) {
-                        Optional<String> optional = FileUtil.saveFile(fileItem,realPath);
-                        if(optional.isPresent()){
-                            String nameFile = optional.get();
-                            news.setImageName(nameFile);
-                            if (newsDao.update(news)) {
-                                resultMessage = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
-                            }else {
-                                resultMessage = MessageKey.ERROR_UNKNOWN_NEWS;
-                            }
-                        } else {
-                            resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
-                        }
+                    news.setImageName(imageName);
+                    if (newsDao.update(news)) {
+                        resultMessage = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
+                    }else {
+                        resultMessage = MessageKey.ERROR_UNKNOWN_NEWS;
                     }
                 }else {
                     resultMessage = MessageKey.ERROR_UNKNOWN_NEWS;

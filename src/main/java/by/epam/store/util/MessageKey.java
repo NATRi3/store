@@ -1,6 +1,8 @@
 package by.epam.store.util;
 
 
+import java.util.Optional;
+
 public class MessageKey {
     public static final String ERROR_MESSAGE_LOGIN_PLEASE = "message.login_please";
     public static final String ERROR_MESSAGE_WRONG_EMAIL_OR_PASS = "message.wrong.email_or_password";
@@ -32,6 +34,7 @@ public class MessageKey {
     public static final String SUCCESSFUL_CHANGE_IMAGE = "message.successful_change_image";
     public static final String SUCCESSFUL_NEWS_DELETE = "message.successful_news_delete";
     public static final String SUCCESSFUL_CREATE_ORDER = "message.successful_create_order";
+    public static final String SUCCESSFUL_CREATE_COLLECTION = "message.successful_create_collection";
 
     private MessageKey(){ }
 }

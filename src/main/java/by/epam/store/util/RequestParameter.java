@@ -39,6 +39,10 @@ public class RequestParameter {
     public static final String EVALUATION = "evaluation";
     public static final String TYPE_ROLE = "type_role";
     public static final String SEARCH = "search";
+    public static final String INFO_COLLECTION = "info_collection";
+    public static final String NAME_COLLECTION = "name_collection";
+
+
 
     private RequestParameter(){ }
 }

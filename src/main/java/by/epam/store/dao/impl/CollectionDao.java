@@ -9,10 +9,7 @@ import by.epam.store.util.MessageKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +20,7 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
     public static final String SQL_SELECT_BY_STATUS = "SELECT id_collection, name, info, date, status FROM l4tsmab3ywpoc8m0.collection WHERE status=?";
+    private static final String SQL_INSERT = "INSERT INTO l4tsmab3ywpoc8m0.collection (`name`,`info`,`date`,`status`) VALUES (?,?,?,?);";
 
     @Override
     public List<ProductCollection> findAll() throws DaoException {
@@ -57,6 +55,21 @@ public class CollectionDao implements BaseDao<ProductCollection>, by.epam.store.
 
     @Override
     public ProductCollection create(ProductCollection productCollection) throws DaoException {
+        try(Connection connection = connectionPool.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)){
+            statement.setString(1,productCollection.getName());
+            statement.setString(2,productCollection.getInfo());
+            statement.setLong(3,productCollection.getDate().getTime());
+            statement.setString(4,TypeStatus.ACTIVE.toString());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if(resultSet.next()){
+                productCollection.setIdCollection(resultSet.getLong(1));
+            }
+            return productCollection;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

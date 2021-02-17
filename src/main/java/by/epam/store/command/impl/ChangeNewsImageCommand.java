@@ -4,6 +4,7 @@ import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.NewsService;
+import by.epam.store.util.FileUtil;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
@@ -15,6 +16,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
 
 public class ChangeNewsImageCommand implements Command {
     private final static Logger log = LogManager.getLogger(ChangeNewsImageCommand.class);
@@ -32,13 +35,11 @@ public class ChangeNewsImageCommand implements Command {
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
         upload.setSizeMax(FILE_MAX_SIZE);
         try {
-            String realPath = request.getServletContext().getRealPath("");
-            String message = newsService.changeImage(id,upload.parseRequest(request),realPath);
-            request.setAttribute(RequestParameter.MESSAGE, message);
-        } catch (ServiceException e) {
-            log.error(e);
-            request.setAttribute(RequestParameter.MESSAGE, e.getMessage());
-        } catch (FileUploadException e) {
+            Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
+            if(optionalFileName.isPresent()){
+                newsService.changeImage(id,optionalFileName.get());
+            }
+        } catch (FileUploadException | IOException | ServiceException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
         }

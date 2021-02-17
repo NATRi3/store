@@ -170,7 +170,7 @@
                         "<td>"+
                         "<div class='profile-img'>"+
                         "<img class='img-thumbnail' width='100' height='100' id='accountImg' alt=''"+
-                        "src='${pageContext.request.contextPath}/async?command=get_image&image_name="+news.imageName+"'/>"+
+                        "src='"+news.imageName+"'/>"+
                         "<form name='uploadForm"+news.idNews+"'"+
                         "action='${pageContext.request.contextPath}/controller?command=change_news_image&id_news="+news.idNews+"&ctoken=${sessionScope.stoken}'"+
                         "method='post' enctype='multipart/form-data'>"+

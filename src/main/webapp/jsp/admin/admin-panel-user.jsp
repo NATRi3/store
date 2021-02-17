@@ -215,7 +215,7 @@
                         "<td>"+
                         "<div class='profile-img'>"+
                         "<img class='img-thumbnail' width='100' height='100' id='accountImg' alt=''"+
-                        "src='${pageContext.request.contextPath}/async?command=get_image&image_name="+user.imageName+"'/>"+
+                        "src='"+user.imageName+"'/>"+
                         "</div>"+
                         "</td>"+
                         "<td>"+user.email+"</td>"+

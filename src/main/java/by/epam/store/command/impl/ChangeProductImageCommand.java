@@ -4,6 +4,7 @@ import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
+import by.epam.store.util.FileUtil;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
@@ -16,6 +17,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
+import java.lang.management.OperatingSystemMXBean;
+import java.util.Optional;
 
 public class ChangeProductImageCommand implements Command {
     private final static Logger log = LogManager.getLogger(ChangeProductImageCommand.class);
@@ -34,15 +38,19 @@ public class ChangeProductImageCommand implements Command {
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
         upload.setSizeMax(FILE_MAX_SIZE);
         try {
-            String realPath = request.getServletContext().getRealPath("");
-            String message = productService.changeProductImage(id,upload.parseRequest(request),realPath);
-            request.setAttribute(RequestParameter.MESSAGE,message);
+            Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
+            if(optionalFileName.isPresent()) {
+                String message = productService.changeProductImage(id, optionalFileName.get());
+                request.setAttribute(RequestParameter.MESSAGE,message);
+            }
         } catch (ServiceException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE, e.getMessage());
         } catch (FileUploadException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return PagePath.ADMIN_PANEL;
     }

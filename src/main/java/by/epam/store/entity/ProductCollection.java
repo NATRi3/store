@@ -1,5 +1,7 @@
 package by.epam.store.entity;
 
+import by.epam.store.entity.type.TypeStatus;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,6 +16,12 @@ public class ProductCollection {
 
     public ProductCollection(long idCollection, String name, String info, Date date) {
         this.idCollection = idCollection;
+        this.name = name;
+        this.info = info;
+        this.date = date;
+    }
+
+    public ProductCollection(String name, String info, Date date) {
         this.name = name;
         this.info = info;
         this.date = date;

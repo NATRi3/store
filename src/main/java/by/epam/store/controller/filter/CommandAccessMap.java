@@ -12,6 +12,7 @@ public class CommandAccessMap extends HashMap<TypeRole,Set<String>> {
 
     private CommandAccessMap(){
         put(TypeRole.ADMIN, Set.of(
+                TypeCommand.ADD_COLLECTION.toString().toLowerCase(),
                 TypeCommand.CHANGE_NEWS.toString().toLowerCase(),
                 TypeCommand.CHANGE_NEWS_IMAGE.toString().toLowerCase(),
                 TypeCommand.CHANGE_PRODUCT.toString().toLowerCase(),

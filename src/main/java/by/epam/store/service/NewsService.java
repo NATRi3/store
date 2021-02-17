@@ -15,6 +15,6 @@ public interface NewsService {
     List<News> getSortNews(String typeSort, String begin) throws ServiceException;
     String deleteNews(String id) throws ServiceException;
     Optional<String> createNews(Map<String, String> parameters) throws ServiceException;
-    String changeImage(String id, List<FileItem> fileItems, String realPath) throws ServiceException;
+    String changeImage(String id, String imageName) throws ServiceException;
     String changeNews(Map<String, String> parameters) throws ServiceException;
 }

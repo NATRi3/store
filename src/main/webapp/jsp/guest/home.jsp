@@ -144,7 +144,7 @@
                             newTBDiv.setAttribute("class","col-lg-4 col-sm-6 portfolio-item");
                             newTBDiv.innerHTML =
                                 "<div class='card h-100'>"+
-                                "<img class='card-img-top' src='${pageContext.request.contextPath}/async?command=get_image&image_name="+news.imageName+"' alt=''>" +
+                                "<img class='card-img-top' src='"+news.imageName+"' alt=''>" +
                                 "<div class='card-body'>"+
                                     "<h4 class='card-title'>"+
                                         "<a>"+news.title+"</a>"+

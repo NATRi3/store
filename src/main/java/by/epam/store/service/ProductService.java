@@ -20,6 +20,6 @@ public interface ProductService {
     List<Product> findProductByCollectionAndSort(String idCollection, String typeSort, String status, String begin) throws ServiceException;
     List<Product> findRandomProduct(String amount) throws ServiceException;
     String changeProduct(Map<String, String> parameters) throws ServiceException;
-    String changeProductImage(String id, List<FileItem> fileItems, String realPath) throws ServiceException;
+    String changeProductImage(String id, String realPath) throws ServiceException;
     List<Product> findProductByName(String name) throws ServiceException;
 }

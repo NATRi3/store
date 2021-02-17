@@ -13,9 +13,24 @@ public class FormValidator {
     private static final String PASSWORD_REGEX = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9@#$%]).{8,40}";
     private static final String PHONE_REGEX = "\\+375\\(\\d{2}\\)\\d{3}-\\d{2}-\\d{2}";
     private static final int MAX_ADDRESS_SIZE = 70;
+    private static final int MAX_INFO_500_SIZE = 500;
 
     public static boolean isFormValid(Map<String, String> dataMap) {
         boolean valid = true;
+        if (dataMap.containsKey(RequestParameter.NAME_COLLECTION)) {
+            String title = dataMap.get(RequestParameter.NAME_COLLECTION);
+            if(!isStringLess(title,MAX_NAME_SIZE)){
+                dataMap.remove(RequestParameter.NAME_COLLECTION);
+                valid = false;
+            }
+        }
+        if (dataMap.containsKey(RequestParameter.INFO_COLLECTION)) {
+            String title = dataMap.get(RequestParameter.INFO_COLLECTION);
+            if(!isStringLess(title,MAX_INFO_500_SIZE)){
+                dataMap.remove(RequestParameter.INFO_COLLECTION);
+                valid = false;
+            }
+        }
         if (dataMap.containsKey(RequestParameter.NEWS_TITLE)) {
             String title = dataMap.get(RequestParameter.NEWS_TITLE);
             if(!isStringLess(title,MAX_TITLE_NEWS_SIZE)){

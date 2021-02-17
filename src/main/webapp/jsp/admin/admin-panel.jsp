@@ -217,7 +217,7 @@
                         "<td>"+
                         "<div class='profile-img'>"+
                             "<img class='img-thumbnail' width='100' height='100' id='accountImg' alt=''"+
-                                "src='${pageContext.request.contextPath}/async?command=get_image&image_name="+product.imageName+"'/>"+
+                                "src='"+product.imageName+"'/>"+
                             "<form name='uploadForm"+product.id+"'"+
                                 "action='${pageContext.request.contextPath}/controller?command=change_product_image&id_product="+product.id+"&ctoken=${sessionScope.stoken}'"+
                                 "method='post' enctype='multipart/form-data'>"+

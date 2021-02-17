@@ -13,7 +13,6 @@ public enum  TypeCommandAsync {
     GET_LIST_NEWS(new GetListNewsCommand()),
     GET_FRESH_NEWS(new GetFreshNewsCommand()),
     GET_LIST_PRODUCT_BY_COLLECTION(new GetListProductByCollectionCommand()),
-    GET_IMAGE(new GetImageCommand()),
     DEACTIVATE_PRODUCT(new DeactivateProductCommand()),
     ADD_PRODUCT_TO_CART(new AddProductToCartCommand()),
     ACTIVATE_PRODUCT(new ActivateProductCommand());

@@ -13,6 +13,7 @@ public enum TypeCommand implements Supplier<Command> {
     REGISTRATION(new RegistrationCommand()),
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
+    ADD_COLLECTION(new AddCollectionCommand()),
     ADD_NEWS(new AddNewsCommand()),
     ADD_PRODUCT(new AddProductCommand()),
     ADD_AMOUNT_PRODUCT_TO_CART(new AddAmountProductToCartCommand()),

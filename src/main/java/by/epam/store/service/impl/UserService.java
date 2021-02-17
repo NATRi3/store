@@ -141,29 +141,6 @@ public class UserService implements by.epam.store.service.UserService {
     }
 
     @Override
-    public String changeAvatar(User user, List<FileItem> fileItems,String realPath) throws ServiceException {
-        String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
-        try {
-            for(FileItem fileItem: fileItems) {
-                Optional<String> optional = FileUtil.saveFile(fileItem,realPath);
-                if(optional.isPresent()){
-                    String nameFile = optional.get();
-                    user.setImageName(nameFile);
-                    if (userDao.update(user)) {
-                        resultMessage = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
-                    }else {
-                        resultMessage = MessageKey.ERROR_UNKNOWN_NEWS;
-                    }
-                }
-            }
-            return resultMessage;
-        } catch (Exception e){
-            log.error(e);
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public List<User> findUsersByRoleAndStatus(String role, String status, String begin) throws ServiceException {
         if(!NumberValidator.isNumberValid(begin)||
             !TypeValidator.isTypeStatus(status.toUpperCase())||
