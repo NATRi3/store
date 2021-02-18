@@ -4,13 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 import java.util.Properties;
 
 public class SendMail {
     private final static Logger log = LogManager.getLogger(SendMail.class);
-    private static final String SENDER_EMAIL_ADDRESS = "mailforwebproject31@gmail.com";
+    private static final String SENDER_EMAIL_ADDRESS = "watchstoreepam@gmail.com";
     private static final String SENDER_EMAIL_PASSWORD = "3114928Denis";
     private static final String SENDER_HOST = "smtp.gmail.com";
     private static final String SENDER_PORT = "587";
@@ -36,7 +35,7 @@ public class SendMail {
             message.setFrom(new InternetAddress(SENDER_EMAIL_ADDRESS));
             message.addRecipient(Message.RecipientType.TO,
                     new InternetAddress(mail));
-            message.setSubject("UGOBOSS");
+            message.setSubject("WatchStoreEpam");
             message.setText("Your activation link \n "
                     +ACTIVATION_URL+id+
                     "\n If You don't registrant on our service just ignore this message");

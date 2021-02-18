@@ -27,7 +27,7 @@ public class ConnectionCreator {
             user = property.getProperty("user");
             pass = property.getProperty("pass");
         } catch (IOException | ClassNotFoundException e) {
-            log.error(e);
+            log.fatal(e);
             throw new RuntimeException();
         }
     }
@@ -35,7 +35,7 @@ public class ConnectionCreator {
     private ConnectionCreator(){
     }
 
-    public static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL,user,pass);
     }
 }

@@ -92,7 +92,7 @@
     .search_result{
         top: 55px;
         position: absolute;
-        left: 1300px;
+        left: 1120px;
         z-index: 10;
         background: #FFF;
         border: 1px #ccc solid;

@@ -15,9 +15,9 @@ import java.util.Optional;
 public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     private final static Logger log = LogManager.getLogger(OrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    private static final String SQL_CREATE_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, adress=?";
-    private static final String SQL_CREATE_ORDER_PRODUCT = "INSERT INTO l4tsmab3ywpoc8m0.order_product SET id_order = ?, id_product = ?, product_amount=?";
-
+    private static final String SQL_INSERT_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, adress=?";
+    private static final String SQL_INSERT_ORDER_PRODUCT = "INSERT INTO l4tsmab3ywpoc8m0.order_product SET id_order = ?, id_product = ?, product_amount=?";
+    private static final String SQL_SELECT_ORDER_BY_USER = "SELECT id_orders, id_account, price, phone, adress FROM l4tsmab3ywpoc8m0.orders";
     @Override
     public List<Order> findAll() throws DaoException {
         return null;
@@ -47,8 +47,8 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
             try {
                 connection = connection();
                 connection.setAutoCommit(false);
-                statementCreateOrder = connection.prepareStatement(SQL_CREATE_ORDER, Statement.RETURN_GENERATED_KEYS);
-                statementCreateOrderProduct = connection.prepareStatement(SQL_CREATE_ORDER_PRODUCT);
+                statementCreateOrder = connection.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
+                statementCreateOrderProduct = connection.prepareStatement(SQL_INSERT_ORDER_PRODUCT);
                 statementCreateOrder.setLong(1, order.getIdUser());
                 statementCreateOrder.setBigDecimal(2, order.getPrice());
                 statementCreateOrder.setString(3, order.getPhone());
@@ -87,4 +87,15 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
         return connectionPool.getConnection();
     }
 
+    @Override
+    public List<Order> getUserOrders(long id) throws DaoException {
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ORDER_BY_USER)) {
+
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
+        return null;
+    }
 }

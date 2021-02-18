@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderService implements by.epam.store.service.OrderService {
@@ -41,6 +42,17 @@ public class OrderService implements by.epam.store.service.OrderService {
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException();
+        }
+    }
+
+    @Override
+    public List<Order> getUserOrders(long id) throws ServiceException {
+        try {
+            List<Order> orders = orderDao.getUserOrders(id);
+            return orders;
+        } catch (DaoException e){
+            log.error(e);
+            throw new ServiceException(e);
         }
     }
 }
