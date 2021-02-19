@@ -159,7 +159,7 @@
                     newTBDiv.innerHTML =
                         "<div class='top'>" +
                         "<h4 class='card-title'>" +
-                        "<a href='#'>" + product.name + "</a>" +
+                        "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>" + product.name + "</a>" +
                         "</h4>" +
                         "</div>" +
                         "<div class='middle'>"+

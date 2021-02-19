@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class SendMail {
     private final static Logger log = LogManager.getLogger(SendMail.class);
-    private static final String SENDER_EMAIL_ADDRESS = "watchstoreepam@gmail.com";
+    private static final String SENDER_EMAIL_ADDRESS = "mailforwebproject31@gmail.com";
     private static final String SENDER_EMAIL_PASSWORD = "3114928Denis";
     private static final String SENDER_HOST = "smtp.gmail.com";
     private static final String SENDER_PORT = "587";
