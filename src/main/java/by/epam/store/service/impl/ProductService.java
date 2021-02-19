@@ -127,7 +127,7 @@ public class ProductService implements by.epam.store.service.ProductService {
             if(FormValidator.isFormValid(parameters)) {
                 long idProduct = Long.parseLong(parameters.get(RequestParameter.ID_PRODUCT));
                 BigDecimal priceProduct = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameter.PRICE_PRODUCT)));
-                String info = parameters.get(parameters.get(RequestParameter.INFO_PRODUCT));
+                String info = parameters.get(RequestParameter.INFO_PRODUCT);
                 Optional<Product> optionalProduct = productDao.findEntityById(idProduct);
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();

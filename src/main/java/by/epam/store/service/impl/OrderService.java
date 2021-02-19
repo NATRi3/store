@@ -28,9 +28,9 @@ public class OrderService implements by.epam.store.service.OrderService {
                 String phone = parameters.get(RequestParameter.PHONE);
                 String address = parameters.get(RequestParameter.ADDRESS);
                 Map<Product, Integer> cartMap = cart.getProducts();
-                Map<Long, Integer> orderMap = new HashMap<>();
+                Map<Product, Integer> orderMap = new HashMap<>();
                 for (Map.Entry<Product, Integer> entry : cartMap.entrySet()) {
-                    orderMap.put(entry.getKey().getId(), entry.getValue());
+                    orderMap.put(entry.getKey(), entry.getValue());
                 }
                 Order order = new Order(user.getId(), phone, address, cart.getTotalPrice(), orderMap);
                 orderDao.create(order);

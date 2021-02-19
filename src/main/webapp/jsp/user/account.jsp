@@ -124,21 +124,8 @@
                           </div>
                       </div>
                       <div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="profile-tab">
-                          <div class="row">
-                              <div class="col-md-6">
-                                  <label><fmt:message key="account.wallet"/></label>
-                              </div>
-                              <div class="col-md-6">
-                                  <p>${sessionScope.currentUser.name}</p>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-md-6">
-                                  <label><fmt:message key="account.balance"/></label>
-                              </div>
-                              <div class="col-md-6">
-                                  <p>${sessionScope.currentUser}</p>
-                              </div>
+                          <div id="accordion">
+
                           </div>
                       </div>
                   </div>
@@ -152,4 +139,66 @@
         </div>
     </div>
   </body>
+<script>
+    $(document).ready ( function(){
+        $.ajax({
+            url: "${pageContext.request.contextPath}/async?command=get_user_orders",
+            type: 'GET',
+            dataType: 'json',
+            success: function(res) {
+                $.each(res, function (idx,order){
+                    var contentID = document.getElementById("accordion");
+                    var newTBDiv = document.createElement("div");
+                    newTBDiv.setAttribute("class","card"+order.id+"");
+                    newTBDiv.innerHTML =
+                        "<div class='card-header' id='heading"+order.id+"'>"+
+                        "<h5 class='mb-0'>"+
+                        "<button class='btn btn-link' data-toggle='collapse"+order.id+"' data-target='#collapse"+order.id+"'  aria-expanded='true' aria-controls='collapse"+order.id+"'>"+
+                            order.price + order.address + order.phone +
+                        "</button>"+
+                        "</h5>"+
+                        "</div>"+
+                        "<div id='collapse"+order.id+"' class='collapse show' aria-labelledby='heading"+order.id+"' data-parent='#accordion'>"+
+                        "<div class='card-body'>"+
+                        "<table class='table'>"+
+                        "<thead>"+
+                        "<tr>"+
+                        "<th scope='col'></th>"+
+                        "<th scope='col'>ProductName</th>"+
+                        "<th scope='col'>ProductPrice</th>"+
+                        "<th scope='col'>ProductAmount</th>"+
+                        "</tr>"+
+                        "</thead>"+
+                        "<tbody id='order"+order.id+"Products'>"+
+
+                        "</tbody>"+
+                        "</table>"+
+                        "</div>"+
+                        "</div>";
+                    contentID.appendChild(newTBDiv);
+                    for(var i = 0; i<order.product.length;i++){
+                        var divElement = document.createElement("tr");
+                        divElement.innerHTML =
+                            "<td scope='row'><img width='50' height='50' src='"+order.product[i].imageName+"' </td>"+
+                            "<td><a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+order.product[i].id+"'>"+order.product[i].name+"</a></td>"+
+                            "<td>"+order.product[i].price+"</td>"+
+                        "<td>"+order.product[i].amount+"</td>";
+                        document.getElementById("order"+order.id+"Products").appendChild(divElement);
+                    }
+                });
+            },
+            statusCode:{
+                402: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
+                },
+                500: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
+                },
+                403: function (){
+                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
+                }
+            }
+        });
+    });
+</script>
 </html>

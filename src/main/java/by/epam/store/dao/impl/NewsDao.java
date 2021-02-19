@@ -18,17 +18,10 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
     private final static Logger log = LogManager.getLogger(NewsDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
-            "SELECT t2.id_news, t2.title,t2.info,t2.date,t2.image " +
-                    "FROM (SELECT id_news FROM l4tsmab3ywpoc8m0.news group by id_news ORDER BY date DESC) as t1," +
-                    "LATERAL (SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
-                    "WHERE t1.id_news=news.id_news " +
-                    "ORDER BY date DESC LIMIT ?) AS t2;";
+            "SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
+                    "ORDER BY date DESC LIMIT ?;";
     public static final String SQL_SELECT_AMOUNT_SORT_NEWS =
-            "SELECT t2.id_news, t2.title,t2.info,t2.date,t2.image " +
-                    "FROM (SELECT id_news FROM l4tsmab3ywpoc8m0.news group by id_news ORDER BY %s) as t1," +
-                    "LATERAL (SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
-                    "WHERE t1.id_news=news.id_news " +
-                    "ORDER BY %s LIMIT ? OFFSET ?) AS t2;";
+            "SELECT id_news, title,info,date,image FROM l4tsmab3ywpoc8m0.news ORDER BY %s LIMIT ? OFFSET ?;";
     private static final String SQL_DELETE_BY_ID = "DELETE FROM l4tsmab3ywpoc8m0.news WHERE id_news=?";
     private static final String SQL_CREATE = "INSERT INTO l4tsmab3ywpoc8m0.news (title, info, date) VALUES (?,?,?) ";
     private static final String SQL_UPDATE_BY_ID =

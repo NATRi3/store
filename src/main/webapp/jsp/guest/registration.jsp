@@ -38,11 +38,11 @@
                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                             <h1><fmt:message key="header.registration" bundle="${text}"/></h1>
                             <c:choose>
-                            <c:when test="${requestScope.message==null}">
+                            <c:when test="${requestScope.error_message==null}">
                                 <p class ="text-muted"> <fmt:message bundle="${text}" key="registration.title"/></p>
                             </c:when>
-                            <c:when test="${requestScope.message!=null}">
-                                <p class ="has-error"><fmt:message key="${requestScope.message}" bundle="${error}"/> </p>
+                            <c:when test="${requestScope.error_message!=null}">
+                                <p class ="has-error"><fmt:message key="${requestScope.error_message}" bundle="${error}"/> </p>
                             </c:when>
                             </c:choose>
                             <input type="hidden" name="command" value="registration"/>

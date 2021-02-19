@@ -6,6 +6,7 @@ public enum  TypeCommandAsync {
     SEARCH_PRODUCT(new SearchProductCommand()),
     BLOCK_PRODUCT(new BlockProductCommand()),
     UNBLOCK_PRODUCT(new UnblockProductCommand()),
+    GET_USER_ORDERS(new GetUserOrdersCommand()),
     GET_LIST_USERS_BY_ROLE_STATUS(new GetListUsersByRoleAndStatus()),
     GET_LIST_PRODUCT_FEEDBACK(new GetListProductFeedbackCommand()),
     GET_LIST_PRODUCT_RANDOM(new GetListProductRandomCommand()),

@@ -1,6 +1,10 @@
 package by.epam.store.entity;
 
+import by.epam.store.util.HashMapAdapter;
+import com.google.gson.annotations.JsonAdapter;
+
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -10,12 +14,13 @@ public class Order {
     private String phone;
     private String address;
     private BigDecimal price;
-    private Map<Long,Integer> product;
+    @JsonAdapter(HashMapAdapter.class)
+    private Map<Product,Integer> product;
 
     public Order() {
     }
 
-    public Order(long id, long idUser, String phone, String address, BigDecimal price, Map<Long, Integer> product) {
+    public Order(long id, long idUser, String phone, String address, BigDecimal price, Map<Product, Integer> product) {
         this.id = id;
         this.idUser = idUser;
         this.phone = phone;
@@ -24,7 +29,7 @@ public class Order {
         this.product = product;
     }
 
-    public Order(long userId, String phone, String address, BigDecimal price, Map<Long, Integer> product) {
+    public Order(long userId, String phone, String address, BigDecimal price, Map<Product, Integer> product) {
         this.idUser = userId;
         this.phone = phone;
         this.address = address;
@@ -72,11 +77,11 @@ public class Order {
         this.price = price;
     }
 
-    public Map<Long, Integer> getProduct() {
+    public Map<Product, Integer> getProduct() {
         return product;
     }
 
-    public void setProduct(Map<Long, Integer> product) {
+    public void setProduct(Map<Product, Integer> product) {
         this.product = product;
     }
 

@@ -45,13 +45,6 @@ public class FormValidator {
                 valid = false;
             }
         }
-        if(dataMap.containsKey(RequestParameter.ID_PRODUCT)){
-            String id = dataMap.get(RequestParameter.ID_PRODUCT);
-            if(!NumberValidator.isNumberValid(id)){
-                dataMap.remove(RequestParameter.ID_PRODUCT);
-                valid = false;
-            }
-        }
         if (dataMap.containsKey(RequestParameter.NEWS_INFO)) {
             String info = dataMap.get(RequestParameter.NEWS_INFO);
             if(!isStringLess(info,MAX_INFO_SIZE)){
