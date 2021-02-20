@@ -5,6 +5,7 @@ import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
+import by.epam.store.util.MessageCreator;
 import by.epam.store.util.RequestParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,8 @@ public class DeactivateProductCommand implements CommandAsync {
         try {
             try{
                 String id = request.getParameter(RequestParameter.ID_PRODUCT);
-                String message = productService.changeStatus(id, TypeStatus.NONACTIVE);
+                String messageKey = productService.changeStatus(id, TypeStatus.NONACTIVE);
+                String message = MessageCreator.getMessageFromBundleByLocale(messageKey,request);
                 response.setContentType("application/text");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(message);

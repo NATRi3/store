@@ -1,16 +1,17 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.dao.impl.UserDao;
 import by.epam.store.entity.User;
 import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
+import by.epam.store.service.DaoCreator;
 import by.epam.store.util.*;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class UserService implements by.epam.store.service.UserService {
+    private static final UserDao userDao = DaoCreator.getInstance().getUserDao();
     private final static Logger log = LogManager.getLogger(UserService.class);
     @Override
     public String activate(String code) throws ServiceException {
@@ -158,6 +160,26 @@ public class UserService implements by.epam.store.service.UserService {
             log.error(e);
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public String changeStatus(String id, TypeStatus status) throws ServiceException {
+        String resultMessage = MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT;
+        if(!NumberValidator.isNumberValid(id)) {
+            try {
+                Optional<User> optionalUser = userDao.findEntityById(Long.valueOf(id));
+                if (optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+                    user.setAccess(status);
+                    userDao.update(user);
+                    resultMessage = MessageKey.SUCCESSFUL_CHANGE_STATUS;
+                }
+            } catch (DaoException e) {
+                log.error(e);
+                throw new ServiceException(e);
+            }
+        }
+        return resultMessage;
     }
 
     private String encryption(String pass){

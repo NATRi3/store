@@ -91,7 +91,7 @@
 <style>
     .search_result{
         top: 55px;
-        position: absolute;
+        position: fixed;
         left: 1120px;
         z-index: 10;
         background: #FFF;

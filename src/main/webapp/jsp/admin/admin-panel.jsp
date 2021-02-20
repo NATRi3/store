@@ -5,6 +5,7 @@
   Time: 22:27
   To change this template use File | Settings | File Templates.
 --%>
+<%@taglib prefix="cus" uri="customtags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -326,8 +327,22 @@
             url: "${pageContext.request.contextPath}/async",
             type: 'POST',
             data: "command=block_product&id_product="+product,
+            dataType: "text",
             statusCode:{
-                200: function (){
+                200: function (message){
+                    var newMessage = document.createElement("div");
+                    newMessage.setAttribute("class","message");
+                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+                    newMessage.innerHTML =
+                            "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+                            "<br>"+
+                            message+
+                            "<br>"+
+                            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+                                 "<span aria-hidden='true''>×</span>"+
+                            "</button>"+
+                            "</div>";
+                    document.body.appendChild(newMessage);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -348,7 +363,20 @@
             type: 'POST',
             data: "command=unblock_product&id_product="+product,
             statusCode:{
-                200: function (){
+                200: function (message){
+                    var newMessage = document.createElement("div");
+                    newMessage.setAttribute("class","message");
+                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+                    newMessage.innerHTML =
+                        "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+                        "<br>"+
+                        message+
+                        "<br>"+
+                        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+                        "<span aria-hidden='true''>×</span>"+
+                        "</button>"+
+                        "</div>";
+                    document.body.appendChild(newMessage);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -369,7 +397,20 @@
             type: 'POST',
             data: "command=deactivate_product&id_product="+product,
             statusCode:{
-                200: function (){
+                200: function (message){
+                    var newMessage = document.createElement("div");
+                    newMessage.setAttribute("class","message");
+                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+                    newMessage.innerHTML =
+                        "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+                        "<br>"+
+                        message+
+                        "<br>"+
+                        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+                        "<span aria-hidden='true''>×</span>"+
+                        "</button>"+
+                        "</div>";
+                    document.body.appendChild(newMessage);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -391,7 +432,20 @@
             dataType: 'text',
             data: "command=activate_product&id_product="+product,
             statusCode:{
-                200: function (){
+                200: function (message){
+                    var newMessage = document.createElement("div");
+                    newMessage.setAttribute("class","message");
+                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+                    newMessage.innerHTML =
+                        "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+                        "<br>"+
+                        message+
+                        "<br>"+
+                        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+                        "<span aria-hidden='true''>×</span>"+
+                        "</button>"+
+                        "</div>";
+                    document.body.appendChild(newMessage);
                     getListProduct(0,0);
                 },
                 402: function (){

@@ -5,12 +5,15 @@ import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
+import by.epam.store.util.MessageCreator;
 import by.epam.store.util.RequestParameter;
+import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class BlockProductCommand implements CommandAsync {
@@ -21,7 +24,8 @@ public class BlockProductCommand implements CommandAsync {
         try {
             try{
                 String id = request.getParameter(RequestParameter.ID_PRODUCT);
-                String message = productService.changeStatus(id, TypeStatus.BLOCKED);
+                String messageKey = productService.changeStatus(id, TypeStatus.BLOCKED);
+                String message = MessageCreator.getMessageFromBundleByLocale(messageKey,request);
                 response.setContentType("application/text");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(message);

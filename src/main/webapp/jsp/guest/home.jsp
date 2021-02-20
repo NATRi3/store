@@ -5,6 +5,7 @@
   Time: 22:27
   To change this template use File | Settings | File Templates.
 --%>
+<%@taglib prefix="ctg" uri="customtags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -28,34 +29,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/fragment/header.jsp" %>
-<c:if test="${requestScope.error_message!=null}">
-    <c:choose>
-        <c:when test="${requestScope.error_message.contains('successful')}">
-            <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                    <br>
-                    <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                    <br>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <br>
-                    <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                    <br>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-            </div>
-        </c:otherwise>
-    </c:choose>
-</c:if>
+<ctg:message/>
 <div>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">

@@ -72,30 +72,6 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#AddNewsModal'>
-                                    <fmt:message key='admin.add_news' bundle='${text}'/>
-                                </button>
-                                <div class='modal fade' id='AddNewsModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                                    <div class='modal-dialog' role='document'>
-                                        <div class='modal-content'>
-                                            <form method="post" action="${pageContext.request.contextPath}/controller">
-                                                <div class='modal-header'>
-                                                    <h5 class='modal-title'><fmt:message key='admin.menu_add_news' bundle='${text}'/></h5>
-                                                </div>
-                                                <div class='modal-body'>
-                                                    <input type='hidden' name='command' value='add_news'>
-                                                    <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
-                                                    <label><fmt:message key='admin.title' bundle='${text}'/></label>
-                                                    <input data-toggle="tooltip" title="<fmt:message key="toggle.news_title" bundle="${text}"/>" class='form-control' type='text' name='news_title' placeholder="" required/>
-                                                    <label><fmt:message key='admin.info' bundle='${text}'/></label>
-                                                    <input data-toggle="tooltip" title="<fmt:message key="toggle.news_info" bundle="${text}"/>" class='form-control' type='text' name='news_info' placeholder="" required/>
-                                                </div>
-                                                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-                                                    <input type='submit' value='Save changes' class='btn btn-primary'/>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                                 <label>
                                     <fmt:message key='admin.sorting_type' bundle='${text}'/>
                                     <select onchange="changeSorting(this.value)" name="typeSort" size=1>
@@ -103,6 +79,13 @@
                                         <option value="title DESC"><fmt:message key='sort.title_desc' bundle='${text}'/></option>
                                         <option value="date DESC"><fmt:message key='sort.date_desc' bundle='${text}'/></option>
                                         <option value="date"><fmt:message key='sort.date' bundle='${text}'/></option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <select onchange="changeStatus(this.value)" name="typeStatus" size=1>
+                                        <option value="ACTIVE"><fmt:message key='sort.active' bundle='${text}'/></option>
+                                        <option value="BLOCKED"><fmt:message key='sort.blocked' bundle='${text}'/></option>
+                                        <option value="NONACTIVE"><fmt:message key='sort.nonactive' bundle='${text}'/></option>
                                     </select>
                                 </label>
                             </div>
@@ -223,19 +206,19 @@
                     newFormStatus.setAttribute("action","${pageContext.request.contextPath}/controller")
                     newFormStatus.setAttribute("method","POST");
                     newFormStatus.innerHTML =
-                            "<div class='modal-dialog' role='document'>"+
-                            "<div class='modal-content' >"+
-                            "<div class='modal-header'>"+
-                            "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change_status' bundle='${text}'/> "+news.title+"</h5>"+
-                            "</div>"+
-                            "<div class='modal-body'>"+
-                            "<input type='hidden' name='command' value='delete_news'>"+
-                            "<input type='hidden' name='ctoken' value='${sessionScope.stoken}'>"+
-                            "<input type='hidden' name='id_news' value='"+news.idNews+"'>"+
-                            "<button class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.cancel' bundle='${text}'/></button>"+
-                            "<input class='btn btn-primary' type='submit' name='delete' value='<fmt:message key='button.delete' bundle='${text}'/>'>"+
-                            "</div>"+
-                            "</div>";
+                        "<div class='modal-dialog' role='document'>"+
+                        "<div class='modal-content' >"+
+                        "<div class='modal-header'>"+
+                        "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change_status' bundle='${text}'/> "+news.title+"</h5>"+
+                        "</div>"+
+                        "<div class='modal-body'>"+
+                        "<input type='hidden' name='command' value='delete_news'>"+
+                        "<input type='hidden' name='ctoken' value='${sessionScope.stoken}'>"+
+                        "<input type='hidden' name='id_news' value='"+news.idNews+"'>"+
+                        "<button class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.cancel' bundle='${text}'/></button>"+
+                        "<input class='btn btn-primary' type='submit' name='delete' value='<fmt:message key='button.delete' bundle='${text}'/>'>"+
+                        "</div>"+
+                        "</div>";
                     document.getElementById("statusModal"+news.idNews).appendChild(newFormStatus);
                     amounts = begin;
                 });

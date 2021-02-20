@@ -35,6 +35,7 @@ public class MessageKey {
     public static final String SUCCESSFUL_NEWS_DELETE = "message.successful_news_delete";
     public static final String SUCCESSFUL_CREATE_ORDER = "message.successful_create_order";
     public static final String SUCCESSFUL_CREATE_COLLECTION = "message.successful_create_collection";
+    public static final String SUCCESSFUL_CHANGE_STATUS = "message.successful_change_status";
 
     private MessageKey(){ }
 }

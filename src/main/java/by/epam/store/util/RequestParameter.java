@@ -6,7 +6,6 @@ public class RequestParameter {
     public static final String EMAIL = "email";
     public static final String COMMAND = "command";
     public static final String MESSAGE = "error_message";
-    public static final String SUCCESS_MESSAGE = "success_message";
     public static final String REPEAT_PASSWORD = "repeat_password";
     public static final String NEW_LOCALE = "newLocale";
     public static final String ACTIVATION_CODE = "activation_code";
@@ -41,7 +40,7 @@ public class RequestParameter {
     public static final String SEARCH = "search";
     public static final String INFO_COLLECTION = "info_collection";
     public static final String NAME_COLLECTION = "name_collection";
-
+    public static final String ID_USER = "id_user";
 
 
     private RequestParameter(){ }

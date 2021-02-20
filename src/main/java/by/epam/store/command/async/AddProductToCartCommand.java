@@ -7,6 +7,7 @@ import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
+import by.epam.store.util.MessageCreator;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
@@ -26,7 +27,7 @@ public class AddProductToCartCommand implements CommandAsync {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {
             String idStr = request.getParameter(RequestParameter.ID_PRODUCT);
-            String message;
+            String messageKey;
             try {
                 Optional<Product> optionalProduct = productService.findProductById(idStr);
                 if (optionalProduct.isPresent()){
@@ -35,13 +36,14 @@ public class AddProductToCartCommand implements CommandAsync {
                     Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
                     cart.addProduct(optionalProduct.get());
                     session.setAttribute(SessionAttribute.CART, cart);
-                    message = MessageKey.SUCCESSFUL_ADD_TO_CART;
+                    messageKey = MessageKey.SUCCESSFUL_ADD_TO_CART;
                     } else {
-                        message = MessageKey.ERROR_PRODUCT_NOT_ACTIVE;
+                        messageKey = MessageKey.ERROR_PRODUCT_NOT_ACTIVE;
                     }
                 }else {
-                    message = MessageKey.ERROR_UNKNOWN_PRODUCT;
+                    messageKey = MessageKey.ERROR_UNKNOWN_PRODUCT;
                 }
+                String message = MessageCreator.getMessageFromBundleByLocale(messageKey,request);
                 response.setContentType("application/text");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(message);

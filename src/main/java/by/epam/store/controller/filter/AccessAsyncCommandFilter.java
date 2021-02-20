@@ -2,6 +2,8 @@ package by.epam.store.controller.filter;
 
 import by.epam.store.entity.User;
 import by.epam.store.entity.type.TypeRole;
+import by.epam.store.util.MessageCreator;
+import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +43,14 @@ public class AccessAsyncCommandFilter implements Filter {
                     if(user.getRole().equals(TypeRole.GUEST)){
                         response.sendError(402);
                     } else {
-                        response.sendError(403);
+                        if(response.getContentType().contains("text")) {
+                            String message = MessageCreator.getMessageFromBundleByLocale(MessageKey.ERROR_MESSAGE_WRONG_ACCESS, request);
+                            response.setContentType("application/text");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write(message);
+                        }else {
+                            response.sendError(403);
+                        }
                     }
                 }
             }

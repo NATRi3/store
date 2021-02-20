@@ -6,12 +6,15 @@ import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductCollectionService;
 import by.epam.store.service.impl.ProductService;
+import by.epam.store.util.MessageCreator;
 import by.epam.store.util.RequestParameter;
+import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class BlockCollectionCommand implements CommandAsync {
@@ -22,7 +25,8 @@ public class BlockCollectionCommand implements CommandAsync {
         try {
             try{
                 String id = request.getParameter(RequestParameter.ID_COLLECTION);
-                String message = collectionService.changeStatus(id, TypeStatus.BLOCKED);
+                String messageKey = collectionService.changeStatus(id, TypeStatus.BLOCKED);
+                String message = MessageCreator.getMessageFromBundleByLocale(messageKey,request);
                 response.setContentType("application/text");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(message);
