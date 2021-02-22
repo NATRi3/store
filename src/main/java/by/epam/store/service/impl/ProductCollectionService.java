@@ -7,6 +7,7 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
+import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +64,39 @@ public class ProductCollectionService implements by.epam.store.service.Collectio
 
     @Override
     public String changeStatus(String id, TypeStatus status) throws ServiceException {
-        return null;
+        if(!NumberValidator.isNumberValid(id)){
+            throw new ServiceException("Invalid id "+id);
+        }
+        try{
+            long idCollection = Long.parseLong(id);
+            if(collectionDao.updateStatus(idCollection,status)){
+                return MessageKey.SUCCESSFUL_CHANGE;
+            } else {
+                return MessageKey.ERROR_UNKNOWN_COLLECTION;
+            }
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public String changeInfo(Map<String,String> parameters) throws ServiceException {
+        try{
+            String messageKey;
+            if(FormValidator.isFormValid(parameters)){
+                Long id = Long.valueOf(parameters.get(RequestParameter.ID_COLLECTION));
+                String info = parameters.get(RequestParameter.INFO_COLLECTION);
+                collectionDao.updateInfo(id,info);
+                messageKey = MessageKey.SUCCESSFUL_CHANGE;
+            } else {
+                messageKey = MessageKey.ERROR_MESSAGE_INVALID_PARAM;
+            }
+            return messageKey;
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException(e);
+        }
     }
 
 }

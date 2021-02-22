@@ -54,9 +54,9 @@
                                 </c:choose>
                             </c:if>
                             <input type="hidden" name="command" value="login"/>
-                            <input type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+                            <input maxlength="45" type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
                                     placeholder="<fmt:message bundle="${text}" key="login.email"/>">
-                            <input type="password" name="password"
+                            <input maxlength="45" type="password" name="password"
                                     placeholder="<fmt:message bundle="${text}" key="login.password"/>">
                             <a class="forgot text-muted" href="${pageContext.request.contextPath}/jsp/guest/forgot-password.jsp">
                                 <fmt:message key="login.forgot_password" bundle="${text}"/>

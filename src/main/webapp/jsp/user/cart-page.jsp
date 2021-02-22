@@ -31,34 +31,7 @@
 </head>
 <body>
 <div class="container">
-    <c:if test="${requestScope.error_message!=null}">
-        <c:choose>
-            <c:when test="${requestScope.error_message.contains('successful')}">
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
+    <cus:message/>
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <!--Section: Block Content-->
         <section>

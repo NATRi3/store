@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.NewsService;
 import by.epam.store.util.FileUtil;
@@ -27,7 +28,7 @@ public class ChangeNewsImageCommand implements Command {
     private static final int MEM_MAX_SIZE = 1024 * 1024 * 5;
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         String id = request.getParameter(RequestParameter.ID_NEWS);
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         diskFileItemFactory.setRepository(new File(SAVE_DIR));
@@ -38,11 +39,17 @@ public class ChangeNewsImageCommand implements Command {
             Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
             if(optionalFileName.isPresent()){
                 newsService.changeImage(id,optionalFileName.get());
+                return Router.redirectTo(PagePath.ADMIN_PANEL_NEWS);
+            } else {
+                request.setAttribute(RequestParameter.MESSAGE,MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE);
             }
-        } catch (FileUploadException | IOException | ServiceException e) {
+        } catch (FileUploadException | IOException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
+        } catch (ServiceException e) {
+            log.error(e);
+            return Router.redirectTo(PagePath.PAGE_500);
         }
-        return PagePath.ADMIN_PANEL_NEWS;
+        return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS);
     }
 }

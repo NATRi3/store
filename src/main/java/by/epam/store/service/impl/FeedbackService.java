@@ -51,4 +51,21 @@ public class FeedbackService implements by.epam.store.service.FeedbackService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public String deleteFeedback(String id) throws ServiceException {
+        try {
+            if(NumberValidator.isNumberValid(id)){
+                long idFeedback = Long.parseLong(id);
+                if(feedbackDao.delete(idFeedback)){
+                    return MessageKey.SUCCESSFUL_DELETE;
+                }
+            }
+            return MessageKey.ERROR_UNKNOWN_FEEDBACK;
+        } catch (DaoException e){
+            log.error(e);
+            throw new ServiceException(e);
+        }
+
+    }
 }

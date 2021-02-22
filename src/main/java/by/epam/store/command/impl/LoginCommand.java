@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.UserService;
@@ -18,7 +19,7 @@ public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
     private static final UserService userService = ServiceCreator.getInstance().getUserService();
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         String email = request.getParameter(RequestParameter.EMAIL);
         String password = request.getParameter(RequestParameter.PASSWORD);
         User user = new User(email);
@@ -27,14 +28,14 @@ public class LoginCommand implements Command {
             Optional<String> optionalMessage = userService.login(user, password);
             if(!optionalMessage.isPresent()) {
                 session.setAttribute(SessionAttribute.USER, user);
-                return PagePath.MAIN;
+                return Router.redirectTo(PagePath.MAIN);
             } else {
                 request.setAttribute(RequestParameter.MESSAGE,optionalMessage.get());
-                return PagePath.LOGIN;
+                return Router.forwardTo(PagePath.LOGIN);
             }
         } catch (ServiceException e) {
             logger.info(e);
-            return PagePath.PAGE_500;
+            return Router.redirectTo(PagePath.PAGE_500);
         }
     }
 }

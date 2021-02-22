@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
 import by.epam.store.util.FileUtil;
@@ -29,7 +30,7 @@ public class ChangeProductImageCommand implements Command {
     private static final int MEM_MAX_SIZE = 1024 * 1024 * 5;
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String id = request.getParameter(RequestParameter.ID_PRODUCT);
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
@@ -45,13 +46,11 @@ public class ChangeProductImageCommand implements Command {
             }
         } catch (ServiceException e) {
             log.error(e);
-            request.setAttribute(RequestParameter.MESSAGE, e.getMessage());
-        } catch (FileUploadException e) {
+            return Router.redirectTo(PagePath.PAGE_500);
+        } catch (FileUploadException | IOException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return PagePath.ADMIN_PANEL;
+        return Router.forwardTo(PagePath.ADMIN_PANEL);
     }
 }

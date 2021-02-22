@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -33,17 +34,29 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Optional<Command> command = CommandProvider.commandDefine(request.getParameter(RequestParameter.COMMAND));
-        String page = command.orElse(TypeCommand.ERROR_NOT_FOUND.get()).execute(request);
-        if(request.getSession(false)!=null){
-            request.getSession().setAttribute(SessionAttribute.PAGE,page);
+        Router router = command.orElse(TypeCommand.ERROR_NOT_FOUND.get()).execute(request);
+        setPageToSession(request,router.getPage());
+        if (router.isRedirect()){
+            response.sendRedirect(router.getPage());
+        } else {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(router.getPage());
+            dispatcher.forward(request, response);
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        dispatcher.forward(request, response);
     }
 
     @Override
     public void destroy() {
         super.destroy();
         CustomConnectionPool.getInstance().closePool();
+    }
+
+    private void setPageToSession(HttpServletRequest request, String page){
+        if(request.getSession(false)!=null) {
+            if (page.contains("/WEB-INF/")) {
+                request.getSession().setAttribute(SessionAttribute.PAGE, request.getRequestURI()+"?"+request.getQueryString());
+            } else {
+                request.getSession().setAttribute(SessionAttribute.PAGE, page);
+            }
+        }
     }
 }

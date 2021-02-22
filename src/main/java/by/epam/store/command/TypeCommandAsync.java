@@ -3,6 +3,7 @@ package by.epam.store.command;
 import by.epam.store.command.async.*;
 
 public enum  TypeCommandAsync {
+    DELETE_FEEDBACK(new DeleteFeedbackCommand()),
     SEARCH_PRODUCT(new SearchProductCommand()),
     BLOCK_PRODUCT(new BlockProductCommand()),
     UNBLOCK_PRODUCT(new UnblockProductCommand()),

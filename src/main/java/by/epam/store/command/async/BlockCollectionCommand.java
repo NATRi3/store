@@ -35,7 +35,7 @@ public class BlockCollectionCommand implements CommandAsync {
                 response.sendError(500);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 }

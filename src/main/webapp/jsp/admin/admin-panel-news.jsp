@@ -29,34 +29,7 @@
 </head>
 <body>
 <div class="container">
-    <c:if test="${requestScope.error_message!=null}">
-        <c:choose>
-            <c:when test="${requestScope.error_message.contains('successful')}">
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
+    <cus:message/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <br>
@@ -241,7 +214,8 @@
                 });
             },
             statusCode:{
-                402: function (){
+                402: function (message){
+                    viewMessage(message);
                     window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
                 },
                 500: function (){
@@ -252,6 +226,21 @@
                 }
             }
         });
+    }
+    function viewMessage(text){
+        var newMessage = document.createElement("div");
+        newMessage.setAttribute("class","message");
+        newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+        newMessage.innerHTML =
+            "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+            "<br>"+
+            text+
+            "<br>"+
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+            "<span aria-hidden='true''>×</span>"+
+            "</button>"+
+            "</div>";
+        document.body.appendChild(newMessage);
     }
     $(document).ready ( function(){
         getListNews(0);

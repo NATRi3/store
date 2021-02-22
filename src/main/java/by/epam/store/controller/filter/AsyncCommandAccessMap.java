@@ -12,6 +12,7 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
 
     private AsyncCommandAccessMap(){
         put(TypeRole.ADMIN, Set.of(
+                TypeCommandAsync.DELETE_FEEDBACK.toString().toLowerCase(),
                 TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
                 TypeCommandAsync.GET_LIST_NEWS.toString().toLowerCase(),
                 TypeCommandAsync.BLOCK_PRODUCT.toString().toLowerCase(),

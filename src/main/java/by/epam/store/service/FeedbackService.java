@@ -13,4 +13,5 @@ public interface FeedbackService {
     static final FeedbackDao feedbackDao = DaoCreator.getInstance().getFeedbackDao();
     List<Feedback> getFeedbackByIdProduct(String idProduct) throws ServiceException;
     Optional<String> createFeedback(Map<String, String> parameters, User user) throws ServiceException;
+    String deleteFeedback(String id) throws ServiceException;
 }

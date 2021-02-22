@@ -3,13 +3,11 @@ package by.epam.store.service.impl;
 import by.epam.store.entity.News;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.util.FileUtil;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -65,7 +63,7 @@ public class NewsService implements by.epam.store.service.NewsService {
     }
 
     @Override
-    public Optional<String> createNews(Map<String, String> parameters) throws ServiceException {
+    public String createNews(Map<String, String> parameters) throws ServiceException {
         try{
             if(FormValidator.isFormValid(parameters)) {
                 Date date = new Date();
@@ -73,9 +71,9 @@ public class NewsService implements by.epam.store.service.NewsService {
                 String info = parameters.get(RequestParameter.NEWS_INFO);
                 News news = new News(title, info, date);
                 newsDao.create(news);
-                return Optional.of(MessageKey.SUCCESSFUL_NEWS_ADD);
+                return MessageKey.SUCCESSFUL_NEWS_ADD;
             } else {
-                return Optional.of(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
+                return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
         } catch (DaoException e) {
             log.error(e);

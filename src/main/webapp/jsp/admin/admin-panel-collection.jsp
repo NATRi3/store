@@ -29,34 +29,7 @@
 </head>
 <body>
 <div class="container">
-    <c:if test="${requestScope.error_message!=null}">
-        <c:choose>
-            <c:when test="${requestScope.error_message.contains('successful')}">
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
+    <cus:message/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <div id="page-wrapper">
@@ -85,9 +58,9 @@
                                                     <input type='hidden' name='command' value='add_collection'>
                                                     <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
                                                     <label><fmt:message key='admin.name' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='name_collection' value="${requestScope.name_collection}" required/>
+                                                    <input maxlength="45" class='form-control' type='text' name='name_collection' value="${requestScope.name_collection}" required/>
                                                     <label><fmt:message key='admin.info' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='info_collection' value="${requestScope.info_collection}" required/>
+                                                    <input maxlength="500" class='form-control' type='text' name='info_collection' value="${requestScope.info_collection}" required/>
                                                 </div>
                                                 <button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>
                                                 <input type='submit' value='<fmt:message key='button.save_changes' bundle='${text}'/>' class='btn btn-primary'/>
@@ -146,47 +119,47 @@
                 $.each(res, function (idx,collection){
                     var newTBDiv = document.createElement("tr");
                     newTBDiv.setAttribute("class","odd gradeX");
-                    newTBDiv.setAttribute("id","product"+collection.id);
+                    newTBDiv.setAttribute("id","product"+collection.idCollection);
                     newTBDiv.innerHTML =
                         "<td>"+collection.name+"</td>"+
                         "<td>"+collection.info+"</td>"+
                         "<td class='center'>"+collection.date+"</td>"+
-                        "<td class='center' id='delete"+collection.id+"'>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#statusModal"+collection.id+"'>"+
-                        "<fmt:message key='admin.change_status' bundle='${text}'/>"+
+                        "<td class='center' id='delete"+collection.idCollection+"'>"+
+                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#statusModal"+collection.idCollection+"'>"+
+                        "<fmt:message key='admin.block' bundle='${text}'/>"+
                         "</button>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#changeModal"+collection.id+"'>"+
+                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#changeModal"+collection.idCollection+"'>"+
                         "<fmt:message key='admin.change' bundle='${text}'/>"+
                         "</button>"+
                         "</td>"+
-                        "<div class='modal fade' id='changeModal"+collection.id+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+                        "<div class='modal fade' id='changeModal"+collection.idCollection+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
                         "</div>"+
-                        "<div class='modal fade' id='statusModal"+collection.id+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+                        "<div class='modal fade' id='statusModal"+collection.idCollection+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
                         "</div>";
                     contentID.appendChild(newTBDiv);
                     var newForm = document.createElement('form');
-                    newForm.setAttribute("name","productForm"+collection.id+"");
+                    newForm.setAttribute("name","productForm"+collection.idCollection+"");
                     newForm.setAttribute("action","${pageContext.request.contextPath}/controller")
                     newForm.setAttribute("method","POST");
                     newForm.innerHTML =
                         "<div class='modal-dialog' role='document'>"+
-                        "<div class='modal-content' id='forForm"+collection.id+"'>"+
+                        "<div class='modal-content' id='forForm"+collection.idCollection+"'>"+
                         "<div class='modal-header'>"+
                         "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.menu_change_product' bundle='${text}'/></h5>"+
                         "</div>"+
                         "<div class='modal-body'>"+
-                        "<input type='hidden' name='command' value='change_product'>"+
-                        "<input type='hidden' name='id_product' value='"+collection.id+"'>"+
+                        "<input type='hidden' name='command' value='change_collection'>"+
+                        "<input type='hidden' name='id_collection' value='"+collection.idCollection+"'>"+
                         "<label>"+collection.name+"</label><br>"+
                         "<input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>"+
-                        "<label><fmt:message key='admin.info' bundle='${text}'/></label><input data-toggle='tooltip' title='<fmt:message key='toggle.products_info' bundle='${text}'/>' class='form-control' aria-label='INFO' type='text' name='info_product' value='"+collection.info+"'/>"+
-                        "<label><fmt:message key='admin.price' bundle='${text}'/></label><input data-toggle='tooltip' title='<fmt:message key='toggle.products_price' bundle='${text}'/>' class='form-control' aria-label='PRICE' type='text' name='price_product' value='"+collection.price+"'/>"+
+                        "<label><fmt:message key='admin.info' bundle='${text}'/></label>"+
+                        "<input maxlength='500' data-toggle='tooltip' title='<fmt:message key='toggle.collection_info' bundle='${text}'/>' class='form-control' aria-label='INFO' type='text' name='info_collection' value='"+collection.info+"'/>"+
                         "</div>"+
                         "<button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>"+
                         "<input type='submit' value='<fmt:message key='button.save_changes' bundle='${text}'/>' class='btn btn-primary'/>"+
                         "</div>"+
                         "</div>";
-                    document.getElementById("changeModal"+collection.id).appendChild(newForm);
+                    document.getElementById("changeModal"+collection.idCollection).appendChild(newForm);
                     var newFormStatus = document.createElement('div');
                     newFormStatus.setAttribute("class","modal-dialog");
                     newFormStatus.setAttribute("role","document");
@@ -197,38 +170,25 @@
                             "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change_status' bundle='${text}'/> "+collection.name+"</h5>"+
                             "</div>"+
                             "<div class='modal-body'>"+
-                            "<button class='btn btn-primary' data-dismiss='modal' onclick='nonactiveProduct("+collection.id+")' ><fmt:message key='admin.nonactive' bundle='${text}'/></button>"+
-                            "<button class='btn btn-primary' data-dismiss='modal' onclick='blockProduct("+collection.id+")'><fmt:message key='admin.block' bundle='${text}'/></button>"+
-                            "</div>"+
+                            "<fmt:message key="admin.block_text" bundle="${text}"/> "+
+                                "</div>"+
+                            "<button class='btn btn-primary' data-dismiss='modal' onclick='blockProduct("+collection.idCollection+")'><fmt:message key='admin.block' bundle='${text}'/></button>"+
                             "<button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>"+
                             "</div>";
                     }else {
-                        if(collection.status==='BLOCKED'){
-                            newFormStatus.innerHTML =
-                                "<div class='modal-content' >"+
-                                "<div class='modal-header'>"+
-                                "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change_status' bundle='${text}'/> "+collection.name+"</h5>"+
-                                "</div>"+
-                                "<div class='modal-body'>"+
-                                "<button class='btn btn-primary' data-dismiss='modal' onclick='unblockProduct("+collection.id+")'><fmt:message key='admin.unblock' bundle='${text}'/></button>"+
-                                "</div>"+
-                                "<button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>"+
-                                "</div>";
-                        } else {
-                            newFormStatus.innerHTML =
-                                "<div class='modal-content' >"+
-                                "<div class='modal-header'>"+
-                                "<h5 class='modal-title' id='exampleModalLabel'>Change Status "+collection.name+"</h5>"+
-                                "</div>"+
-                                "<div class='modal-body'>"+
-                                "<button class='btn btn-primary' data-dismiss='modal' onclick='activeProduct("+collection.id+")' ><fmt:message key='admin.active' bundle='${text}'/></button>"+
-                                "<button class='btn btn-primary' data-dismiss='modal' onclick='blockProduct("+collection.id+")'><fmt:message key='admin.block' bundle='${text}'/></button>"+
-                                "</div>"+
-                                "<button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>"+
-                                "</div>";
-                        }
+                        newFormStatus.innerHTML =
+                            "<div class='modal-content' >"+
+                            "<div class='modal-header'>"+
+                            "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change_status' bundle='${text}'/> "+collection.name+"</h5>"+
+                            "</div>"+
+                            "<div class='modal-body'>"+
+                            "<fmt:message key="admin.unblock_text" bundle="${text}"/> "+
+                            "</div>"+
+                            "<button class='btn btn-primary' data-dismiss='modal' onclick='unblockProduct("+collection.idCollection+")'><fmt:message key='admin.unblock' bundle='${text}'/></button>"+
+                            "<button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>"+
+                            "</div>";
                     }
-                    document.getElementById("statusModal"+collection.id).appendChild(newFormStatus);
+                    document.getElementById("statusModal"+collection.idCollection).appendChild(newFormStatus);
                 });
             },
             statusCode:{
@@ -250,7 +210,8 @@
             type: 'POST',
             data: "command=block_collection&id_collection="+product,
             statusCode:{
-                200: function (){
+                200: function (message){
+                    viewMessage(message);
                     getListCollection(0,0);
                 },
                 402: function (){
@@ -271,7 +232,8 @@
             type: 'POST',
             data: "command=unblock_collection&id_collection="+product,
             statusCode:{
-                200: function (){
+                200: function (message){
+                    viewMessage(message);
                     getListCollection(0,0);
                 },
                 402: function (){
@@ -286,6 +248,21 @@
             }
         })
     }
+    function viewMessage(text){
+        var newMessage = document.createElement("div");
+        newMessage.setAttribute("class","message");
+        newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+        newMessage.innerHTML =
+            "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+            "<br>"+
+            text+
+            "<br>"+
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+            "<span aria-hidden='true''>×</span>"+
+            "</button>"+
+            "</div>";
+        document.body.appendChild(newMessage);
+    }
     $(document).ready ( function(){
         getListCollection();
     });
@@ -298,6 +275,7 @@
         padding: 15px;
         font-size: 20px;
     }
+
 </style>
 <script>
     $(document).ready(function(){

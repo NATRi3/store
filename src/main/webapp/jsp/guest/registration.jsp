@@ -47,18 +47,18 @@
                             </c:when>
                             </c:choose>
                             <input type="hidden" name="command" value="registration"/>
-                            <input type="text" name="name" required
+                            <input maxlength="45" type="text" name="name" required
                                    value="${requestScope.name}"
                                    placeholder="<fmt:message bundle="${text}" key="registration.name"/>">
-                            <input data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>"
+                            <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>"
                                    value="${requestScope.email}"
                                    type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
                                    placeholder="<fmt:message bundle="${text}" key="registration.email"/>">
-                            <input data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
+                            <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
                                    value="${requestScope.password}"
                                    type="password" name="password"
                                    placeholder="<fmt:message bundle="${text}" key="registration.password"/>" required>
-                            <input type="password" name="repeat_password"
+                            <input maxlength="45" type="password" name="repeat_password"
                                    value="${requestScope.repeat_password}"
                                    placeholder="<fmt:message bundle="${text}" key="registration.repeat"/>"/>
                             <input type="submit" value="<fmt:message bundle="${text}" key="registration.submitregistration"/>" required>

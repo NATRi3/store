@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
@@ -23,11 +24,11 @@ public class AddAmountProductToCartCommand implements Command {
     private final static Logger log = LogManager.getLogger(AddAmountProductToCartCommand.class);
     private static final ProductService productService = ServiceCreator.getInstance().getProductService();
     @Override
-    public String execute(HttpServletRequest request) {
-        String page;
+    public Router execute(HttpServletRequest request) {
         String idStr = request.getParameter(RequestParameter.ID_PRODUCT);
         String amount = request.getParameter(RequestParameter.PRODUCT_AMOUNT);
         HttpSession session = request.getSession();
+        String page = String.valueOf(session.getAttribute(SessionAttribute.PAGE));
         Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
         try {
             if(NumberValidator.isNumberValid(amount)) {
@@ -36,25 +37,21 @@ public class AddAmountProductToCartCommand implements Command {
                     if (optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
                         cart.addProduct(optionalProduct.get(), Integer.parseInt(amount));
                         session.setAttribute(SessionAttribute.CART, cart);
-                        page = String.valueOf(session.getAttribute(SessionAttribute.PAGE));
                         request.setAttribute(RequestParameter.MESSAGE, MessageKey.SUCCESSFUL_ADD_TO_CART);
                     } else {
                         cart.deleteProduct(optionalProduct.get());
-                        page = String.valueOf(session.getAttribute(SessionAttribute.PAGE));
                         request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_PRODUCT_NOT_ACTIVE);
                     }
                 } else {
-                    page = String.valueOf(session.getAttribute(SessionAttribute.PAGE));
                     request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UNKNOWN_PRODUCT);
                 }
             } else {
-                page = String.valueOf(session.getAttribute(SessionAttribute.PAGE));
                 request.setAttribute(RequestParameter.MESSAGE,MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
         } catch (ServiceException e) {
             log.error(e);
             page = PagePath.PAGE_500;
         }
-        return page;
+        return Router.redirectTo(page);
     }
 }

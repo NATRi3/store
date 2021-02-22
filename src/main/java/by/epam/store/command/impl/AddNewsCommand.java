@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.NewsService;
 import by.epam.store.util.PagePath;
@@ -18,20 +19,20 @@ public class AddNewsCommand implements Command {
     private final static Logger log = LogManager.getLogger(AddNewsCommand.class);
     private static final NewsService newsService = ServiceCreator.getInstance().getNewsService();
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(RequestParameter.NEWS_INFO,request.getParameter(RequestParameter.NEWS_INFO));
         parameters.put(RequestParameter.NEWS_TITLE,request.getParameter(RequestParameter.NEWS_TITLE));
         try{
-            Optional<String> optionalMessage = newsService.createNews(parameters);
-            optionalMessage.ifPresent(s -> request.setAttribute(RequestParameter.MESSAGE,s));
+            String message = newsService.createNews(parameters);
+            request.setAttribute(RequestParameter.MESSAGE,message);
             for(Map.Entry<String,String> entry: parameters.entrySet()){
                 request.setAttribute(entry.getKey(),entry.getValue());
             }
-            return PagePath.ADMIN_PANEL_NEWS;
+            return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS);
         } catch (ServiceException e) {
             log.error(e);
-            return PagePath.PAGE_500;
+            return Router.redirectTo(PagePath.PAGE_500);
         }
     }
 }

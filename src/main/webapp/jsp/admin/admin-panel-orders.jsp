@@ -29,34 +29,7 @@
 </head>
 <body>
 <div class="container">
-    <c:if test="${requestScope.error_message!=null}">
-        <c:choose>
-            <c:when test="${requestScope.error_message.contains('successful')}">
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
+    <cus:message/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <br>
@@ -75,36 +48,27 @@
                                 <label>
                                     <fmt:message key='admin.sorting_type' bundle='${text}'/>
                                     <select onchange="changeSorting(this.value)" name="typeSort" size=1>
-                                        <option value="title"><fmt:message key='sort.title' bundle='${text}'/> </option>
-                                        <option value="title DESC"><fmt:message key='sort.title_desc' bundle='${text}'/></option>
+                                        <option value="price"><fmt:message key='sort.price' bundle='${text}'/> </option>
+                                        <option value="price DESC"><fmt:message key='sort.price_desc' bundle='${text}'/></option>
                                         <option value="date DESC"><fmt:message key='sort.date_desc' bundle='${text}'/></option>
                                         <option value="date"><fmt:message key='sort.date' bundle='${text}'/></option>
                                     </select>
                                 </label>
                                 <label>
                                     <select onchange="changeStatus(this.value)" name="typeStatus" size=1>
-                                        <option value="ACTIVE"><fmt:message key='sort.active' bundle='${text}'/></option>
-                                        <option value="BLOCKED"><fmt:message key='sort.blocked' bundle='${text}'/></option>
-                                        <option value="NONACTIVE"><fmt:message key='sort.nonactive' bundle='${text}'/></option>
+                                        <option value="WAIT"><fmt:message key='sort.wait' bundle='${text}'/></option>
+                                        <option value="COMPLETED"><fmt:message key='sort.complited' bundle='${text}'/></option>
+                                        <option value="INPROGRESS"><fmt:message key='sort.inprodress' bundle='${text}'/></option>
+                                        <option value="DISLINE"><fmt:message key='sort.disline' bundle='${text}'/></option>
                                     </select>
                                 </label>
                             </div>
+                            <div id="CONTENT">
+
+                            </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                        <tr>
-                                            <th><fmt:message key='admin.image' bundle='${text}'/></th>
-                                            <th><fmt:message key='admin.title' bundle='${text}'/></th>
-                                            <th><fmt:message key='admin.info' bundle='${text}'/></th>
-                                            <th><fmt:message key='admin.date' bundle='${text}'/></th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="table">
 
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -122,15 +86,20 @@
         sorting = sort;
         getListNews(0);
     }
+    let status = 'WAIT';
+    function changeStatus(newStatus){
+        status = newStatus;
+        getListNews(0);
+    }
     function getListNews(begin){
         $.ajax({
             url: "${pageContext.request.contextPath}/async?" +
-                "command=get_list_news&type_sort="+sorting+
-                "&begin_pagination="+begin,
+                "command=get_list_orders&type_sort="+sorting+
+                "&begin_pagination="+begin+"&type_status="+status,
             type: 'GET',
             dataType: 'json',
             success: function (res){
-                var contentID = document.getElementById("table");
+                var contentID = document.getElementById("CONTENT");
                 contentID.innerHTML = "";
                 if(amounts>=10) {
                     var previous = document.createElement("button");
@@ -151,75 +120,40 @@
                     newTBDiv.setAttribute("class","odd gradeX");
                     newTBDiv.setAttribute("id","news"+news.idNews);
                     newTBDiv.innerHTML =
-                        "<td>"+
-                        "<div class='profile-img'>"+
-                        "<img class='img-thumbnail' width='100' height='100' id='accountImg' alt=''"+
-                        "src='"+news.imageName+"'/>"+
-                        "<form name='uploadForm"+news.idNews+"'"+
-                        "action='${pageContext.request.contextPath}/controller?command=change_news_image&id_news="+news.idNews+"&ctoken=${sessionScope.stoken}'"+
-                        "method='post' enctype='multipart/form-data'>"+
-                        "<input class='btn btn-primary' type='file' name='file' onchange='document.uploadForm"+news.idNews+".submit()'/>"+
-                        "</form>"+
-                        "</div>"+
-                        "<td>"+news.title+"</td>"+
-                        "<td>"+news.info+"</td>"+
-                        "<td>"+news.date+"</td>"+
-                        "<td class='center' id='delete"+news.idNews+"'>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#statusModal"+news.idNews+"'>"+
-                        "<fmt:message key='admin.change_status' bundle='${text}'/>"+
+                        "<div class='card-header' id='heading"+order.id+"'>"+
+                        "<h5 class='mb-0'>"+
+                        "<button class='btn btn-link' data-toggle='collapse"+order.id+"' data-target='#collapse"+order.id+"'  aria-expanded='true' aria-controls='collapse"+order.id+"'>"+
+                        order.price + order.address + order.phone +
                         "</button>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#changeModal"+news.idNews+"'>"+
-                        "<fmt:message key='admin.change' bundle='${text}'/>"+
-                        "</button>"+
-                        "</td>"+
-                        "<div class='modal fade' id='changeModal"+news.idNews+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+                        "</h5>"+
                         "</div>"+
-                        "<div class='modal fade' id='statusModal"+news.idNews+"' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+                        "<div id='collapse"+order.id+"' class='collapse show' aria-labelledby='heading"+order.id+"' data-parent='#accordion'>"+
+                        "<div class='card-body'>"+
+                        "<table class='table'>"+
+                        "<thead>"+
+                        "<tr>"+
+                        "<th scope='col'></th>"+
+                        "<th scope='col'>ProductName</th>"+
+                        "<th scope='col'>ProductPrice</th>"+
+                        "<th scope='col'>ProductAmount</th>"+
+                        "</tr>"+
+                        "</thead>"+
+                        "<tbody id='order"+order.id+"Products'>"+
+
+                        "</tbody>"+
+                        "</table>"+
+                        "</div>"+
                         "</div>";
                     contentID.appendChild(newTBDiv);
-                    var newForm = document.createElement('form');
-                    newForm.setAttribute("name","productForm"+news.idNews+"");
-                    newForm.setAttribute("action","${pageContext.request.contextPath}/controller")
-                    newForm.setAttribute("method","POST");
-                    newForm.innerHTML =
-                        "<div class='modal-dialog' role='document'>"+
-                        "<div class='modal-content' id='forForm"+news.idNews+"'>"+
-                        "<div class='modal-header'>"+
-                        "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change' bundle='${text}'/>"+news.title+"</h5>"+
-                        "</div>"+
-                        "<div class='modal-body'>"+
-                        "<input type='hidden' name='command' value='change_news'>"+
-                        "<input type='hidden' name='id_news' value='"+news.idNews+"'>"+
-                        "<label>"+news.title+"</label><br>"+
-                        "<input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>"+
-                        "<label><fmt:message key='admin.title' bundle='${text}'/></label><input class='form-control' aria-label='TITLE' type='text' name='news_title' value='"+news.title+"'/>"+
-                        "<label><fmt:message key='admin.info' bundle='${text}'/></label><input class='form-control' aria-label='INFO' type='text' name='news_info' value='"+news.info+"'/>"+
-                        "</div>"+
-                        "<button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>"+
-                        "<input type='submit' value='<fmt:message key='button.save_changes' bundle='${text}'/>' class='btn btn-primary'/>"+
-                        "</div>"+
-                        "</div>"+
-                        "</div>";
-                    document.getElementById("changeModal"+news.idNews).appendChild(newForm);
-                    var newFormStatus = document.createElement('form');
-                    newFormStatus.setAttribute("name","productForm"+news.idNews+"");
-                    newFormStatus.setAttribute("action","${pageContext.request.contextPath}/controller")
-                    newFormStatus.setAttribute("method","POST");
-                    newFormStatus.innerHTML =
-                        "<div class='modal-dialog' role='document'>"+
-                        "<div class='modal-content' >"+
-                        "<div class='modal-header'>"+
-                        "<h5 class='modal-title' id='exampleModalLabel'><fmt:message key='admin.change_status' bundle='${text}'/> "+news.title+"</h5>"+
-                        "</div>"+
-                        "<div class='modal-body'>"+
-                        "<input type='hidden' name='command' value='delete_news'>"+
-                        "<input type='hidden' name='ctoken' value='${sessionScope.stoken}'>"+
-                        "<input type='hidden' name='id_news' value='"+news.idNews+"'>"+
-                        "<button class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.cancel' bundle='${text}'/></button>"+
-                        "<input class='btn btn-primary' type='submit' name='delete' value='<fmt:message key='button.delete' bundle='${text}'/>'>"+
-                        "</div>"+
-                        "</div>";
-                    document.getElementById("statusModal"+news.idNews).appendChild(newFormStatus);
+                    for(var i = 0; i<order.product.length;i++){
+                        var divElement = document.createElement("tr");
+                        divElement.innerHTML =
+                            "<td scope='row'><img width='50' height='50' src='"+order.product[i].imageName+"' </td>"+
+                            "<td><a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+order.product[i].id+"'>"+order.product[i].name+"</a></td>"+
+                            "<td>"+order.product[i].price+"</td>"+
+                            "<td>"+order.product[i].amount+"</td>";
+                        document.getElementById("order"+order.id+"Products").appendChild(divElement);
+                    }
                     amounts = begin;
                 });
             },

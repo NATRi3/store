@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.entity.Product;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
@@ -17,19 +18,19 @@ public class RedirectToSingleProductCommand implements Command {
     private final static Logger log = LogManager.getLogger(RedirectToSingleProductCommand.class);
     private static final ProductService productService = ServiceCreator.getInstance().getProductService();
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         String id = request.getParameter(RequestParameter.ID_PRODUCT);
         try {
             Optional<Product> optionalProduct = productService.findProductById(id);
             if(!optionalProduct.isPresent()){
-                return PagePath.PAGE_404;
+                return Router.redirectTo(PagePath.PAGE_404);
             }
             optionalProduct.ifPresent(product ->request.setAttribute(RequestParameter.PRODUCT,product));
-            return PagePath.SINGLE_PRODUCT;
+            return Router.forwardTo(PagePath.SINGLE_PRODUCT);
         } catch (ServiceException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE,e.getMessage());
-            return PagePath.PAGE_500;
+            return Router.redirectTo(PagePath.PAGE_500);
         }
     }
 }

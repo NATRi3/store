@@ -58,28 +58,27 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <form method="post" action="${pageContext.request.contextPath}/controller">
                             <div class="table-responsive mb-2">
                                 <table class="table table-sm table-borderless">
                                     <tbody>
                                     <tr>
                                         <td class="pl-0">
                                             <div class="def-number-input number-input safari_only mb-0">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus">
-                                                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> <fmt:message key="button.down" bundle="${text}"/>
-                                                </button>
-                                                <input class="quantity" min="0" name="quantity" value="1" type="number">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus">
-                                                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> <fmt:message key="button.up" bundle="${text}"/>
-                                                </button>
+                                                <input type="hidden" name="id_product" value="${requestScope.product.id}">
+                                                <input type="hidden" name="command" value="add_amount_product_to_cart">
+                                                <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
+                                                <input class="quantity" min="0" name="amount_product" value="1" type="number">
                                             </div>
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <button type="button" class="btn btn-light btn-md mr-1 mb-2 waves-effect waves-light">
+                            <button type="submit" class="btn btn-light btn-md mr-1 mb-2 waves-effect waves-light">
                                 <fmt:message key="button.add_to_cart" bundle="${text}"/>
                             </button>
+                            </form>
                         </div>
                     </div>
                         <div class="col-md-6 col-xs-12 col-md-offset-3">
@@ -87,8 +86,8 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">//FEEDBACK</h3>
                                 </div>
-                                <form action="${pageContext.request.contextPath}/controller" method="post">
-                                    <div class="panel-body">
+                                <div class="panel-body">
+                                    <form action="${pageContext.request.contextPath}/controller" method="post">
                                         <div class="form-group">
                                             <input type="hidden" name="command" value="create_feedback">
                                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
@@ -117,12 +116,12 @@
                                             </button>
                                         </div>
                                         </div>
-                                        <hr class="margin-bottom-10">
-                                        <ul id="lastComment" class="list-group list-group-dividered list-group-full">
+                                    </form>
+                                    <hr class="margin-bottom-10">
+                                    <ul id="lastComment" class="list-group list-group-dividered list-group-full">
 
-                                        </ul>
-                                    </div>
-                                </form>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     <div class="col-md-12 ">
@@ -210,17 +209,22 @@
                 } else {
                     $.each(res, function (idx,feedback){
                         var newTBDiv = document.createElement("li");
+                        newTBDiv.setAttribute("id","feedbackRemove"+feedback.id);
                         newTBDiv.innerHTML =
-                            "<div class='media' id='feedbackRemove'"+feedback.id+">"+
+                            "<div class='media'>"+
                                 "<div class='media-left'>"+
                                 "<a class='avatar avatar-online' href='javascript:void(0)'>"+
-                                    "<img src='${pageContext.request.contextPath}/async?command=get_image&image_name="+feedback.user.imageName+"' alt=''>"+
+                                    "<img src='"+feedback.user.imageName+"' alt=''>"+
                                 "</a>"+
                                 "</div>"+
                                 "<div class='media-body' id='feedback'"+feedback.id+">"+
                                 "<small class='text-muted pull-right'>"+feedback.date+"</small>"+
                                 "<h4 class='media-heading'>"+feedback.user.name+"("+feedback.evaluation+"/5)"+"</h4>"+
-                                "<div>"+feedback.feedback+"</div>"+
+                                "<div>"+feedback.feedback+
+                                "<cus:access access="ADMIN">"+
+                                "<button onclick='deleteFeedback("+feedback.id+")' >DELETE</button>"+
+                                "</cus:access>"+
+                                "</div>"+
                                 "</div>"+
                             "</div>";
                         contentID.appendChild(newTBDiv);
@@ -253,8 +257,9 @@
             type: 'POST',
             data: "command=delete_feedback&id_feedback="+id,
             statusCode:{
-                200: function (){
+                200: function (message){
                     document.getElementById("feedbackRemove"+id).remove();
+                    viewMessage(message);
                 },
                 402: function (){
                     window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
@@ -267,6 +272,33 @@
                 }
             }
         })
+    }
+    function viewMessage(text){
+        var newMessage = document.createElement("div");
+        newMessage.setAttribute("class","message");
+        newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+        if (text.includes('success')||text.includes('успешн')){
+            newMessage.innerHTML =
+                "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>" +
+                "<br>" +
+                text +
+                "<br>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                "<span aria-hidden='true''>×</span>" +
+                "</button>" +
+                "</div>";
+        } else {
+            newMessage.innerHTML =
+                "<div id='my-alert-error' class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+                "<br>" +
+                text +
+                "<br>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                "<span aria-hidden='true''>×</span>" +
+                "</button>" +
+                "</div>";
+        }
+        document.body.appendChild(newMessage);
     }
     jQuery(document).ready(function($){
 

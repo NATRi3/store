@@ -4,13 +4,11 @@ import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.util.FileUtil;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +35,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     }
 
     @Override
-    public Optional<String> saveProduct(Map<String, String> parameters) throws ServiceException {
+    public String saveProduct(Map<String, String> parameters) throws ServiceException {
         try {
             if(FormValidator.isFormValid(parameters)) {
                 long idCollection = Long.parseLong(parameters.get(RequestParameter.ID_COLLECTION));
@@ -46,9 +44,9 @@ public class ProductService implements by.epam.store.service.ProductService {
                 String info = parameters.get(RequestParameter.INFO_PRODUCT);
                 Product product = new Product(name, info, price, idCollection);
                 productDao.create(product);
-                return Optional.of(MessageKey.SUCCESSFUL_PRODUCT_ADD);
+                return MessageKey.SUCCESSFUL_PRODUCT_ADD;
             } else {
-                return Optional.of(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
+                return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
         } catch (DaoException e) {
             log.error(e);

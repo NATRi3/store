@@ -74,7 +74,6 @@
         </ul>
         <form class="navbar-nav" name="submitForm" method="GET" action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="change_locale">
-            <input type="hidden" name="currentPage" value="${pageContext.request.requestURI}">
             <input type="hidden" name="newLocale" value="<fmt:message key="language.value" bundle="${text}"/>">
             <A class="nav-link" href="javascript:document.submitForm.submit()">
                 <fmt:message key="language.submit" bundle="${text}"/>
@@ -92,7 +91,7 @@
     .search_result{
         top: 55px;
         position: fixed;
-        left: 1120px;
+        left: 1150px;
         z-index: 10;
         background: #FFF;
         border: 1px #ccc solid;

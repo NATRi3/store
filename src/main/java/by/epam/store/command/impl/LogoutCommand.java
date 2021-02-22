@@ -1,6 +1,7 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
+import by.epam.store.controller.Router;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
@@ -12,9 +13,9 @@ import javax.servlet.http.HttpSession;
 public class LogoutCommand implements Command {
     public static final Logger logger = LogManager.getLogger(LogoutCommand.class);
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
-        return PagePath.LOGIN;
+        return Router.redirectTo(PagePath.LOGIN);
     }
 }

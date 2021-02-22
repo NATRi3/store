@@ -29,34 +29,7 @@
 </head>
 <body>
 <div class="container">
-    <c:if test="${requestScope.error_message!=null}">
-        <c:choose>
-            <c:when test="${requestScope.error_message.contains('successful')}">
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="messages" style="position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;">
-                    <div id="my-alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <br>
-                        <fmt:message key="${requestScope.error_message}" bundle="${error}"/>
-                        <br>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
+    <cus:message/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <div id="page-wrapper">
@@ -85,11 +58,11 @@
                                                     <input type='hidden' name='command' value='add_product'>
                                                     <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
                                                     <label><fmt:message key='admin.name' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='name_product' value="${requestScope.name_product}" required/>
+                                                    <input maxlength="45" class='form-control' type='text' name='name_product' value="${requestScope.name_product}" required/>
                                                     <label><fmt:message key='admin.info' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='info_product' value="${requestScope.info_product}" required/>
+                                                    <input maxlength="1000" class='form-control' type='text' name='info_product' value="${requestScope.info_product}" required/>
                                                     <label><fmt:message key='admin.price' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='price_product' value="${requestScope.price_product}" required pattern="\d*+(\.\d{2})?"/>
+                                                    <input maxlength="17" class='form-control' type='text' name='price_product' value="${requestScope.price_product}" required pattern="\d*+(\.\d{2})?"/>
                                                     <label><fmt:message key='admin.collection' bundle='${text}'/></label>
                                                     <select name="id_collection" id="selectorCollection">
 
@@ -330,19 +303,7 @@
             dataType: "text",
             statusCode:{
                 200: function (message){
-                    var newMessage = document.createElement("div");
-                    newMessage.setAttribute("class","message");
-                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
-                    newMessage.innerHTML =
-                            "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
-                            "<br>"+
-                            message+
-                            "<br>"+
-                            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
-                                 "<span aria-hidden='true''>×</span>"+
-                            "</button>"+
-                            "</div>";
-                    document.body.appendChild(newMessage);
+                    viewMessage(message);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -364,19 +325,7 @@
             data: "command=unblock_product&id_product="+product,
             statusCode:{
                 200: function (message){
-                    var newMessage = document.createElement("div");
-                    newMessage.setAttribute("class","message");
-                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
-                    newMessage.innerHTML =
-                        "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
-                        "<br>"+
-                        message+
-                        "<br>"+
-                        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
-                        "<span aria-hidden='true''>×</span>"+
-                        "</button>"+
-                        "</div>";
-                    document.body.appendChild(newMessage);
+                    viewMessage(message);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -398,19 +347,7 @@
             data: "command=deactivate_product&id_product="+product,
             statusCode:{
                 200: function (message){
-                    var newMessage = document.createElement("div");
-                    newMessage.setAttribute("class","message");
-                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
-                    newMessage.innerHTML =
-                        "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
-                        "<br>"+
-                        message+
-                        "<br>"+
-                        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
-                        "<span aria-hidden='true''>×</span>"+
-                        "</button>"+
-                        "</div>";
-                    document.body.appendChild(newMessage);
+                    viewMessage(message);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -433,19 +370,7 @@
             data: "command=activate_product&id_product="+product,
             statusCode:{
                 200: function (message){
-                    var newMessage = document.createElement("div");
-                    newMessage.setAttribute("class","message");
-                    newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
-                    newMessage.innerHTML =
-                        "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
-                        "<br>"+
-                        message+
-                        "<br>"+
-                        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
-                        "<span aria-hidden='true''>×</span>"+
-                        "</button>"+
-                        "</div>";
-                    document.body.appendChild(newMessage);
+                   viewMessage(message);
                     getListProduct(0,0);
                 },
                 402: function (){
@@ -461,17 +386,19 @@
         })
     }
     function viewMessage(text){
-        var newDivMessage = document.createElement("div");
-        newDivMessage.setAttribute("class","messages");
-        newDivMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
-        newDivMessage.innerHTML =
-            "<div id='my-alert-error' class='alert alert-danger alert-dismissible fade show' role='alert'>"+
-            "<br>"+ text + "<br>"+
+        var newMessage = document.createElement("div");
+        newMessage.setAttribute("class","message");
+        newMessage.setAttribute("style","position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;");
+        newMessage.innerHTML =
+            "<div id='my-alert-success' class='alert alert-success alert-dismissible fade show' role='alert'>"+
+            "<br>"+
+            text+
+            "<br>"+
             "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
-            "<span aria-hidden='true'>×</span>"+
-        "</button>"+
-        "</div>";
-        document.body.appendChild(newDivMessage);
+            "<span aria-hidden='true''>×</span>"+
+            "</button>"+
+            "</div>";
+        document.body.appendChild(newMessage);
     }
     $(document).ready ( function(){
         getListProduct(0,0);

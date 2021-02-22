@@ -41,6 +41,7 @@ public class RequestParameter {
     public static final String INFO_COLLECTION = "info_collection";
     public static final String NAME_COLLECTION = "name_collection";
     public static final String ID_USER = "id_user";
+    public static final String ID_FEEDBACK = "id_feedback";
 
 
     private RequestParameter(){ }

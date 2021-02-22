@@ -10,7 +10,7 @@
         <tag-class>by.epam.store.tag.AccessTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
-            <name>roleAccess</name>
+            <name>access</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

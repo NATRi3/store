@@ -16,4 +16,5 @@ public interface CollectionService {
     public List<ProductCollection> findAllProductCollections() throws ServiceException;
     Optional<String> createCollection(Map<String, String> parameters) throws ServiceException;
     String changeStatus(String id, TypeStatus status) throws ServiceException;
+    String changeInfo(Map<String,String> parameters) throws ServiceException;
 }

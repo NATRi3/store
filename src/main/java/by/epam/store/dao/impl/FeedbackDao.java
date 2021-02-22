@@ -26,6 +26,8 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account WHERE id_product=?";
     private static final String SQL_SELECT_BY_ID =
             "SELECT id_feedback, feedback, evaluation, id_product, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account WHERE id_feedback=?";
+    private static final String SQL_DELETE_BY_ID =
+            "DELETE FROM l4tsmab3ywpoc8m0.feedback WHERE id_feedback=?";
     private static final String SQL_CREATE =
             "INSERT INTO feedback SET feedback=?, evaluation=?, id_product=?, id_account=?, date=?";
 
@@ -65,10 +67,11 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     }
 
     @Override
-    public Optional<Feedback> findEntityById(Long aLong) throws DaoException {
+    public Optional<Feedback> findEntityById(Long id) throws DaoException {
         Optional<Feedback> optionalFeedback = Optional.empty();
         try (Connection connection = connection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)){
+            statement.setLong(1,id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 optionalFeedback = getFeedbackFromResultSet(resultSet);
@@ -82,7 +85,15 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
 
     @Override
     public boolean delete(Long id) throws DaoException {
-        return false;
+        Optional<Feedback> optionalFeedback = Optional.empty();
+        try (Connection connection = connection();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)){
+            statement.setLong(1,id);
+            return 1==statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
+import by.epam.store.controller.Router;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.util.SessionAttribute;
@@ -15,17 +16,17 @@ import javax.swing.text.ChangedCharSetException;
 public class ChangeLocaleCommand implements Command {
     private final static Logger log = LogManager.getLogger(ChangeLocaleCommand.class);
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String newLocale = request.getParameter(RequestParameter.NEW_LOCALE);
         if(LocalValidator.isLocale(newLocale)) {
             session.setAttribute(SessionAttribute.LOCALE, newLocale);
-            String page = request.getParameter(RequestParameter.CURRENT_PAGE).replace(request.getContextPath(), "");
+            String page = (String) request.getSession().getAttribute(SessionAttribute.PAGE);
             log.info("Locale change");
-            return page;
+            return Router.redirectTo(page);
         } else {
             log.error("Local not found " + newLocale);
-            return PagePath.PAGE_404;
+            return Router.redirectTo(PagePath.PAGE_404);
         }
     }
 }

@@ -44,7 +44,7 @@
                             </c:if>
                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                             <input type="hidden" name="command" value="forgot_password"/>
-                            <input type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+                            <input data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>" maxlength="45" type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
                                    placeholder="<fmt:message bundle="${text}" key="forgot_password.email"/>">
                             <input type="submit" value=<fmt:message bundle="${text}" key="forgot_password.submit"/>>
                         </form>
@@ -58,4 +58,18 @@
     </div>
 </div>
 </body>
+<style>
+    input + .tooltip > .tooltip-inner {
+        border-right: 5px solid black;
+        background-color: rgba(0,0,0,0.13);
+        color: #FFFFFF;
+        padding: 15px;
+        font-size: 20px;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </html>

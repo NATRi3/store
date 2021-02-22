@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.command.ServiceCreator;
+import by.epam.store.controller.Router;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
@@ -21,7 +22,7 @@ public class CreateOrderCommand implements Command {
     private final static Logger log = LogManager.getLogger(CreateOrderCommand.class);
     private static final OrderService orderService = ServiceCreator.getInstance().getOrderService();
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
         Map<String,String> parameters = new HashMap<>();
         parameters.put(RequestParameter.PHONE,request.getParameter(RequestParameter.PHONE));
         parameters.put(RequestParameter.ADDRESS,request.getParameter(RequestParameter.ADDRESS));
@@ -34,10 +35,10 @@ public class CreateOrderCommand implements Command {
             for(Map.Entry<String,String> entry: parameters.entrySet()){
                 request.setAttribute(entry.getKey(),entry.getValue());
             }
-            return PagePath.CART;
+            return Router.forwardTo(PagePath.CART);
         } catch (ServiceException e) {
             log.error(e);
-            return PagePath.PAGE_500;
+            return Router.redirectTo(PagePath.PAGE_500);
         }
     }
 }
