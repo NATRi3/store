@@ -1,10 +1,10 @@
 package by.epam.store.entity;
 
-import lombok.Builder;
+
 
 import java.util.Date;
 import java.util.Objects;
-@Builder
+
 public class News {
     private long idNews;
     private String title;

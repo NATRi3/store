@@ -3,14 +3,14 @@ package by.epam.store.entity;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.util.HashMapAdapter;
 import com.google.gson.annotations.JsonAdapter;
-import lombok.AllArgsConstructor;
+
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-@AllArgsConstructor
+
 public class Order {
     private long id;
     private long idUser;

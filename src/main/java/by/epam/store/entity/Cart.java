@@ -1,11 +1,11 @@
 package by.epam.store.entity;
 
-import lombok.Builder;
+
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-@Builder
+
 public class Cart {
     private Map<Product,Integer> products;
     private int totalAmount;
