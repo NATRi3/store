@@ -23,7 +23,7 @@ public class DataBaseColumn {
     public static final String ID_PRODUCT = "id_products";
     public static final String PRODUCT_NAME = "name";
     public static final String PRODUCT_INFO = "info";
-    public static final String PRODUCT_STATUS = "status";
+    public static final String STATUS = "status";
     public static final String PRODUCT_PRICE = "price";
     public static final String PRODUCT_IMAGE = "image";
     public static final String PRODUCT_ID_COLLECTION = "id_collection";

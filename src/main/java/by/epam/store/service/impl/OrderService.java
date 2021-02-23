@@ -4,11 +4,15 @@ import by.epam.store.entity.Cart;
 import by.epam.store.entity.Order;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.User;
+import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
+import by.epam.store.service.TypeSort;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameter;
 import by.epam.store.validator.FormValidator;
+import by.epam.store.validator.NumberValidator;
+import by.epam.store.validator.TypeValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,6 +54,24 @@ public class OrderService implements by.epam.store.service.OrderService {
         try {
             List<Order> orders = orderDao.getUserOrders(id);
             return orders;
+        } catch (DaoException e){
+            log.error(e);
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Order> getOrderList(String begin, String sort, String status) throws ServiceException {
+        if(!NumberValidator.isNumberValid(begin)&&
+            !TypeValidator.isTypeOrderSort(sort)&&
+            !TypeValidator.isTypeOrderStatus(status)){
+            throw new ServiceException("Invalid params "+ begin + " " + sort + " " + status);
+        }
+        try {
+            int beginPagination = Integer.parseInt(begin);
+            TypeSort typeSort = TypeSort.valueOf(sort);
+            TypeStatus typeStatus = TypeStatus.valueOf(status);
+            return orderDao.getOrdersByStatusAndSort(beginPagination,typeSort,typeStatus);
         } catch (DaoException e){
             log.error(e);
             throw new ServiceException(e);

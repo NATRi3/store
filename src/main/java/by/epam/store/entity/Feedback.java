@@ -1,8 +1,10 @@
 package by.epam.store.entity;
 
+import lombok.Builder;
+
 import java.util.Date;
 import java.util.Objects;
-
+@Builder
 public class Feedback {
     private long id;
     private String feedback;

@@ -115,10 +115,10 @@
                     next.innerHTML = "<fmt:message key='button.next' bundle='${text}'/>";
                     contentID.appendChild(next);
                 }
-                $.each(res, function (idx,news){
+                $.each(res, function (idx,order){
                     var newTBDiv = document.createElement("tr");
                     newTBDiv.setAttribute("class","odd gradeX");
-                    newTBDiv.setAttribute("id","news"+news.idNews);
+                    newTBDiv.setAttribute("id","news"+order.idNews);
                     newTBDiv.innerHTML =
                         "<div class='card-header' id='heading"+order.id+"'>"+
                         "<h5 class='mb-0'>"+

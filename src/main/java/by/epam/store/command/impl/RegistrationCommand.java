@@ -22,7 +22,7 @@ public class RegistrationCommand implements Command {
     public Router execute(HttpServletRequest request) {
         Router page;
         Map<String ,String> parameters = new HashMap<>();
-        parameters.put(RequestParameter.NAME,request.getParameter(RequestParameter.NAME));
+        parameters.put(RequestParameter.NAME, request.getParameter(RequestParameter.NAME));
         parameters.put(RequestParameter.EMAIL, request.getParameter(RequestParameter.EMAIL));
         parameters.put(RequestParameter.PASSWORD, request.getParameter(RequestParameter.PASSWORD));
         parameters.put(RequestParameter.REPEAT_PASSWORD, request.getParameter(RequestParameter.REPEAT_PASSWORD));

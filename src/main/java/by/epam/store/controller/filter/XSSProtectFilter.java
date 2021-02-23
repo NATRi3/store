@@ -1,8 +1,10 @@
 package by.epam.store.controller.filter;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Map;
 
 public class XSSProtectFilter implements Filter {
     @Override
@@ -12,16 +14,18 @@ public class XSSProtectFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        Enumeration<String> enumeration = servletRequest.getAttributeNames();
-        while (enumeration.hasMoreElements()){
-            String parameterName = enumeration.nextElement();
-            String parameter = servletRequest.getParameter(parameterName);
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        RequestWrapper wrapper = new RequestWrapper(request);
+        Map<String, String[]> enumeration = wrapper.getParameterMap();
+        for (Map.Entry<String, String[]> entry: enumeration.entrySet()){
+            String parameter = entry.getValue()[0];
             if(parameter != null){
-                String newParameter = parameter.replaceAll("<", "&lt;").replaceAll(">","&gt;");
-                servletRequest.setAttribute(parameterName,newParameter);
+                String newParameter = parameter.replaceAll("<", "&lt;").replaceAll(">","&gt;").
+                        replaceAll("\"","&#34;").replaceAll("'","&#39;");
+                wrapper.setParameter(entry.getKey(),newParameter);
             }
         }
-        filterChain.doFilter(servletRequest,servletResponse);
+        filterChain.doFilter(wrapper,servletResponse);
     }
 
     @Override

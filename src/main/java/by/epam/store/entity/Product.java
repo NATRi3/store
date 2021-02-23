@@ -1,10 +1,11 @@
 package by.epam.store.entity;
 
 import by.epam.store.entity.type.TypeStatus;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-
+@Builder
 public class Product {
     private long id;
     private String name;

@@ -5,7 +5,6 @@ import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -154,7 +153,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
                 long id = resultSet.getLong(DataBaseColumn.ID_PRODUCT);
                 String productName = resultSet.getString(DataBaseColumn.PRODUCT_NAME);
                 String info = resultSet.getString(DataBaseColumn.PRODUCT_INFO);
-                TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.PRODUCT_STATUS));
+                TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.STATUS));
                 BigDecimal price = resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE);
                 String image = resultSet.getString(DataBaseColumn.PRODUCT_IMAGE);
                 long idCollection = resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION);
@@ -205,7 +204,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             long id = resultSet.getLong(DataBaseColumn.ID_PRODUCT);
             String name = resultSet.getString(DataBaseColumn.PRODUCT_NAME);
             String info = resultSet.getString(DataBaseColumn.PRODUCT_INFO);
-            TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.PRODUCT_STATUS));
+            TypeStatus status = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.STATUS));
             BigDecimal price = resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE);
             String image = resultSet.getString(DataBaseColumn.PRODUCT_IMAGE);
             long idCollection = resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION);

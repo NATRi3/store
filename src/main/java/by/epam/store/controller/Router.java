@@ -5,7 +5,11 @@ public class Router {
     private final boolean isRedirect;
 
     public static Router forwardTo(String page){
-        return new Router(page,false);
+        if(!page.contains("/controller")) {
+            return new Router(page, false);
+        } else {
+            return new Router(page, true);
+        }
     }
     public static Router redirectTo(String page){
         return new Router(page,true);

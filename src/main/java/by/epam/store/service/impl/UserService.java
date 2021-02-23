@@ -148,14 +148,13 @@ public class UserService implements by.epam.store.service.UserService {
             !TypeValidator.isTypeStatus(status.toUpperCase())||
             !TypeValidator.isTypeRole(role.toUpperCase())){
             log.error(role+status+begin);
-            throw new ServiceException();
+            throw new ServiceException("Invalid param");
         }
         try {
             TypeRole userRole = TypeRole.valueOf(role.toUpperCase());
             TypeStatus userStatus = TypeStatus.valueOf(status.toUpperCase());
             int beginPagination = Integer.parseInt(begin);
-            List<User> userList = userDao.findUserByRoleAndStatus(userRole,userStatus,beginPagination);
-            return userList;
+            return userDao.findUserByRoleAndStatus(userRole,userStatus,beginPagination);
         } catch (DaoException e){
             log.error(e);
             throw new ServiceException(e);

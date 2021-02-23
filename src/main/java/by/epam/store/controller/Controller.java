@@ -37,7 +37,7 @@ public class Controller extends HttpServlet {
         Router router = command.orElse(TypeCommand.ERROR_NOT_FOUND.get()).execute(request);
         setPageToSession(request,router.getPage());
         if (router.isRedirect()){
-            response.sendRedirect(router.getPage());
+            response.sendRedirect(request.getContextPath()+router.getPage());
         } else {
             RequestDispatcher dispatcher = request.getRequestDispatcher(router.getPage());
             dispatcher.forward(request, response);

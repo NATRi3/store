@@ -13,4 +13,5 @@ public interface OrderService {
     static final OrderDao orderDao = DaoCreator.getInstance().getOrderDao();
     String createOrder(Map<String, String> parameters, User user, Cart cart) throws ServiceException;
     List<Order> getUserOrders(long id) throws ServiceException;
+    List<Order> getOrderList(String begin, String sort, String status) throws ServiceException;
 }

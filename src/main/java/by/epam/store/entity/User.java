@@ -2,10 +2,12 @@ package by.epam.store.entity;
 
 import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
+import lombok.Builder;
+
 import java.util.Date;
 import java.util.Objects;
 
-
+@Builder
 public class User {
     private long id;
     private String email;

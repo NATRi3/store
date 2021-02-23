@@ -3,6 +3,7 @@ package by.epam.store.validator;
 import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.service.TypeSort;
+import com.google.gson.JsonArray;
 
 import java.util.Set;
 
@@ -17,6 +18,10 @@ public class TypeValidator {
             TypeRole.GUEST.toString(),TypeRole.MANAGER.toString());
     private static Set<String> typeCollectionStatus = Set.of(TypeStatus.ACTIVE.toString(),
             TypeStatus.BLOCKED.toString());
+    private static Set<String> typeOrderStatus = Set.of(TypeStatus.WAIT.toString(),TypeStatus.DECLINE.toString(),
+            TypeStatus.COMPLETED.toString(),TypeStatus.INPROGRESS.toString());
+    private static Set<String> typeOrderSort = Set.of(TypeSort.DATE.toString(),TypeSort.PRICE.toString(),
+            TypeSort.DATEDESC.toString(),TypeSort.PRICEDECS.toString());
 
     public static boolean isTypeProductSort(String sort){
         if(sort==null)return false;
@@ -39,5 +44,15 @@ public class TypeValidator {
     public static boolean isTypeCollectionStatus(String status) {
         if(status==null)return false;
         return typeCollectionStatus.contains(status.toUpperCase());
+    }
+
+    public static boolean isTypeOrderSort(String sort) {
+        if(sort==null) return false;
+        return typeOrderSort.contains(sort);
+    }
+
+    public static boolean isTypeOrderStatus(String status) {
+        if(status==null) return false;
+        return typeOrderStatus.contains(status);
     }
 }

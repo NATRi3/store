@@ -206,14 +206,15 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     }
 
     private User createUserFormResultSet(ResultSet resultSet) throws SQLException{
-        long idUser = resultSet.getInt(DataBaseColumn.ID_ACCOUNT);
-        String name = resultSet.getString(DataBaseColumn.ACCOUNT_NAME);
-        String email = resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL);
-        String image = resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE);
-        TypeStatus access = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS));
-        TypeRole role = TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE));
-        Date dateRegister = new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE));
-        return new User(idUser,email,role,name,image,access,dateRegister);
+        User user = new User();
+        user.setId(resultSet.getInt(DataBaseColumn.ID_ACCOUNT));
+        user.setName(resultSet.getString(DataBaseColumn.ACCOUNT_NAME));
+        user.setEmail(resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL));
+        user.setImageName(resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE));
+        user.setAccess(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS)));
+        user.setRole(TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE)));
+        user.setRegisterDate(new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE)));
+        return user;
     }
 
     private Connection getConnection() throws SQLException {
