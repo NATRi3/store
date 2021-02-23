@@ -32,15 +32,7 @@
     <cus:message/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
-        <br>
-        <div style="padding-top: 50px" class="col-lg-3">
-            <div id="collectionList" class="list-group">
-                <button class="list-group-item" onclick="getListProduct(0,0)">
-                    Показать все
-                </button>
-            </div>
-        </div>
-        <div  style="padding-top: 50px"  class="col-lg-9">
+        <div class="col-lg-12">
             <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -63,7 +55,12 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-            <div class="pagination" id="pagination">
+            <div id="collectionList" class="btn-group btn-lg btn-group-toggle">
+                <button class="btn btn-lg btn-block btn-secondary" onclick="getListProduct(0,0)">
+                    Показать все
+                </button>
+            </div>
+            <div class="btn-group btn-lg btn-group-toggle" id="pagination">
 
             </div>
             <div class="row" id="content">
@@ -84,9 +81,9 @@
                 var contentID = document.getElementById("collectionList");
                 $.each(res, function (idx,collection){
                     var newTBDiv = document.createElement("button");
-                    newTBDiv.setAttribute("class","list-group-item");
+                    newTBDiv.setAttribute("class","btn btn-lg btn-block btn-secondary")
                     newTBDiv.setAttribute("onclick","getListProduct(0,"+collection.idCollection+")");
-                    newTBDiv.innerHTML = collection.name+"("+collection.date+")";
+                    newTBDiv.innerHTML = collection.name;
                     contentID.appendChild(newTBDiv);
                 });
             }
@@ -138,9 +135,10 @@
                         "</div>" +
                         "<div class='middle'>"+
                         "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"+
-                        "<img height='300' src='"+product.imageName+"' alt='Sample'>"+
+                        "<img src='"+product.imageName+"' alt='Sample'>"+
                         "<div class='mask waves-effect waves-light'></div>"+
                         "</a>"+
+                        "</div>"+
                         "<div class='bottom'>" +
                         "<h5>" + product.price + "$</h5>" +
                         "<p class='card-text'><fmt:message key="admin.rating" bundle="${text}"/> : " + product.rating+ "</p>"+
@@ -148,7 +146,6 @@
                         "<fmt:message key='shop.add_to_cart' bundle='${text}'/>"+
                         "</button>"+
                         "</small>" +
-                        "</div>" +
                         "</div>";
                     contentID.appendChild(newTBDiv);
                 });
@@ -227,16 +224,13 @@
     });
 </script>
 <style>
-    .converse {
-        padding: 2px 10px;
-        border-radius: 20px;
-        text-transform: uppercase;
-        font-size: 14px;
-    }
     .middle {
-        margin-bottom: 40px;
+        margin: auto;
+        align-self: center;
+        flex: auto;
     }
     .middle img {
+        max-height: max-content;
         width: 100%;
     }
     .bottom {
@@ -275,8 +269,8 @@
         text-decoration: line-through;
     }
     .block {
-        margin: 20px;
-        border-radius: 4px;
+        margin: 10px auto 10px;
+        border-radius: 10px;
         width: 280px;
         min-height: 430px;
         background: #fff;
