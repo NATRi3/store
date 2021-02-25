@@ -22,10 +22,9 @@ public class GetListUsersByRoleAndStatus implements CommandAsync {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {
             String begin = request.getParameter(RequestParameter.BEGIN_PAGINATION);
-            String role = request.getParameter(RequestParameter.TYPE_ROLE);
             String status = request.getParameter(RequestParameter.TYPE_STATUS);
             try {
-                List<User> userList = userService.findUsersByRoleAndStatus(role, status, begin);
+                List<User> userList = userService.findUsersByRoleAndStatus(status, begin);
                 String json = new Gson().toJson(userList);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

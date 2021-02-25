@@ -29,7 +29,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     private static final String SQL_DELETE_USER ="DELETE FROM l4tsmab3ywpoc8m0.accounts WHERE email=? AND password=?";
     private static final String SQL_UPDATE = "UPDATE l4tsmab3ywpoc8m0.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
     public static final String SQL_UPDATE_PASSWORD ="UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
-    private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE role=? and access=?  LIMIT 10 OFFSET ?";
+    private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE access=?  LIMIT 10 OFFSET ?";
     private static final String SQL_SET_STATUS_FROM_TO = "UPDATE l4tsmab3ywpoc8m0.accounts SET access=? WHERE id_accounts=? and access=? LIMIT 1";
 
     @Override
@@ -164,12 +164,11 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     }
 
     @Override
-    public List<User> findUserByRoleAndStatus(TypeRole role, TypeStatus status, int begin) throws DaoException {
+    public List<User> findUserByRoleAndStatus( TypeStatus status, int begin) throws DaoException {
         try(Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ROLE_STATUS)) {
-            statement.setString(1,role.toString());
-            statement.setString(2,status.toString());
-            statement.setInt(3,begin);
+            statement.setString(1,status.toString());
+            statement.setInt(2,begin);
             ResultSet resultSet = statement.executeQuery();
             List<User> resultUserFromDB = new ArrayList<>();
             while (resultSet.next()){

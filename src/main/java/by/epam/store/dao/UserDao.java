@@ -21,7 +21,7 @@ public interface UserDao {
 
     void updatePassword(User user, String password) throws DaoException;
 
-    List<User> findUserByRoleAndStatus(TypeRole role, TypeStatus status, int begin) throws DaoException;
+    List<User> findUserByRoleAndStatus(TypeStatus status, int begin) throws DaoException;
 
     boolean changeStatus(long id, TypeStatus statusFrom, TypeStatus statusTo) throws DaoException;
 }

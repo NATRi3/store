@@ -19,11 +19,11 @@ import java.util.Date;
 public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     private final static Logger log = LogManager.getLogger(OrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    private static final String SQL_INSERT_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, address=?";
+    private static final String SQL_INSERT_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, address=?, date=?";
     private static final String SQL_INSERT_ORDER_PRODUCT = "INSERT INTO l4tsmab3ywpoc8m0.order_product SET id_order = ?, id_product = ?, product_amount=?";
-    private static final String SQL_SELECT_ORDER_BY_USER = "SELECT id_orders, id_account, price, phone, address FROM l4tsmab3ywpoc8m0.orders WHERE id_account=?";
+    private static final String SQL_SELECT_ORDER_BY_USER = "SELECT id_orders, id_account, price, phone, address, status, date FROM l4tsmab3ywpoc8m0.orders WHERE id_account=?";
     private static final String SQL_SELECT_PRODUCTS_BY_ID_ORDER =
-            "SELECT * FROM l4tsmab3ywpoc8m0.order_product join(SELECT id_products,name,info,price,status,image,id_collection,t1.evaluation" +
+            "SELECT id_order_product, id_order, id_product, product_amount, id_products, name, info, price, status, image, id_collection, evaluation FROM l4tsmab3ywpoc8m0.order_product join(SELECT id_products,name,info,price,status,image,id_collection,t1.evaluation" +
                     " from l4tsmab3ywpoc8m0.products LEFT JOIN (SELECT id_product,AVG(evaluation) as 'evaluation' FROM l4tsmab3ywpoc8m0.feedback) as t1 on t1.id_product=id_products ) p" +
                     " on order_product.id_product=p.id_products WHERE id_order=?";
     private static final String SQL_SELECT_ORDERS_BY_STATUS = "SELECT id_orders, price, phone, address, status, date, id_accounts, email, role, password, name, image, access, register_date FROM l4tsmab3ywpoc8m0.orders " +
@@ -63,6 +63,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
                 statementCreateOrder.setBigDecimal(2, order.getPrice());
                 statementCreateOrder.setString(3, order.getPhone());
                 statementCreateOrder.setString(4, order.getAddress());
+                statementCreateOrder.setLong(5,order.getDate().getTime());
                 statementCreateOrder.executeUpdate();
                 ResultSet resultSet = statementCreateOrder.getGeneratedKeys();
                 if (resultSet.next()) {

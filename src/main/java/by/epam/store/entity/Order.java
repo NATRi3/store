@@ -35,12 +35,13 @@ public class Order {
         this.product = product;
     }
 
-    public Order(long userId, String phone, String address, BigDecimal price, Map<Product, Integer> product) {
+    public Order(long userId, String phone, String address, BigDecimal price, Map<Product, Integer> product, Date date) {
         this.idUser = userId;
         this.phone = phone;
         this.address = address;
         this.price = price;
         this.product = product;
+        this.date = date;
     }
 
     public User getUser() {

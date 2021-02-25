@@ -76,12 +76,6 @@
                                     </div>
                                 </div>
                                 <label>
-                                    <select onchange="changeSorting(this.value)" name="typeSort" size=1>
-                                        <option value="CLIENT"><fmt:message key='sort.client' bundle='${text}'/></option>
-                                        <option value="MANAGER"><fmt:message key='sort.manager' bundle='${text}'/></option>
-                                    </select>
-                                </label>
-                                <label>
                                     <select onchange="changeStatus(this.value)" name="typeStatus" size=1>
                                         <option value="ACTIVE"><fmt:message key='sort.active' bundle='${text}'/></option>
                                         <option value="BLOCKED"><fmt:message key='sort.blocked' bundle='${text}'/></option>
@@ -147,11 +141,6 @@
             }
         });
     });
-    let role = 'CLIENT';
-    function changeRole(newRole){
-        role =newRole;
-        getListProduct(0,0);
-    }
     let status = 'ACTIVE';
     function changeStatus(typeStatus){
         status=typeStatus;
@@ -161,7 +150,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/async?" +
                 "command=get_list_users_by_role_status"+
-                "&type_role="+role+"&begin_pagination="+begin+"&type_status="+status,
+                "&begin_pagination="+begin+"&type_status="+status,
             type: 'GET',
             dataType: 'json',
             success: function (res){

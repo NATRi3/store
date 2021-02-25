@@ -199,7 +199,7 @@
                                 "<input class='btn btn-primary' type='file' name='file' onchange='document.uploadForm"+product.id+".submit()'/>"+
                             "</form>"+
                         "</div>"+
-                        "<td>"+product.name+"</td>"+
+                        "<td><a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>"+product.name+"</a></td>"+
                         "<td>"+product.info+"</td>"+
                         "<td>"+product.price+"</td>"+
                         "<td class='center'>"+product.rating+"</td>"+

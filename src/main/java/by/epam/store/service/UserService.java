@@ -21,7 +21,7 @@ public interface UserService {
 
     Optional<String> changePasswordSendForgotMailMessage(String email) throws ServiceException;
 
-    List<User> findUsersByRoleAndStatus(String role, String status, String begin) throws ServiceException;
+    List<User> findUsersByRoleAndStatus(String status, String begin) throws ServiceException;
 
     String changeStatusFromTo(String id, String statusFrom, String statusTo) throws ServiceException;
 }

@@ -32,7 +32,6 @@
     <cus:message/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
-        <br>
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div style="background-color: #FFFFFF" class="row">

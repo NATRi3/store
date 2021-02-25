@@ -16,6 +16,7 @@ import by.epam.store.validator.TypeValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class OrderService implements by.epam.store.service.OrderService {
                 for (Map.Entry<Product, Integer> entry : cartMap.entrySet()) {
                     orderMap.put(entry.getKey(), entry.getValue());
                 }
-                Order order = new Order(user.getId(), phone, address, cart.getTotalPrice(), orderMap);
+                Order order = new Order(user.getId(), phone, address, cart.getTotalPrice(), orderMap, new Date());
                 orderDao.create(order);
                 cart.clear();
                 return MessageKey.SUCCESSFUL_CREATE_ORDER;
