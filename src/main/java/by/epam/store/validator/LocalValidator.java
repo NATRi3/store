@@ -7,6 +7,7 @@ public class LocalValidator {
             "en-US",
             "ru-RU"
     );
+
     public static boolean isLocale(String local){
         if(local==null) return false;
         return availableLocal.contains(local);

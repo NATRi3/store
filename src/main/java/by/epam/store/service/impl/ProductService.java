@@ -22,7 +22,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     @Override
     public Optional<Product> findProductById(String idProduct) throws ServiceException {
         try {
-            if(NumberValidator.isNumberValid(idProduct)) {
+            if(NumberValidator.isLongValid(idProduct)) {
                 long id = Long.parseLong(idProduct);
                 return productDao.findEntityById(id);
             } else {
@@ -57,7 +57,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     @Override
     public String changeStatus(String idProduct, TypeStatus status) throws ServiceException{
         try {
-            if(NumberValidator.isNumberValid(idProduct)) {
+            if(NumberValidator.isLongValid(idProduct)) {
                 long id = Long.parseLong(idProduct);
                 Optional<Product> optionalProduct = productDao.findEntityById(id);
                 if (optionalProduct.isPresent()) {
@@ -83,12 +83,12 @@ public class ProductService implements by.epam.store.service.ProductService {
         try {
             int beginPagination;
             if(!TypeValidator.isTypeProductSort(typeSort)||
-                !NumberValidator.isNumberValid(begin)||
+                !NumberValidator.isLongValid(begin)||
                 !TypeValidator.isTypeStatus(status)){
                 log.error("Invalid param " + begin + "-" + typeSort + "-" + status);
                 throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
-            if(!NumberValidator.isNumberValid(idCollection)){
+            if(!NumberValidator.isLongValid(idCollection)){
                 log.info("unknown collection "+ idCollection);
                 throw new ServiceException(MessageKey.ERROR_UNKNOWN_COLLECTION);
             }
@@ -107,7 +107,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     @Override
     public List<Product> findRandomProduct(String amountStr) throws ServiceException {
         try {
-            if(!NumberValidator.isNumberValid(amountStr)){
+            if(!NumberValidator.isLongValid(amountStr)){
                 throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
             int amount = Integer.parseInt(amountStr);
@@ -151,7 +151,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     public String changeProductImage(String id, String imageName) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
-            if(NumberValidator.isNumberValid(id)) {
+            if(NumberValidator.isLongValid(id)) {
                 Optional<Product> optionalProduct = productDao.findEntityById(Long.valueOf(id));
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
@@ -175,10 +175,17 @@ public class ProductService implements by.epam.store.service.ProductService {
     }
 
     @Override
-    public List<Product> findProductByName(String name) throws ServiceException {
+    public List<Product> searchProduct(String searchRequest) throws ServiceException {
         try{
-            String searchName = '%'+name+'%';
-            return productDao.findProductByName(searchName);
+            if(searchRequest.contains(" ")) {
+                String[] search = searchRequest.split(" ");
+                for (int i = 0; i < search.length; i++) {
+                    search[i] = "%" + search[i] + "%";
+                }
+                return productDao.findProductByName(search);
+            } else {
+                return productDao.findProductByName("%"+searchRequest+"%");
+            }
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException();

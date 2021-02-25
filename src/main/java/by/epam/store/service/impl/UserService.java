@@ -16,6 +16,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class UserService implements by.epam.store.service.UserService {
     @Override
     public String activate(String code) throws ServiceException {
         try {
-            if(NumberValidator.isNumberValid(code)) {
+            if(NumberValidator.isLongValid(code)) {
                 long id = Long.parseLong(code);
                 User activeUser;
                 Optional<User> optionalUser = userDao.findEntityById(id);
@@ -55,9 +56,26 @@ public class UserService implements by.epam.store.service.UserService {
         try {
             Optional<User> optionalUser =
                     userDao.findEntityByEmailAndPassword(user.getEmail(), encryption(password));
-            if(optionalUser.isPresent()){
-                User dataBaseUser = optionalUser.get();
-                user.setParametersForm(dataBaseUser);
+            if(optionalUser.isPresent()) {
+                switch (optionalUser.get().getAccess()) {
+                    case ACTIVE: {
+                        User dataBaseUser = optionalUser.get();
+                        user.setParametersForm(dataBaseUser);
+                        break;
+                    }
+                    case BLOCKED:{
+                        resultMessage = Optional.of(MessageKey.ERROR_MESSAGE_USER_BLOCKED);
+                        break;
+                    }
+                    case NONACTIVE:{
+                        resultMessage = Optional.of(MessageKey.ERROR_MESSAGE_USER_NONACTIVE);
+                        break;
+                    }
+                    default:{
+                        resultMessage = Optional.of(MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT);
+                        break;
+                    }
+                }
             } else {
                 resultMessage = Optional.of(MessageKey.ERROR_MESSAGE_WRONG_EMAIL_OR_PASS);
             }
@@ -144,7 +162,7 @@ public class UserService implements by.epam.store.service.UserService {
 
     @Override
     public List<User> findUsersByRoleAndStatus(String role, String status, String begin) throws ServiceException {
-        if(!NumberValidator.isNumberValid(begin)||
+        if(!NumberValidator.isLongValid(begin)||
             !TypeValidator.isTypeStatus(status.toUpperCase())||
             !TypeValidator.isTypeRole(role.toUpperCase())){
             log.error(role+status+begin);
@@ -162,15 +180,16 @@ public class UserService implements by.epam.store.service.UserService {
     }
 
     @Override
-    public String changeStatus(String id, TypeStatus status) throws ServiceException {
+    public String changeStatusFromTo(String id, String statusFrom, String statusTo) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT;
-        if(!NumberValidator.isNumberValid(id)) {
+        if(!NumberValidator.isLongValid(id)||
+            !TypeValidator.isTypeStatus(statusFrom)||
+            !TypeValidator.isTypeStatus(statusTo)) {
             try {
-                Optional<User> optionalUser = userDao.findEntityById(Long.valueOf(id));
-                if (optionalUser.isPresent()) {
-                    User user = optionalUser.get();
-                    user.setAccess(status);
-                    userDao.update(user);
+                long idUser = Long.parseLong(id);
+                TypeStatus typeStatusFrom = TypeStatus.valueOf(statusFrom);
+                TypeStatus typeStatusTo = TypeStatus.valueOf(statusTo);
+                if(userDao.changeStatus(idUser,typeStatusFrom,typeStatusTo)) {
                     resultMessage = MessageKey.SUCCESSFUL_CHANGE_STATUS;
                 }
             } catch (DaoException e) {

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public class CommandProvider {
     private final static Logger log = LogManager.getLogger(CommandProvider.class);
+
     public static Optional<Command> commandDefine(String command){
         Optional<Command> optionalCommand = Optional.empty();
         try {

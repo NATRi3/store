@@ -62,15 +62,15 @@ public class OrderService implements by.epam.store.service.OrderService {
 
     @Override
     public List<Order> getOrderList(String begin, String sort, String status) throws ServiceException {
-        if(!NumberValidator.isNumberValid(begin)&&
+        if(!NumberValidator.isLongValid(begin)&&
             !TypeValidator.isTypeOrderSort(sort)&&
             !TypeValidator.isTypeOrderStatus(status)){
             throw new ServiceException("Invalid params "+ begin + " " + sort + " " + status);
         }
         try {
             int beginPagination = Integer.parseInt(begin);
-            TypeSort typeSort = TypeSort.valueOf(sort);
-            TypeStatus typeStatus = TypeStatus.valueOf(status);
+            TypeSort typeSort = TypeSort.valueOf(sort.toUpperCase());
+            TypeStatus typeStatus = TypeStatus.valueOf(status.toUpperCase());
             return orderDao.getOrdersByStatusAndSort(beginPagination,typeSort,typeStatus);
         } catch (DaoException e){
             log.error(e);

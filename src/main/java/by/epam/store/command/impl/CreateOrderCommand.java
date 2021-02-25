@@ -35,10 +35,10 @@ public class CreateOrderCommand implements Command {
             for(Map.Entry<String,String> entry: parameters.entrySet()){
                 request.setAttribute(entry.getKey(),entry.getValue());
             }
-            return Router.forwardTo(PagePath.CART);
+            return Router.forwardTo(PagePath.CART,request);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

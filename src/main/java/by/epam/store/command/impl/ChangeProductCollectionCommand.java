@@ -25,10 +25,10 @@ public class ChangeProductCollectionCommand implements Command {
         try{
             String messageKey = collectionService.changeInfo(parameters);
             request.setAttribute(RequestParameter.MESSAGE,messageKey);
-            return Router.forwardTo(PagePath.ADMIN_PANEL_COLLECTION);
+            return Router.forwardTo(PagePath.ADMIN_PANEL_COLLECTION,request);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

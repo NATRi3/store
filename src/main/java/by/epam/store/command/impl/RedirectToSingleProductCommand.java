@@ -23,14 +23,14 @@ public class RedirectToSingleProductCommand implements Command {
         try {
             Optional<Product> optionalProduct = productService.findProductById(id);
             if(!optionalProduct.isPresent()){
-                return Router.redirectTo(PagePath.PAGE_404);
+                return Router.redirectTo(PagePath.PAGE_404,request);
             }
             optionalProduct.ifPresent(product ->request.setAttribute(RequestParameter.PRODUCT,product));
-            return Router.forwardTo(PagePath.SINGLE_PRODUCT);
+            return Router.forwardTo(PagePath.SINGLE_PRODUCT,request);
         } catch (ServiceException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE,e.getMessage());
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

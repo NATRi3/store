@@ -13,6 +13,7 @@ import java.util.Set;
 
 public class FileUtil {
     private static final Set<String> FILE_TYPE = Set.of("image/jpg", "image/png", "image/gif", "image/jpeg");
+
     public static Optional<String> saveFile(List<FileItem> fileItems) throws IOException {
         for(FileItem fileItem: fileItems){
             if (!fileItem.isFormField()) {

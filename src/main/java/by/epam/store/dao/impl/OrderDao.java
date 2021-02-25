@@ -26,8 +26,8 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
             "SELECT * FROM l4tsmab3ywpoc8m0.order_product join(SELECT id_products,name,info,price,status,image,id_collection,t1.evaluation" +
                     " from l4tsmab3ywpoc8m0.products LEFT JOIN (SELECT id_product,AVG(evaluation) as 'evaluation' FROM l4tsmab3ywpoc8m0.feedback) as t1 on t1.id_product=id_products ) p" +
                     " on order_product.id_product=p.id_products WHERE id_order=?";
-    private static final String SQL_SELECT_ORDERS_BY_STATUS = "SELECT id_orders, price, phone, address, status, data, id_accounts, email, role, password, name, image, access, register_date FROM l4tsmab3ywpoc8m0.orders " +
-            "JOIN accounts a on a.id_accounts = orders.id_account WHERE status=? LIMIT 10 OFFSET ?";
+    private static final String SQL_SELECT_ORDERS_BY_STATUS = "SELECT id_orders, price, phone, address, status, date, id_accounts, email, role, password, name, image, access, register_date FROM l4tsmab3ywpoc8m0.orders " +
+            "JOIN accounts a on a.id_accounts = orders.id_account WHERE status=? ORDER BY %s LIMIT 10 OFFSET ?";
     @Override
     public List<Order> findAll() throws DaoException {
         return null;
@@ -126,7 +126,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     public List<Order> getOrdersByStatusAndSort(int beginPagination, TypeSort typeSort, TypeStatus typeStatus) throws DaoException {
         String sql = String.format(SQL_SELECT_ORDERS_BY_STATUS,typeSort.toString());
         try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statementOrder = connection.prepareStatement(SQL_SELECT_ORDERS_BY_STATUS);
+            PreparedStatement statementOrder = connection.prepareStatement(sql);
             PreparedStatement statementProduct = connection.prepareStatement(SQL_SELECT_PRODUCTS_BY_ID_ORDER)) {
             statementOrder.setString(1,typeStatus.toString());
             statementOrder.setLong(2,beginPagination);

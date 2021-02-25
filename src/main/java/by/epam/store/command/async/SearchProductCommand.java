@@ -23,7 +23,7 @@ public class SearchProductCommand implements CommandAsync {
         try {
             try {
                 String search = request.getParameter(RequestParameter.SEARCH);
-                List<Product> productList = productService.findProductByName(search);
+                List<Product> productList = productService.searchProduct(search);
                 String json = new Gson().toJson(productList);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

@@ -40,6 +40,7 @@
                         <h1 class="page-header"><fmt:message key='admin.users' bundle='${text}'/></h1>
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-news.jsp"><h1 class="page-header"><fmt:message key='admin.news' bundle='${text}'/></h1> </a>
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-collection.jsp"><h1 class="page-header"><fmt:message key='admin.collections' bundle='${text}'/></h1></a>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-orders.jsp"><h1 class="page-header"><fmt:message key='admin.orders' bundle='${text}'/></h1></a>
                     </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">
@@ -195,18 +196,24 @@
                         "<td>"+user.email+"</td>"+
                         "<td>"+user.name+"</td>"+
                         "<td class='center' id='blocked"+user.id+"'>"+
-                        "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#statusModal"+user.id+"'>"+
-                        "<fmt:message key='admin.change_status' bundle='${text}'/>"+
-                        "</button>"+
-                        "</td id = 'userBtnBlock"+user.id+"'>"+
+
+                        "</td>"+
                         "</div>";
                     contentID.appendChild(newTBDiv);
-                    if (user.status==='ACTIVE'){
+                    if (user.access==='ACTIVE'){
                         var newFormStatus = document.createElement('button');
                         newFormStatus.setAttribute("class","btn btn-primary");
-                        newFormStatus.setAttribute("onclick","blockProduct("+user.id+")");
+                        newFormStatus.setAttribute("onclick","blockUser("+user.id+")");
                         newFormStatus.innerHTML = "<fmt:message key='admin.block' bundle='${text}'/>";
-                        document.getElementById("userBtnBlock"+user.id).appendChild(newFormStatus);
+                        document.getElementById("blocked"+user.id).appendChild(newFormStatus);
+                    } else {
+                        if(user.access==='BLOCKED') {
+                            var newFormStatus = document.createElement('button');
+                            newFormStatus.setAttribute("class","btn btn-primary");
+                            newFormStatus.setAttribute("onclick","unblockUser("+user.id+")");
+                            newFormStatus.innerHTML = "<fmt:message key='admin.block' bundle='${text}'/>";
+                            document.getElementById("blocked"+user.id).appendChild(newFormStatus);
+                        }
                     }
                 });
             },
@@ -227,7 +234,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/async",
             type: 'GET',
-            data: "command=block_user&id_user="+userId,
+            data: "command=change_user_status&id_user="+userId + "status=ACTIVE&status=BLOCKED",
             statusCode:{
                 200: function(message){
                     viewMessage(message);
@@ -249,30 +256,8 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/async",
             type: 'POST',
-            data: "command=unblock_user&id_user="+userId,
+            data: "command=change_user_status&id_user="+userId + "status=BLOCKED&status=ACTIVE",
             statusCode: {
-                200: function (message){
-                    viewMessage(message);
-                    getListProduct(0,0);
-                },
-                402: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/user/account.jsp";
-                },
-                500: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/error/error500.jsp";
-                },
-                403: function (){
-                    window.location.href = "${pageContext.request.contextPath}/jsp/guest/login.jsp";
-                }
-            }
-        })
-    }
-    function deleteUser(userId){
-        $.ajax({
-            url: "${pageContext.request.contextPath}/async",
-            type: 'POST',
-            data: "command=deactivate_product&id_product="+userId,
-            statusCode:{
                 200: function (message){
                     viewMessage(message);
                     getListProduct(0,0);

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public class CommandProviderAsync {
     private final static Logger log = LogManager.getLogger(CommandProviderAsync.class);
+
     public static Optional<CommandAsync> commandDefine(String command) {
         Optional<CommandAsync> optionalCommand = Optional.empty();
         try {

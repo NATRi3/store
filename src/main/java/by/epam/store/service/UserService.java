@@ -10,11 +10,18 @@ import java.util.Optional;
 public interface UserService {
 
     String activate(String code)throws ServiceException;
+
     Optional<String> login(User user, String password) throws ServiceException;
+
     Optional<String> registerClient(Map<String, String> parameters) throws ServiceException;
+
     User findUserById(long id) throws ServiceException;
+
     boolean updateById(User user) throws ServiceException;
+
     Optional<String> changePasswordSendForgotMailMessage(String email) throws ServiceException;
+
     List<User> findUsersByRoleAndStatus(String role, String status, String begin) throws ServiceException;
-    String changeStatus(String id, TypeStatus status) throws ServiceException;
+
+    String changeStatusFromTo(String id, String statusFrom, String statusTo) throws ServiceException;
 }

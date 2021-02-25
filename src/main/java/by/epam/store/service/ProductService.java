@@ -14,11 +14,18 @@ public interface ProductService {
     static final ProductDao productDao = DaoCreator.getInstance().getProductDao();
 
     Optional<Product> findProductById(String id) throws ServiceException;
+
     String saveProduct(Map<String, String> parameters) throws ServiceException;
+
     String changeStatus(String id, TypeStatus status) throws ServiceException;
+
     List<Product> findProductByCollectionAndSort(String idCollection, String typeSort, String status, String begin) throws ServiceException;
+
     List<Product> findRandomProduct(String amount) throws ServiceException;
+
     String changeProduct(Map<String, String> parameters) throws ServiceException;
+
     String changeProductImage(String id, String realPath) throws ServiceException;
-    List<Product> findProductByName(String name) throws ServiceException;
+
+    List<Product> searchProduct(String name) throws ServiceException;
 }

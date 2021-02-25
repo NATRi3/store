@@ -21,10 +21,10 @@ public class ActivationCommand implements Command {
         try {
             String message = userService.activate(code);
             request.setAttribute(RequestParameter.MESSAGE, message);
-            return Router.forwardTo(PagePath.LOGIN);
+            return Router.forwardTo(PagePath.LOGIN,request);
         } catch (ServiceException e) {
             logger.info(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

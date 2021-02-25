@@ -24,13 +24,13 @@ public class ForgotPasswordCommand implements Command {
             Optional<String> optional = userService.changePasswordSendForgotMailMessage(email);
             if(optional.isPresent()){
                 request.setAttribute(RequestParameter.MESSAGE,optional.get());
-                page = Router.forwardTo(PagePath.FORGOT_PASSWORD);
+                page = Router.forwardTo(PagePath.FORGOT_PASSWORD,request);
             } else {
-                page = Router.redirectTo(PagePath.LOGIN);
+                page = Router.redirectTo(PagePath.LOGIN,request);
             }
         } catch (ServiceException e) {
             log.error(e);
-            page = Router.redirectTo(PagePath.PAGE_500);
+            page = Router.redirectTo(PagePath.PAGE_500,request);
         }
         return page;
     }

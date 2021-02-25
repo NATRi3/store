@@ -23,10 +23,10 @@ public class ChangeLocaleCommand implements Command {
             session.setAttribute(SessionAttribute.LOCALE, newLocale);
             String page = (String) request.getSession().getAttribute(SessionAttribute.PAGE);
             log.info("Locale change");
-            return Router.redirectTo(page);
+            return Router.redirectTo(page,request);
         } else {
             log.error("Local not found " + newLocale);
-            return Router.redirectTo(PagePath.PAGE_404);
+            return Router.redirectTo(PagePath.PAGE_404,request);
         }
     }
 }

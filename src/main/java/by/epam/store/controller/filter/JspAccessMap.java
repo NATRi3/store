@@ -14,11 +14,7 @@ public class JspAccessMap extends HashMap<TypeRole, Set<String>> {
                 Set.of(PagePath.ACCOUNT,PagePath.MAIN,PagePath.SHOP,
                         PagePath.PAGE_404,PagePath.PAGE_500,PagePath.SINGLE_PRODUCT,
                         PagePath.ADMIN_PANEL,PagePath.ADMIN_PANEL_USERS,PagePath.ADMIN_PANEL_NEWS,
-                        PagePath.ADMIN_PANEL_COLLECTION));
-        put(TypeRole.MANAGER,
-                Set.of(PagePath.ACCOUNT,PagePath.CART,PagePath.MAIN,PagePath.SHOP,
-                        PagePath.PAGE_404,PagePath.PAGE_500,PagePath.SINGLE_PRODUCT,
-                        PagePath.PRODUCTS));
+                        PagePath.ADMIN_PANEL_COLLECTION, PagePath.ADMIN_PANEL_ORDERS));
         put(TypeRole.CLIENT,
                 Set.of(PagePath.ACCOUNT,PagePath.CART,PagePath.MAIN,PagePath.SHOP,
                         PagePath.PAGE_404,PagePath.PAGE_500,PagePath.SINGLE_PRODUCT));

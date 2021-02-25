@@ -43,7 +43,7 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
             "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from l4tsmab3ywpoc8m0.feedback GROUP BY id_product)as t1)"+
             "as f on f.id_product=id_products WHERE status='ACTIVE' order by rand() limit ?";
     private static final String SQL_SELECT_BY_NAME = "SELECT id_products,name,info,image,id_collection,status,price" +
-            " FROM l4tsmab3ywpoc8m0.products WHERE name LIKE ? limit 6 ";
+            " FROM l4tsmab3ywpoc8m0.products WHERE name LIKE ? %s limit 6 ";
 
 
     @Override
@@ -143,10 +143,17 @@ public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDa
     }
 
     @Override
-    public List<Product> findProductByName(String name) throws DaoException {
+    public List<Product> findProductByName(String... names) throws DaoException {
+        StringBuilder append = new StringBuilder();
+        for (int i = 1; i<names.length;i++){
+            append.append("AND name LIKE ?");
+        }
+        String sql = String.format(SQL_SELECT_BY_NAME,append);
         try(Connection connection = getConnection();
-        PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_NAME)){
-            statement.setString(1,name);
+        PreparedStatement statement = connection.prepareStatement(sql)){
+            for(int i = 1;i<=names.length;i++) {
+                statement.setString(i, names[i-1]);
+            }
             ResultSet resultSet = statement.executeQuery();
             List<Product> resultList = new ArrayList<>();
             while(resultSet.next()){

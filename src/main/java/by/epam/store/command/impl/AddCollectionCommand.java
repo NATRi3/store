@@ -29,10 +29,10 @@ public class AddCollectionCommand implements Command {
             for(Map.Entry<String,String> entry: parameters.entrySet()){
                 request.setAttribute(entry.getKey(),entry.getValue());
             }
-            return Router.forwardTo(PagePath.ADMIN_PANEL_COLLECTION);
+            return Router.forwardTo(PagePath.ADMIN_PANEL_COLLECTION,request);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

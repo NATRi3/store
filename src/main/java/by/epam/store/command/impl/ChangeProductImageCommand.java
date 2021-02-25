@@ -46,11 +46,11 @@ public class ChangeProductImageCommand implements Command {
             }
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         } catch (FileUploadException | IOException e) {
             log.error(e);
             request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
         }
-        return Router.forwardTo(PagePath.ADMIN_PANEL);
+        return Router.forwardTo(PagePath.ADMIN_PANEL,request);
     }
 }

@@ -10,7 +10,7 @@ import java.util.Properties;
 public class SendMail {
     private final static Logger log = LogManager.getLogger(SendMail.class);
     private static final String SENDER_EMAIL_ADDRESS = "mailforwebproject31@gmail.com";
-    private static final String SENDER_EMAIL_PASSWORD = "3114928Denis";
+    private static final String SENDER_EMAIL_PASSWORD = "3114928Oksana";
     private static final String SENDER_HOST = "smtp.gmail.com";
     private static final String SENDER_PORT = "587";
     private static final String ACTIVATION_URL = "https://watchstoreepam.herokuapp.com/controller?command=activation&activation_code=";
@@ -24,6 +24,7 @@ public class SendMail {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
     }
+
     public static void sendActivationMailTo(String mail, long id) {
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {

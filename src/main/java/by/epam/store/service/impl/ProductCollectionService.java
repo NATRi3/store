@@ -64,7 +64,7 @@ public class ProductCollectionService implements by.epam.store.service.Collectio
 
     @Override
     public String changeStatus(String id, TypeStatus status) throws ServiceException {
-        if(!NumberValidator.isNumberValid(id)){
+        if(!NumberValidator.isLongValid(id)){
             throw new ServiceException("Invalid id "+id);
         }
         try{

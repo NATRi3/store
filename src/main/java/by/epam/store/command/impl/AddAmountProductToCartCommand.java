@@ -31,7 +31,7 @@ public class AddAmountProductToCartCommand implements Command {
         String page = String.valueOf(session.getAttribute(SessionAttribute.PAGE));
         Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
         try {
-            if(NumberValidator.isNumberValid(amount)) {
+            if(NumberValidator.isLongValid(amount)) {
                 Optional<Product> optionalProduct = productService.findProductById(idStr);
                 if (optionalProduct.isPresent()) {
                     if (optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
@@ -52,6 +52,6 @@ public class AddAmountProductToCartCommand implements Command {
             log.error(e);
             page = PagePath.PAGE_500;
         }
-        return Router.redirectTo(page);
+        return Router.redirectTo(page,request);
     }
 }

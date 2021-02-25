@@ -20,7 +20,7 @@ public class FeedbackService implements by.epam.store.service.FeedbackService {
     private final static Logger log = LogManager.getLogger(FeedbackService.class);
     @Override
     public List<Feedback> getFeedbackByIdProduct(String idProduct) throws ServiceException {
-        if(!NumberValidator.isNumberValid(idProduct)){
+        if(!NumberValidator.isLongValid(idProduct)){
             throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         }
         try {
@@ -55,7 +55,7 @@ public class FeedbackService implements by.epam.store.service.FeedbackService {
     @Override
     public String deleteFeedback(String id) throws ServiceException {
         try {
-            if(NumberValidator.isNumberValid(id)){
+            if(NumberValidator.isLongValid(id)){
                 long idFeedback = Long.parseLong(id);
                 if(feedbackDao.delete(idFeedback)){
                     return MessageKey.SUCCESSFUL_DELETE;

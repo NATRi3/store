@@ -5,6 +5,7 @@ import by.epam.store.command.async.*;
 public enum  TypeCommandAsync {
     DELETE_FEEDBACK(new DeleteFeedbackCommand()),
     SEARCH_PRODUCT(new SearchProductCommand()),
+    CHANGE_USER_STATUS(new ChangeUserStatusCommand()),
     BLOCK_PRODUCT(new BlockProductCommand()),
     UNBLOCK_PRODUCT(new UnblockProductCommand()),
     GET_USER_ORDERS(new GetUserOrdersCommand()),
@@ -15,6 +16,7 @@ public enum  TypeCommandAsync {
     GET_LIST_NEWS(new GetListNewsCommand()),
     GET_FRESH_NEWS(new GetFreshNewsCommand()),
     GET_LIST_PRODUCT_BY_COLLECTION(new GetListProductByCollectionCommand()),
+    GET_LIST_ORDERS(new GetListOrdersCommand()),
     DEACTIVATE_PRODUCT(new DeactivateProductCommand()),
     ADD_PRODUCT_TO_CART(new AddProductToCartCommand()),
     ACTIVATE_PRODUCT(new ActivateProductCommand());

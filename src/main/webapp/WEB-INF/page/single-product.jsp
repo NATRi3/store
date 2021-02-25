@@ -30,6 +30,7 @@
 <c:if test="${requestScope.product==null}" >
     <jsp:forward page="/jsp/error/error404.jsp"/>
 </c:if>
+<cus:message/>
 <div class="container">
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
@@ -92,12 +93,12 @@
                                             <input type="hidden" name="command" value="create_feedback">
                                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                                             <input type="hidden" name="id_product" value="${requestScope.product.id}">
-                                            <textarea name="feedback" class="form-control" placeholder="Enter here for tweet..." rows="3"></textarea>
+                                            <textarea name="feedback" class="form-control" placeholder="Enter here for tweet..." rows="3">${requestScope.feedback}</textarea>
                                         </div>
                                         <input type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light" value="Tweet">
                                         <div class="clearfix"><div class="form-group" id="rating-ability-wrapper">
                                             <label class="control-label" for="rating">
-                                                <input type="hidden" id="selected_rating" name="evaluation" value="" required="required">
+                                                <input type="hidden" id="selected_rating" name="evaluation" value="${requestScope.evaluation}" required="required">
                                             </label>
                                             <button type="button" class="btnrating btn btn-default btn-lg" data-attr="1" id="rating-star-1">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -154,7 +155,7 @@
                         newTBDiv.setAttribute("class","block");
                         newTBDiv.innerHTML =
                             "<div>"+
-                            "<div class='top'>"+
+                            "<div style='height:80px' class='top'>"+
                             "<h5 class='mb-0'>"+product.name+"</h5>"+
                             "</div>"+
                             "<div class='middle'>"+
@@ -167,7 +168,7 @@
                             "<h6 class='mb-3'>$"+product.price+"</h6>"+
                             "<button type='button' class='btn btn-primary btn-sm mr-1 waves-effect waves-light'>"+
                                 "<fmt:message key='shop.add_to_cart' bundle='${text}'/></button>"+
-                            "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"' type='button' class='btn btn-light btn-sm waves-effect waves-light'><i class='fas fa-info-circle pr-2'></i>Details</a>"+
+                            "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"' type='button' class='btn btn-light btn-sm waves-effect waves-light'>Details</a>"+
                             "</div>"+
                             "</div>";
                         contentID.appendChild(newTBDiv);

@@ -39,8 +39,9 @@
                     <div class="col-lg-12">
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel.jsp"><h1 class="page-header"><fmt:message key='admin.products' bundle='${text}'/></h1> </a>
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-user.jsp"><h1 class="page-header"><fmt:message key='admin.users' bundle='${text}'/></h1> </a>
-                        <h1 class="page-header"><fmt:message key='admin.news' bundle='${text}'/></h1>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-news.jsp"><h1 class="page-header"><fmt:message key='admin.news' bundle='${text}'/></h1> </a>
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-collection.jsp"><h1 class="page-header"><fmt:message key='admin.collections' bundle='${text}'/></h1> </a>
+                        <h1 class="page-header"><fmt:message key='admin.orders' bundle='${text}'/></h1>
                     </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">
@@ -48,10 +49,10 @@
                                 <label>
                                     <fmt:message key='admin.sorting_type' bundle='${text}'/>
                                     <select onchange="changeSorting(this.value)" name="typeSort" size=1>
-                                        <option value="price"><fmt:message key='sort.price' bundle='${text}'/> </option>
-                                        <option value="price DESC"><fmt:message key='sort.price_desc' bundle='${text}'/></option>
-                                        <option value="date DESC"><fmt:message key='sort.date_desc' bundle='${text}'/></option>
                                         <option value="date"><fmt:message key='sort.date' bundle='${text}'/></option>
+                                        <option value="dateDESC"><fmt:message key='sort.date_desc' bundle='${text}'/></option>
+                                        <option value="price"><fmt:message key='sort.price' bundle='${text}'/> </option>
+                                        <option value="priceDESC"><fmt:message key='sort.price_desc' bundle='${text}'/></option>
                                     </select>
                                 </label>
                                 <label>
@@ -59,7 +60,7 @@
                                         <option value="WAIT"><fmt:message key='sort.wait' bundle='${text}'/></option>
                                         <option value="COMPLETED"><fmt:message key='sort.complited' bundle='${text}'/></option>
                                         <option value="INPROGRESS"><fmt:message key='sort.inprodress' bundle='${text}'/></option>
-                                        <option value="DISLINE"><fmt:message key='sort.disline' bundle='${text}'/></option>
+                                        <option value="DECLINE"><fmt:message key='sort.decline' bundle='${text}'/></option>
                                     </select>
                                 </label>
                             </div>
@@ -81,7 +82,7 @@
 </body>
 <script>
     let amounts;
-    let sorting = 'title';
+    let sorting = 'date';
     function changeSorting(sort){
         sorting = sort;
         getListNews(0);
@@ -116,9 +117,9 @@
                     contentID.appendChild(next);
                 }
                 $.each(res, function (idx,order){
-                    var newTBDiv = document.createElement("tr");
-                    newTBDiv.setAttribute("class","odd gradeX");
-                    newTBDiv.setAttribute("id","news"+order.idNews);
+                    var contentID = document.getElementById("CONTENT");
+                    var newTBDiv = document.createElement("div");
+                    newTBDiv.setAttribute("class","card"+order.id+"");
                     newTBDiv.innerHTML =
                         "<div class='card-header' id='heading"+order.id+"'>"+
                         "<h5 class='mb-0'>"+
@@ -154,7 +155,6 @@
                             "<td>"+order.product[i].amount+"</td>";
                         document.getElementById("order"+order.id+"Products").appendChild(divElement);
                     }
-                    amounts = begin;
                 });
             },
             statusCode:{

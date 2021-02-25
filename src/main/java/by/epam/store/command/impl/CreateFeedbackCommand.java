@@ -32,18 +32,18 @@ public class CreateFeedbackCommand implements Command {
         User user = (User) session.getAttribute(SessionAttribute.USER);
         try {
             Optional<String> optionalMessage = feedbackService.createFeedback(parameters,user);
+            String currentPage = session.getAttribute(SessionAttribute.PAGE).toString();
             if(optionalMessage.isPresent()){
                 for(Map.Entry<String,String> entry: parameters.entrySet()){
                     request.setAttribute(entry.getKey(),entry.getValue());
                 }
                 request.setAttribute(RequestParameter.MESSAGE,optionalMessage.get());
-                return TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.get().execute(request);
+                return TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.get().execute(request);//todo
             }
-            String currentPage = (String) session.getAttribute(SessionAttribute.PAGE);
-            return Router.redirectTo(currentPage);
+            return Router.redirectTo(currentPage,request);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

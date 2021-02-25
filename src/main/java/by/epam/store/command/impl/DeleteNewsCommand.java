@@ -21,10 +21,10 @@ public class DeleteNewsCommand implements Command {
         try{
             String message = newsService.deleteNews(id);
             request.setAttribute(RequestParameter.MESSAGE,message);
-            return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS);
+            return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS,request);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

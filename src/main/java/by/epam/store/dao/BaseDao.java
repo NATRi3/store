@@ -12,10 +12,15 @@ import java.util.Optional;
 
 public interface BaseDao<K> {
     Logger logger = LogManager.getLogger(BaseDao.class);
+
     List<K> findAll() throws DaoException;
+
     Optional<K> findEntityById (Long id) throws DaoException;
+
     boolean delete (Long id) throws DaoException;
+
     boolean update(K k) throws DaoException;
+
     K create (K k) throws DaoException;
 
     default void close(Statement statement){

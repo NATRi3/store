@@ -25,13 +25,6 @@ public class CommandAccessMap extends HashMap<TypeRole,Set<String>> {
                 TypeCommand.ADD_NEWS.toString().toLowerCase(),
                 TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.toString().toLowerCase(),
                 TypeCommand.CHANGE_LOCALE.toString().toLowerCase()));
-        put(TypeRole.MANAGER,Set.of(
-                TypeCommand.CHANGE_LOCALE.toString().toLowerCase(),
-                TypeCommand.LOGOUT.toString().toLowerCase(),
-                TypeCommand.UPLOAD_IMAGE.toString().toLowerCase(),
-                TypeCommand.ACTIVATION.toString().toLowerCase(),
-                TypeCommand.REMOVE_PRODUCT_FROM_CART.toString().toLowerCase(),
-                TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.toString().toLowerCase()));
         put(TypeRole.CLIENT,Set.of(
                 TypeCommand.CHANGE_LOCALE.toString().toLowerCase(),
                 TypeCommand.LOGOUT.toString().toLowerCase(),

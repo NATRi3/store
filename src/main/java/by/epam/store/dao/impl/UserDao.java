@@ -30,6 +30,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     private static final String SQL_UPDATE = "UPDATE l4tsmab3ywpoc8m0.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
     public static final String SQL_UPDATE_PASSWORD ="UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
     private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE role=? and access=?  LIMIT 10 OFFSET ?";
+    private static final String SQL_SET_STATUS_FROM_TO = "UPDATE l4tsmab3ywpoc8m0.accounts SET access=? WHERE id_accounts=? and access=? LIMIT 1";
 
     @Override
     public List<User> findAll() throws DaoException {
@@ -164,7 +165,6 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
 
     @Override
     public List<User> findUserByRoleAndStatus(TypeRole role, TypeStatus status, int begin) throws DaoException {
-
         try(Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ROLE_STATUS)) {
             statement.setString(1,role.toString());
@@ -176,6 +176,20 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
                 resultUserFromDB.add(createUserFormResultSet(resultSet));
             }
             return resultUserFromDB;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean changeStatus(long id, TypeStatus statusFrom, TypeStatus statusTo) throws DaoException {
+        try(Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_SET_STATUS_FROM_TO)) {
+            statement.setString(1,statusTo.toString());
+            statement.setString(2,statusFrom.toString());
+            statement.setLong(3,id);
+            return statement.executeUpdate()==1;
         } catch (SQLException e) {
             log.error(e);
             throw new DaoException(e);

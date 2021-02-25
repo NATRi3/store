@@ -40,7 +40,7 @@ public class FormValidator {
         }
         if(dataMap.containsKey(RequestParameter.ID_COLLECTION)){
             String id = dataMap.get(RequestParameter.ID_COLLECTION);
-            if(!NumberValidator.isNumberValid(id)){
+            if(!NumberValidator.isLongValid(id)){
                 dataMap.remove(RequestParameter.ID_COLLECTION);
                 valid = false;
             }
@@ -117,7 +117,7 @@ public class FormValidator {
         }
         if (dataMap.containsKey(RequestParameter.ID_PRODUCT)) {
             String idProduct = dataMap.get(RequestParameter.ID_PRODUCT);
-            if(!NumberValidator.isNumberValid(idProduct)){
+            if(!NumberValidator.isLongValid(idProduct)){
                 dataMap.remove(RequestParameter.ID_PRODUCT);
                 valid = false;
             }
@@ -131,7 +131,7 @@ public class FormValidator {
         }
         if (dataMap.containsKey(RequestParameter.EVALUATION)) {
             String evaluation = dataMap.get(RequestParameter.EVALUATION);
-            if(!NumberValidator.isNumberValid(evaluation)||
+            if(!NumberValidator.isLongValid(evaluation)||
                     !(Integer.parseInt(evaluation)>=1&&Integer.parseInt(evaluation)<=5)){
                 dataMap.remove(RequestParameter.EVALUATION);
                 valid = false;
@@ -139,7 +139,7 @@ public class FormValidator {
         }
         if (dataMap.containsKey(RequestParameter.ID_COLLECTION)) {
             String idCollection = dataMap.get(RequestParameter.ID_COLLECTION);
-            if(!NumberValidator.isNumberValid(idCollection)){
+            if(!NumberValidator.isLongValid(idCollection)){
                 dataMap.remove(RequestParameter.ID_COLLECTION);
                 valid = false;
             }

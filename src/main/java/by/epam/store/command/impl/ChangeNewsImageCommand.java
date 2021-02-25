@@ -39,7 +39,7 @@ public class ChangeNewsImageCommand implements Command {
             Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
             if(optionalFileName.isPresent()){
                 newsService.changeImage(id,optionalFileName.get());
-                return Router.redirectTo(PagePath.ADMIN_PANEL_NEWS);
+                return Router.redirectTo(PagePath.ADMIN_PANEL_NEWS,request);
             } else {
                 request.setAttribute(RequestParameter.MESSAGE,MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE);
             }
@@ -48,8 +48,8 @@ public class ChangeNewsImageCommand implements Command {
             request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
-        return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS);
+        return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS,request);
     }
 }

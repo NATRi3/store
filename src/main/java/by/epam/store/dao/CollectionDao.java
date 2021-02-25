@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface CollectionDao {
     List<ProductCollection> findByStatus(TypeStatus typeStatus) throws DaoException;
+
     boolean updateStatus(long idCollection, TypeStatus status) throws DaoException;
+
     boolean updateInfo(Long id, String info) throws DaoException;
 }

@@ -28,14 +28,14 @@ public class LoginCommand implements Command {
             Optional<String> optionalMessage = userService.login(user, password);
             if(!optionalMessage.isPresent()) {
                 session.setAttribute(SessionAttribute.USER, user);
-                return Router.redirectTo(PagePath.MAIN);
+                return Router.redirectTo(PagePath.MAIN,request);
             } else {
                 request.setAttribute(RequestParameter.MESSAGE,optionalMessage.get());
-                return Router.forwardTo(PagePath.LOGIN);
+                return Router.forwardTo(PagePath.LOGIN,request);
             }
         } catch (ServiceException e) {
             logger.info(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

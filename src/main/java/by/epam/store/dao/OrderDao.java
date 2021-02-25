@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface OrderDao {
     List<Order> getUserOrders(long id) throws DaoException;
+
     List<Order> getOrdersByStatusAndSort(int beginPagination, TypeSort typeSort, TypeStatus typeStatus) throws DaoException;
 }

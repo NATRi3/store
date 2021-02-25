@@ -40,6 +40,7 @@
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-user.jsp"><h1 class="page-header"><fmt:message key='admin.users' bundle='${text}'/></h1> </a>
                         <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-news.jsp"><h1 class="page-header"><fmt:message key='admin.news' bundle='${text}'/></h1> </a>
                         <h1 class="page-header"><fmt:message key='admin.collections' bundle='${text}'/></h1>
+                        <a href="${pageContext.request.contextPath}/jsp/admin/admin-panel-orders.jsp"><h1 class="page-header"><fmt:message key='admin.orders' bundle='${text}'/></h1></a>
                     </div>
                     <div class="col-lg-12">
                         <div class="panel panel-default">

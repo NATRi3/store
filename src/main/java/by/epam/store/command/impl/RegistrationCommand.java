@@ -30,16 +30,16 @@ public class RegistrationCommand implements Command {
             Optional<String> optionalMessage = userService.registerClient(parameters);
             if(optionalMessage.isPresent()){
                 request.setAttribute(RequestParameter.MESSAGE, optionalMessage.get());
-                page = Router.forwardTo(PagePath.REGISTRATION);
+                page = Router.forwardTo(PagePath.REGISTRATION,request);
                 for(Map.Entry<String,String> entry: parameters.entrySet()){
                     request.setAttribute(entry.getKey(),entry.getValue());
                 }
             }else {
-                page = Router.redirectTo(PagePath.LOGIN);
+                page = Router.redirectTo(PagePath.LOGIN,request);
             }
         } catch (ServiceException e) {
             logger.info(e);
-            page = Router.redirectTo(PagePath.PAGE_500);
+            page = Router.redirectTo(PagePath.PAGE_500,request);
         }
         return page;
     }

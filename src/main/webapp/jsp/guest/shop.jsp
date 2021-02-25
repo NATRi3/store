@@ -128,7 +128,7 @@
                     var newTBDiv = document.createElement("div");
                     newTBDiv.setAttribute("class","block");
                     newTBDiv.innerHTML =
-                        "<div class='top'>" +
+                        "<div style='height:80px' class='top'>" +
                         "<h4 class='card-title'>" +
                         "<a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+product.id+"'>" + product.name + "</a>" +
                         "</h4>" +
@@ -230,7 +230,7 @@
         flex: auto;
     }
     .middle img {
-        max-height: max-content;
+        height: 300px;
         width: 100%;
     }
     .bottom {

@@ -16,6 +16,6 @@ public class LogoutCommand implements Command {
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
-        return Router.redirectTo(PagePath.LOGIN);
+        return Router.redirectTo(PagePath.LOGIN,request);
     }
 }

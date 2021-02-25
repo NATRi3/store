@@ -15,7 +15,7 @@ public class TypeValidator {
     private static final Set<String> typeNewsSort = Set.of(TypeSort.DATE.toString(),TypeSort.DATEDESC.toString(),
             TypeSort.TITLE.toString(),TypeSort.TITLEDESC.toString());
     private static final Set<String> typeRole = Set.of(TypeRole.CLIENT.toString(),TypeRole.ADMIN.toString(),
-            TypeRole.GUEST.toString(),TypeRole.MANAGER.toString());
+            TypeRole.GUEST.toString());
     private static Set<String> typeCollectionStatus = Set.of(TypeStatus.ACTIVE.toString(),
             TypeStatus.BLOCKED.toString());
     private static Set<String> typeOrderStatus = Set.of(TypeStatus.WAIT.toString(),TypeStatus.DECLINE.toString(),
@@ -27,10 +27,12 @@ public class TypeValidator {
         if(sort==null)return false;
         return typeProductSort.contains(sort);
     }
+
     public static boolean isTypeStatus(String status){
         if(status==null)return false;
         return typeStatus.contains(status.toUpperCase());
     }
+
     public static boolean isTypeNewsSort(String sort){
         if(sort==null)return false;
         return typeNewsSort.contains(sort);

@@ -33,19 +33,21 @@ public class UploadFileCommand implements Command {
         diskFileItemFactory.setSizeThreshold(MEM_MAX_SIZE);
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
         upload.setSizeMax(FILE_MAX_SIZE);
+        String currentImage = user.getImageName();
         try {
             Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
             if(optionalFileName.isPresent()) {
                 user.setImageName(optionalFileName.get());
                 userService.updateById(user);
-                return Router.redirectTo(PagePath.ACCOUNT);
+                return Router.redirectTo(PagePath.ACCOUNT,request);
             } else {
                 request.setAttribute(RequestParameter.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
-                return Router.forwardTo(PagePath.ACCOUNT);
+                return Router.forwardTo(PagePath.ACCOUNT,request);
             }
         } catch (IOException | FileUploadException | ServiceException e) {
+            user.setImageName(currentImage);
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500);
+            return Router.redirectTo(PagePath.PAGE_500,request);
         }
     }
 }

@@ -4,6 +4,7 @@ import by.epam.store.entity.Cart;
 import by.epam.store.entity.User;
 import by.epam.store.entity.type.TypeRole;
 import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.util.PagePath;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +29,7 @@ public class SessionListener implements HttpSessionListener {
         session.setAttribute(SessionAttribute.SERVER_TOKEN, new Random().nextInt(10000));
         session.setAttribute(SessionAttribute.USER, defaultUser);
         session.setAttribute(SessionAttribute.LOCALE, Locale.getDefault());
+        session.setAttribute(SessionAttribute.PAGE, PagePath.MAIN);
     }
 
     @Override

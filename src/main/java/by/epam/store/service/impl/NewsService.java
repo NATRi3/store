@@ -20,7 +20,7 @@ public class NewsService implements by.epam.store.service.NewsService {
     private static final Logger log = LogManager.getLogger(NewsService.class);
     @Override
     public List<News> getFreshNews(String count) throws ServiceException {
-        if(!NumberValidator.isNumberValid(count)){
+        if(!NumberValidator.isLongValid(count)){
             throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         }
         try {
@@ -33,7 +33,7 @@ public class NewsService implements by.epam.store.service.NewsService {
 
     @Override
     public List<News> getSortNews(String typeSort, String begin) throws ServiceException {
-        if(!NumberValidator.isNumberValid(begin)||
+        if(!NumberValidator.isLongValid(begin)||
             !TypeValidator.isTypeNewsSort(typeSort)){
             throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         }
@@ -47,7 +47,7 @@ public class NewsService implements by.epam.store.service.NewsService {
 
     @Override
     public String deleteNews(String id) throws ServiceException {
-        if(!NumberValidator.isNumberValid(id)){
+        if(!NumberValidator.isLongValid(id)){
             return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
         }
         try{
@@ -85,7 +85,7 @@ public class NewsService implements by.epam.store.service.NewsService {
     public String changeImage(String id, String imageName) throws ServiceException {
         String resultMessage;
         try {
-            if(NumberValidator.isNumberValid(id)) {
+            if(NumberValidator.isLongValid(id)) {
                 Optional<News> optionalNews = newsDao.findEntityById(Long.valueOf(id));
                 if (optionalNews.isPresent()) {
                     News news = optionalNews.get();

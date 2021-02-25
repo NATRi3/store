@@ -22,6 +22,8 @@ public class MessageKey {
     public static final String ERROR_PRODUCT_NOT_ACTIVE = "message.product_not_active";
     public static final String ERROR_MESSAGE_FILE_NOT_FOUND = "message.file_not_found";
     public static final String ERROR_MESSAGE_EMPTY_CART = "message.empty_cart";
+    public static final String ERROR_MESSAGE_USER_NONACTIVE = "message.nonactive_user";
+    public static final String ERROR_UNKNOWN_FEEDBACK = "message.unknown_feedback";
 
     public static final String SUCCESSFUL_DELETE = "message.successful_delete";
     public static final String SUCCESSFUL_CHANGE_PASSWORD = "message.successful_change_password";
@@ -36,7 +38,6 @@ public class MessageKey {
     public static final String SUCCESSFUL_CREATE_ORDER = "message.successful_create_order";
     public static final String SUCCESSFUL_CREATE_COLLECTION = "message.successful_create_collection";
     public static final String SUCCESSFUL_CHANGE_STATUS = "message.successful_change_status";
-    public static final String ERROR_UNKNOWN_FEEDBACK = "message.unknown_feedback";
 
     private MessageKey(){ }
 }

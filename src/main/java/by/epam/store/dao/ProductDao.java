@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface ProductDao {
     public boolean changeStatus(Long id, TypeStatus status) throws DaoException;
+
     public List<Product> findCollectionProductAndSort(int begin, TypeStatus status, String idCollection, String typeSort)
             throws DaoException;
+
     List<Product> findRandomProduct(int amount) throws DaoException;
 
-    List<Product> findProductByName(String name) throws DaoException;
+    List<Product> findProductByName(String... name) throws DaoException;
 }

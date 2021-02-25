@@ -14,6 +14,7 @@ public class MessageCreator {
         bundleMap.put("ru-RU",ResourceBundle.getBundle("property/error", Locale.forLanguageTag("ru-Ru")));
         bundleMap.put("default",ResourceBundle.getBundle("property/error",Locale.getDefault()));
     }
+
     public static String getMessageFromBundleByLocale(String key, HttpServletRequest request){
         String locale = String.valueOf(request.getSession().getAttribute(SessionAttribute.LOCALE));
         ResourceBundle bundle = bundleMap.get(locale);

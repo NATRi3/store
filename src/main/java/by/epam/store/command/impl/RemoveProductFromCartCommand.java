@@ -21,13 +21,13 @@ public class RemoveProductFromCartCommand implements Command {
         String idStr = request.getParameter(RequestParameter.ID_PRODUCT);
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
-        if(NumberValidator.isNumberValid(idStr)){
+        if(NumberValidator.isLongValid(idStr)){
             long id = Long.parseLong(idStr);
             cart.deleteProduct(id);
-            return Router.redirectTo(PagePath.CART);
+            return Router.redirectTo(PagePath.CART,request);
         } else {
             request.setAttribute(RequestParameter.MESSAGE,MessageKey.ERROR_UNKNOWN_PRODUCT);
-            return Router.forwardTo(PagePath.CART);
+            return Router.forwardTo(PagePath.CART,request);
         }
     }
 }
