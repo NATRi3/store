@@ -5,8 +5,10 @@ import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.Order;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.User;
+import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.OrderService;
+import by.epam.store.util.ResponseWriterUtil;
 import by.epam.store.util.SessionAttribute;
 import com.google.gson.*;
 import org.apache.logging.log4j.LogManager;
@@ -27,23 +29,17 @@ public class GetUserOrdersCommand implements CommandAsync {
     private static final OrderService orderService = ServiceCreator.getInstance().getOrderService();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(SessionAttribute.USER);
         try {
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute(SessionAttribute.USER);
-            try {
-                List<Order> orderList = orderService.getUserOrders(user.getId());
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                String json = gson.toJson(orderList);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            } catch (Throwable e) {
-                log.error(e);
-                response.sendError(500);
-            }
-        }catch (IOException e){
+            List<Order> orderList = orderService.getUserOrders(user.getId());
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(orderList);
+            ResponseWriterUtil.writeJsonToResponse(response,json);
+        } catch (Throwable e) {
             log.error(e);
+            throw new CommandException(e);
         }
     }
 }

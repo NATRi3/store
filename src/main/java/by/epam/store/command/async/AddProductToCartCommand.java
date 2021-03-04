@@ -7,10 +7,7 @@ import by.epam.store.entity.Product;
 import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
-import by.epam.store.util.MessageCreator;
-import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,34 +22,27 @@ public class AddProductToCartCommand implements CommandAsync {
     private static final ProductService productService = ServiceCreator.getInstance().getProductService();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        String idStr = request.getParameter(RequestParameter.ID_PRODUCT);
+        String messageKey;
         try {
-            String idStr = request.getParameter(RequestParameter.ID_PRODUCT);
-            String messageKey;
-            try {
-                Optional<Product> optionalProduct = productService.findProductById(idStr);
-                if (optionalProduct.isPresent()){
-                    if(optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
+            Optional<Product> optionalProduct = productService.findProductById(idStr);
+            if (optionalProduct.isPresent()){
+                if(optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
                     HttpSession session = request.getSession();
                     Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
                     cart.addProduct(optionalProduct.get());
                     session.setAttribute(SessionAttribute.CART, cart);
                     messageKey = MessageKey.SUCCESSFUL_ADD_TO_CART;
-                    } else {
-                        messageKey = MessageKey.ERROR_PRODUCT_NOT_ACTIVE;
-                    }
-                }else {
-                    messageKey = MessageKey.ERROR_UNKNOWN_PRODUCT;
+                } else {
+                    messageKey = MessageKey.ERROR_PRODUCT_NOT_ACTIVE;
                 }
-                String message = MessageCreator.getMessageFromBundleByLocale(messageKey,request);
-                response.setContentType("application/text");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(message);
-            } catch (ServiceException e) {
-                log.warn(e);
-                response.setStatus(500);
+            }else {
+                messageKey = MessageKey.ERROR_UNKNOWN_PRODUCT;
             }
-        } catch (IOException e) {
-            log.error(e);
+            ResponseWriterUtil.writeTextToResponse(request,response,messageKey);
+        } catch (ServiceException e) {
+            log.warn(e);
+            response.setStatus(500);
         }
     }
 }

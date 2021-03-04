@@ -33,13 +33,15 @@ public class CustomConnectionPool {
         givenAwayConnection = new LinkedList<>();
         try{
             for(int i = 0; i<POOL_SIZE;i++){
-                freeConnections.add(new ProxyConnection(ConnectionCreator.getConnection()));
+                Connection connection = ConnectionCreator.getConnection();
+                ProxyConnection proxyConnection = new ProxyConnection(connection);
+                freeConnections.add(proxyConnection);
             }
         } catch (SQLException e) {
-            log.error(e);
+            log.fatal(e);
             throw new RuntimeException();
         }
-        timerTask.schedule(new CheckConnectionTimerTask(), 1,2000);
+        timerTask.schedule(new CheckConnectionTimerTask(), 14400000,14400000);
     }
 
     public static CustomConnectionPool getInstance(){
@@ -54,41 +56,52 @@ public class CustomConnectionPool {
         return instance;
     }
 
-    public Connection getConnection() throws SQLException {
-        if(timeTaskIsWork.get()){
-            lockConnection.lock();
-            lockConnection.unlock();
+    public Connection getConnection(){
+        while (timeTaskIsWork.get()){
+            //todo
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error(e);;
+            }
         }
+        ProxyConnection connection = null;
         try {
-            ProxyConnection connection = freeConnections.take();
+            connection = freeConnections.take();
             givenAwayConnection.add(connection);
-            return connection;
         } catch (InterruptedException e) {
-            log.info(e);
-            throw new SQLException();
+            Thread.currentThread().interrupt();
+            log.error(e);
         }
+        return connection;
     }
 
-    public void closeConnection(Connection connection) {
-        if(timeTaskIsWork.get()){
-            lockConnection.lock();
-            lockConnection.unlock();
+    void closeConnection(Connection connection) {
+        while (timeTaskIsWork.get()){
+            //todo
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error(e);
+            }
         }
         if(connection instanceof ProxyConnection) {
             givenAwayConnection.remove(connection);
             freeConnections.add((ProxyConnection) connection);
         } else {
-        log.warn("Connection is not proxy or null!");
+            log.warn("Connection is not proxy or null!");
         }
     }
 
     public void closePool(){
         for(int i=0; i<getSize(); i++){
             try {
-                ProxyConnection proxyConnection = (ProxyConnection) freeConnections.take();
+                ProxyConnection proxyConnection = freeConnections.take();
                 proxyConnection.reallyClose();
             } catch (InterruptedException | SQLException e) {
-               log.warn(e);
+                log.error(e);
             }
         }
         deregisterDrivers();
