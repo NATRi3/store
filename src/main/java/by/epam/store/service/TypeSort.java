@@ -11,6 +11,7 @@ public enum TypeSort {
     TITLE("title"),
     TITLEDESC("title DESC");
     private String string;
+
     TypeSort(String string){
         this.string=string;
     }

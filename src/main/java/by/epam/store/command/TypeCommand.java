@@ -5,7 +5,7 @@ import by.epam.store.command.impl.*;
 
 import java.util.function.Supplier;
 
-public enum TypeCommand implements Supplier<Command> {
+public enum TypeCommand{
     CREATE_FEEDBACK(new CreateFeedbackCommand()),
     CREATE_ORDER(new CreateOrderCommand()),
     REDIRECT_TO_SINGLE_PRODUCT(new RedirectToSingleProductCommand()),
@@ -30,11 +30,11 @@ public enum TypeCommand implements Supplier<Command> {
 
     private final Command command;
 
+    public Command getCommand() {
+        return command;
+    }
+
     TypeCommand(Command command) {
         this.command = command;
-    }
-@Override
-    public Command get(){
-        return command;
     }
 }

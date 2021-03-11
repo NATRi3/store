@@ -1,6 +1,6 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.entity.type.TypeRole;
+import by.epam.store.entity.TypeRole;
 import by.epam.store.util.PagePath;
 
 import java.util.HashMap;

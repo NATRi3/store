@@ -1,11 +1,7 @@
 package by.epam.store.dao.impl;
 
 import by.epam.store.dao.BaseDao;
-import by.epam.store.entity.Order;
-import by.epam.store.entity.Product;
-import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.*;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.service.TypeSort;
@@ -13,8 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 
 public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     private final static Logger log = LogManager.getLogger(OrderDao.class);
@@ -101,7 +97,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     }
 
     @Override
-    public List<Order> getUserOrders(long id) throws DaoException {
+    public List<Order> findUserOrders(long id) throws DaoException {
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statementOrder = connection.prepareStatement(SQL_SELECT_ORDER_BY_USER);
             PreparedStatement statementProduct = connection.prepareStatement(SQL_SELECT_PRODUCTS_BY_ID_ORDER)) {
@@ -124,7 +120,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
     }
 
     @Override
-    public List<Order> getOrdersByStatusAndSort(int beginPagination, TypeSort typeSort, TypeStatus typeStatus) throws DaoException {
+    public List<Order> findOrdersByStatusAndSort(int beginPagination, TypeSort typeSort, TypeStatus typeStatus) throws DaoException {
         String sql = String.format(SQL_SELECT_ORDERS_BY_STATUS,typeSort.toString());
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statementOrder = connection.prepareStatement(sql);

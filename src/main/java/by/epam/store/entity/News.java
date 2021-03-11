@@ -1,9 +1,7 @@
 package by.epam.store.entity;
 
 
-
 import java.util.Date;
-import java.util.Objects;
 
 public class News {
     private long idNews;
@@ -73,12 +71,23 @@ public class News {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         News news = (News) o;
-        return idNews == news.idNews && Objects.equals(title, news.title) && Objects.equals(info, news.info) && Objects.equals(imageName, news.imageName) && Objects.equals(date, news.date);
+
+        if (idNews != news.idNews) return false;
+        if (title != null ? !title.equals(news.title) : news.title != null) return false;
+        if (info != null ? !info.equals(news.info) : news.info != null) return false;
+        if (imageName != null ? !imageName.equals(news.imageName) : news.imageName != null) return false;
+        return date != null ? date.equals(news.date) : news.date == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idNews, title, info, imageName, date);
+        int result = (int) (idNews ^ (idNews >>> 32));
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        result = 31 * result + (imageName != null ? imageName.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 }

@@ -8,15 +8,15 @@ import java.util.Optional;
 public class CommandProvider {
     private final static Logger log = LogManager.getLogger(CommandProvider.class);
 
-    public static Optional<Command> commandDefine(String command){
+    public static Optional<Command> commandDefine(String command) {
         Optional<Command> optionalCommand = Optional.empty();
         try {
-            if(command!=null) {
+            if (command != null) {
                 Command resultCommand =
-                        TypeCommand.valueOf(command.toUpperCase()).get();
+                        TypeCommand.valueOf(command.toUpperCase()).getCommand();
                 optionalCommand = Optional.of(resultCommand);
             }
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             log.error(e);
         }
         return optionalCommand;

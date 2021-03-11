@@ -9,6 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 public class NotFoundCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
-        return Router.redirectTo(PagePath.PAGE_404,request);
+        return Router.redirectTo(PagePath.PAGE_404, request);
     }
 }

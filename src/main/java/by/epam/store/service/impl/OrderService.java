@@ -4,12 +4,12 @@ import by.epam.store.entity.Cart;
 import by.epam.store.entity.Order;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.TypeSort;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
@@ -30,8 +30,8 @@ public class OrderService implements by.epam.store.service.OrderService {
                 return MessageKey.ERROR_MESSAGE_EMPTY_CART;
             }
             if(FormValidator.isFormValid(parameters)) {
-                String phone = parameters.get(RequestParameter.PHONE);
-                String address = parameters.get(RequestParameter.ADDRESS);
+                String phone = parameters.get(RequestParameterAndAttribute.PHONE);
+                String address = parameters.get(RequestParameterAndAttribute.ADDRESS);
                 Map<Product, Integer> cartMap = cart.getProducts();
                 Map<Product, Integer> orderMap = new HashMap<>();
                 for (Map.Entry<Product, Integer> entry : cartMap.entrySet()) {
@@ -51,9 +51,9 @@ public class OrderService implements by.epam.store.service.OrderService {
     }
 
     @Override
-    public List<Order> getUserOrders(long id) throws ServiceException {
+    public List<Order> findUserOrders(long id) throws ServiceException {
         try {
-            List<Order> orders = orderDao.getUserOrders(id);
+            List<Order> orders = orderDao.findUserOrders(id);
             return orders;
         } catch (DaoException e){
             log.error(e);
@@ -62,7 +62,7 @@ public class OrderService implements by.epam.store.service.OrderService {
     }
 
     @Override
-    public List<Order> getOrderList(String begin, String sort, String status) throws ServiceException {
+    public List<Order> findOrderList(String begin, String sort, String status) throws ServiceException {
         if(!NumberValidator.isLongValid(begin)&&
             !TypeValidator.isTypeOrderSort(sort)&&
             !TypeValidator.isTypeOrderStatus(status)){
@@ -72,7 +72,7 @@ public class OrderService implements by.epam.store.service.OrderService {
             int beginPagination = Integer.parseInt(begin);
             TypeSort typeSort = TypeSort.valueOf(sort.toUpperCase());
             TypeStatus typeStatus = TypeStatus.valueOf(status.toUpperCase());
-            return orderDao.getOrdersByStatusAndSort(beginPagination,typeSort,typeStatus);
+            return orderDao.findOrdersByStatusAndSort(beginPagination,typeSort,typeStatus);
         } catch (DaoException e){
             log.error(e);
             throw new ServiceException(e);

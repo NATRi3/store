@@ -1,13 +1,16 @@
 package by.epam.store.util;
 
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Log4j2
 public class ResponseWriterUtil {
+
+    private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(ResponseWriterUtil.class);
+
+    private ResponseWriterUtil(){}
 
     public static void writeTextToResponse (HttpServletRequest request, HttpServletResponse response, String messageKey){
         try {

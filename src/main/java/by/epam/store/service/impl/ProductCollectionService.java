@@ -1,11 +1,11 @@
 package by.epam.store.service.impl;
 
 import by.epam.store.entity.ProductCollection;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
@@ -23,12 +23,12 @@ public class ProductCollectionService implements by.epam.store.service.Collectio
     @Override
     public List<ProductCollection> findAllProductCollectionsByStatus(String status) throws ServiceException {
         try {
-            if(!TypeValidator.isTypeCollectionStatus(status)){
+            if (!TypeValidator.isTypeCollectionStatus(status)) {
                 throw new ServiceException();
             }
             TypeStatus typeStatus = TypeStatus.valueOf(status);
             return collectionDao.findByStatus(typeStatus);
-        } catch (DaoException e){
+        } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
         }
@@ -46,12 +46,12 @@ public class ProductCollectionService implements by.epam.store.service.Collectio
 
     @Override
     public Optional<String> createCollection(Map<String, String> parameters) throws ServiceException {
-        try{
-            if(FormValidator.isFormValid(parameters)){
-                String name = parameters.get(RequestParameter.NAME_COLLECTION);
-                String info = parameters.get(RequestParameter.INFO_COLLECTION);
+        try {
+            if (FormValidator.isFormValid(parameters)) {
+                String name = parameters.get(RequestParameterAndAttribute.NAME_COLLECTION);
+                String info = parameters.get(RequestParameterAndAttribute.INFO_COLLECTION);
                 Date date = new Date();
-                ProductCollection productCollection = new ProductCollection(name,info,date);
+                ProductCollection productCollection = new ProductCollection(name, info, date);
                 collectionDao.create(productCollection);
                 return Optional.of(MessageKey.SUCCESSFUL_CREATE_COLLECTION);
             }
@@ -64,12 +64,12 @@ public class ProductCollectionService implements by.epam.store.service.Collectio
 
     @Override
     public String changeStatus(String id, TypeStatus status) throws ServiceException {
-        if(!NumberValidator.isLongValid(id)){
-            throw new ServiceException("Invalid id "+id);
+        if (!NumberValidator.isLongValid(id)) {
+            throw new ServiceException("Invalid id " + id);
         }
-        try{
+        try {
             long idCollection = Long.parseLong(id);
-            if(collectionDao.updateStatus(idCollection,status)){
+            if (collectionDao.updateStatus(idCollection, status)) {
                 return MessageKey.SUCCESSFUL_CHANGE;
             } else {
                 return MessageKey.ERROR_UNKNOWN_COLLECTION;
@@ -81,13 +81,13 @@ public class ProductCollectionService implements by.epam.store.service.Collectio
     }
 
     @Override
-    public String changeInfo(Map<String,String> parameters) throws ServiceException {
-        try{
+    public String changeInfo(Map<String, String> parameters) throws ServiceException {
+        try {
             String messageKey;
-            if(FormValidator.isFormValid(parameters)){
-                Long id = Long.valueOf(parameters.get(RequestParameter.ID_COLLECTION));
-                String info = parameters.get(RequestParameter.INFO_COLLECTION);
-                collectionDao.updateInfo(id,info);
+            if (FormValidator.isFormValid(parameters)) {
+                Long id = Long.valueOf(parameters.get(RequestParameterAndAttribute.ID_COLLECTION));
+                String info = parameters.get(RequestParameterAndAttribute.INFO_COLLECTION);
+                collectionDao.updateInfo(id, info);
                 messageKey = MessageKey.SUCCESSFUL_CHANGE;
             } else {
                 messageKey = MessageKey.ERROR_MESSAGE_INVALID_PARAM;

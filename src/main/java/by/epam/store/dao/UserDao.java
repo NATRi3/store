@@ -1,8 +1,7 @@
 package by.epam.store.dao;
 
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 
 import java.util.List;
@@ -24,4 +23,6 @@ public interface UserDao {
     List<User> findUserByRoleAndStatus(TypeStatus status, int begin) throws DaoException;
 
     boolean changeStatus(long id, TypeStatus statusFrom, TypeStatus statusTo) throws DaoException;
+
+    boolean changeImageById(long id, String imageName) throws DaoException;
 }

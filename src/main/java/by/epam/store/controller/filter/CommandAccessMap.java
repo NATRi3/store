@@ -1,10 +1,8 @@
 package by.epam.store.controller.filter;
 
 import by.epam.store.command.TypeCommand;
-import by.epam.store.command.TypeCommandAsync;
-import by.epam.store.entity.type.TypeRole;
+import by.epam.store.entity.TypeRole;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Set;
 
 public class CommandAccessMap extends HashMap<TypeRole,Set<String>> {

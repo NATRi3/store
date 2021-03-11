@@ -6,33 +6,29 @@ import by.epam.store.controller.Router;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.NewsService;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestUtil;
+import by.epam.store.util.RouterResponseHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ChangeNewsCommand implements Command {
     private final static Logger log = LogManager.getLogger(ChangeNewsCommand.class);
     private static final NewsService newsService = ServiceCreator.getInstance().getNewsService();
+
     @Override
     public Router execute(HttpServletRequest request) {
-        Map<String,String> parameters = new HashMap<>();
-        parameters.put(RequestParameter.NEWS_TITLE,request.getParameter(RequestParameter.NEWS_TITLE));
-        parameters.put(RequestParameter.NEWS_INFO,request.getParameter(RequestParameter.NEWS_INFO));
-        parameters.put(RequestParameter.ID_NEWS,request.getParameter(RequestParameter.ID_NEWS));
-        try{
+        Router page;
+        Map<String,String> parameters = RequestUtil.getAllParametersFrom(request);
+        try {
             String message = newsService.changeNews(parameters);
-            request.setAttribute(RequestParameter.MESSAGE,message);
-            for(Map.Entry<String,String> entry: parameters.entrySet()){
-                request.setAttribute(entry.getKey(),entry.getValue());
-            }
-            return Router.forwardTo(PagePath.ADMIN_PANEL_NEWS,request);
+            page = RouterResponseHelper.router(request,message,parameters,PagePath.ADMIN_PANEL_NEWS);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500,request);
+            page = Router.redirectTo(PagePath.PAGE_500, request);
         }
+        return page;
     }
 }

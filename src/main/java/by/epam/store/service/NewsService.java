@@ -7,12 +7,12 @@ import by.epam.store.exception.ServiceException;
 import java.util.List;
 import java.util.Map;
 
-public interface NewsService {
+public interface NewsService extends ImageService {
     static final NewsDao newsDao = DaoCreator.getInstance().getNewsDao();
 
-    List<News> getFreshNews(String count) throws ServiceException;
+    List<News> findFreshNews(String count) throws ServiceException;
 
-    List<News> getSortNews(String typeSort, String begin) throws ServiceException;
+    List<News> findSortNews(String typeSort, String begin) throws ServiceException;
 
     String deleteNews(String id) throws ServiceException;
 

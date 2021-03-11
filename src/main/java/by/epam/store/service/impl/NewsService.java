@@ -3,8 +3,9 @@ package by.epam.store.service.impl;
 import by.epam.store.entity.News;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
+import by.epam.store.service.ImageService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
@@ -19,12 +20,12 @@ import java.util.Optional;
 public class NewsService implements by.epam.store.service.NewsService {
     private static final Logger log = LogManager.getLogger(NewsService.class);
     @Override
-    public List<News> getFreshNews(String count) throws ServiceException {
+    public List<News> findFreshNews(String count) throws ServiceException {
         if(!NumberValidator.isLongValid(count)){
             throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         }
         try {
-            return newsDao.getFreshNews(Integer.parseInt(count));
+            return newsDao.findFreshNews(Integer.parseInt(count));
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e.getMessage());
@@ -32,13 +33,13 @@ public class NewsService implements by.epam.store.service.NewsService {
     }
 
     @Override
-    public List<News> getSortNews(String typeSort, String begin) throws ServiceException {
+    public List<News> findSortNews(String typeSort, String begin) throws ServiceException {
         if(!NumberValidator.isLongValid(begin)||
             !TypeValidator.isTypeNewsSort(typeSort)){
             throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         }
         try{
-            return newsDao.getSortNews(typeSort, Integer.parseInt(begin),10);
+            return newsDao.findSortNews(typeSort, Integer.parseInt(begin),10);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e.getMessage(),e);
@@ -67,8 +68,8 @@ public class NewsService implements by.epam.store.service.NewsService {
         try{
             if(FormValidator.isFormValid(parameters)) {
                 Date date = new Date();
-                String title = parameters.get(RequestParameter.NEWS_TITLE);
-                String info = parameters.get(RequestParameter.NEWS_INFO);
+                String title = parameters.get(RequestParameterAndAttribute.NEWS_TITLE);
+                String info = parameters.get(RequestParameterAndAttribute.NEWS_INFO);
                 News news = new News(title, info, date);
                 newsDao.create(news);
                 return MessageKey.SUCCESSFUL_NEWS_ADD;
@@ -113,9 +114,9 @@ public class NewsService implements by.epam.store.service.NewsService {
         String resultMessage;
         try {
             if(FormValidator.isFormValid(parameters)) {
-                long id = Long.parseLong(parameters.get(RequestParameter.ID_NEWS));
-                String title = parameters.get(RequestParameter.NEWS_TITLE);
-                String info = parameters.get(RequestParameter.NEWS_INFO);
+                long id = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_NEWS));
+                String title = parameters.get(RequestParameterAndAttribute.NEWS_TITLE);
+                String info = parameters.get(RequestParameterAndAttribute.NEWS_INFO);
                 Optional<News> optionalNews = newsDao.findEntityById(id);
                 if (optionalNews.isPresent()) {
                     News news = optionalNews.get();

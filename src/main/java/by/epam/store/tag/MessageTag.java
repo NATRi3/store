@@ -1,8 +1,7 @@
 package by.epam.store.tag;
 
 import by.epam.store.util.MessageCreator;
-import by.epam.store.util.RequestParameter;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.util.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,17 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 public class MessageTag  extends TagSupport {
     private static final Logger log = LogManager.getLogger(MessageTag.class);
     @Override
     public int doStartTag() throws JspException {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        String messageKey = (String) request.getAttribute(RequestParameter.MESSAGE);
+        String messageKey = (String) request.getAttribute(RequestParameterAndAttribute.MESSAGE);
         try {
             if (messageKey != null) {
                 String message = MessageCreator.getMessageFromBundleByLocale(messageKey, request);
@@ -51,9 +46,6 @@ public class MessageTag  extends TagSupport {
             }
         }catch (IOException e){
             log.error(e);
-        } catch (Throwable e){// FIXME: 20.02.2021 IOException
-            log.error(e);
-            throw e;
         }
         return SKIP_BODY;
     }

@@ -4,7 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class SendMail {
@@ -24,6 +25,8 @@ public class SendMail {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
     }
+
+    private SendMail(){}
 
     public static void sendActivationMailTo(String mail, long id) {
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {

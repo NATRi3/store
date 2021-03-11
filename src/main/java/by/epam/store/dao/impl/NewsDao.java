@@ -4,7 +4,6 @@ import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.News;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -98,7 +97,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
     }
 
     @Override
-    public List<News> getFreshNews(int count) throws DaoException {
+    public List<News> findFreshNews(int count) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_AMOUNT_FRESH_NEWS)) {
             statement.setInt(1,count);
@@ -115,7 +114,7 @@ public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
     }
 
     @Override
-    public List<News> getSortNews(String typeSort, int begin, int count) throws DaoException {
+    public List<News> findSortNews(String typeSort, int begin, int count) throws DaoException {
         String sql = String.format(SQL_SELECT_AMOUNT_SORT_NEWS,typeSort,typeSort);
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

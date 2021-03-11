@@ -2,12 +2,11 @@ package by.epam.store.dao.impl;
 
 import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.Feedback;
+import by.epam.store.entity.TypeRole;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.util.MessageKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -2,7 +2,7 @@ package by.epam.store.dao.impl;
 
 import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.Product;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;

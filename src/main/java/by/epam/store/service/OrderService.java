@@ -14,7 +14,7 @@ public interface OrderService {
 
     String createOrder(Map<String, String> parameters, User user, Cart cart) throws ServiceException;
 
-    List<Order> getUserOrders(long id) throws ServiceException;
+    List<Order> findUserOrders(long id) throws ServiceException;
 
-    List<Order> getOrderList(String begin, String sort, String status) throws ServiceException;
+    List<Order> findOrderList(String begin, String sort, String status) throws ServiceException;
 }

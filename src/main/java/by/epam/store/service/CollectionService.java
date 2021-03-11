@@ -2,7 +2,7 @@ package by.epam.store.service;
 
 import by.epam.store.dao.impl.CollectionDao;
 import by.epam.store.entity.ProductCollection;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
 
 import java.util.List;

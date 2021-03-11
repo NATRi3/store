@@ -1,9 +1,7 @@
 package by.epam.store.entity;
 
 
-
 import java.util.Date;
-import java.util.Objects;
 
 public class Feedback {
     private long id;
@@ -85,12 +83,25 @@ public class Feedback {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Feedback feedback1 = (Feedback) o;
-        return id == feedback1.id && evaluation == feedback1.evaluation && idProduct == feedback1.idProduct && feedback.equals(feedback1.feedback) && user.equals(feedback1.user) && date.equals(feedback1.date);
+
+        if (id != feedback1.id) return false;
+        if (evaluation != feedback1.evaluation) return false;
+        if (idProduct != feedback1.idProduct) return false;
+        if (feedback != null ? !feedback.equals(feedback1.feedback) : feedback1.feedback != null) return false;
+        if (user != null ? !user.equals(feedback1.user) : feedback1.user != null) return false;
+        return date != null ? date.equals(feedback1.date) : feedback1.date == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, feedback, evaluation, idProduct, user, date);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
+        result = 31 * result + (int) evaluation;
+        result = 31 * result + (int) (idProduct ^ (idProduct >>> 32));
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 }

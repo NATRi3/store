@@ -11,12 +11,12 @@ public class CommandProviderAsync {
     public static Optional<CommandAsync> commandDefine(String command) {
         Optional<CommandAsync> optionalCommand = Optional.empty();
         try {
-            if(command!=null) {
+            if (command != null) {
                 CommandAsync commandAsync =
                         TypeCommandAsync.valueOf(command.toUpperCase()).getCommand();
                 optionalCommand = Optional.of(commandAsync);
             }
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             log.error(e);
         }
         return optionalCommand;

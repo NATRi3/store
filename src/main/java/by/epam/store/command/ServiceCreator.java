@@ -13,7 +13,7 @@ public class ServiceCreator {
     private final FeedbackService feedbackService = new FeedbackService();
     private final NewsService newsService = new NewsService();
 
-    public static ServiceCreator getInstance(){
+    public static ServiceCreator getInstance() {
         return INSTANCE;
     }
 

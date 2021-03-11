@@ -2,7 +2,7 @@ package by.epam.store.command;
 
 import by.epam.store.command.async.*;
 
-public enum  TypeCommandAsync {
+public enum TypeCommandAsync {
     DELETE_FEEDBACK(new DeleteFeedbackCommand()),
     SEARCH_PRODUCT(new SearchProductCommand()),
     CHANGE_USER_STATUS(new ChangeUserStatusCommand()),
@@ -20,13 +20,13 @@ public enum  TypeCommandAsync {
     DEACTIVATE_PRODUCT(new DeactivateProductCommand()),
     ADD_PRODUCT_TO_CART(new AddProductToCartCommand()),
     ACTIVATE_PRODUCT(new ActivateProductCommand());
-    private CommandAsync command;
+    private final CommandAsync command;
 
     TypeCommandAsync(CommandAsync command) {
         this.command = command;
     }
 
-    public CommandAsync getCommand(){
+    public CommandAsync getCommand() {
         return command;
     }
 }

@@ -1,11 +1,11 @@
 package by.epam.store.service.impl;
 
 import by.epam.store.entity.Product;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import by.epam.store.validator.TypeValidator;
@@ -30,7 +30,7 @@ public class ProductService implements by.epam.store.service.ProductService {
             }
         } catch (DaoException e) {
             log.error(e);
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -38,10 +38,10 @@ public class ProductService implements by.epam.store.service.ProductService {
     public String saveProduct(Map<String, String> parameters) throws ServiceException {
         try {
             if(FormValidator.isFormValid(parameters)) {
-                long idCollection = Long.parseLong(parameters.get(RequestParameter.ID_COLLECTION));
-                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameter.PRICE_PRODUCT)));
-                String name = parameters.get(RequestParameter.NAME_PRODUCT);
-                String info = parameters.get(RequestParameter.INFO_PRODUCT);
+                long idCollection = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_COLLECTION));
+                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
+                String name = parameters.get(RequestParameterAndAttribute.NAME_PRODUCT);
+                String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
                 Product product = new Product(name, info, price, idCollection);
                 productDao.create(product);
                 return MessageKey.SUCCESSFUL_PRODUCT_ADD;
@@ -50,12 +50,13 @@ public class ProductService implements by.epam.store.service.ProductService {
             }
         } catch (DaoException e) {
             log.error(e);
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
     @Override
     public String changeStatus(String idProduct, TypeStatus status) throws ServiceException{
+        String resultMessage;
         try {
             if(NumberValidator.isLongValid(idProduct)) {
                 long id = Long.parseLong(idProduct);
@@ -64,17 +65,18 @@ public class ProductService implements by.epam.store.service.ProductService {
                     Product product = optionalProduct.get();
                     product.setStatus(status);
                     productDao.update(product);
-                    return MessageKey.SUCCESSFUL_CHANGE;
+                    resultMessage = MessageKey.SUCCESSFUL_CHANGE;
                 } else {
-                    return MessageKey.ERROR_UNKNOWN_PRODUCT;
+                    resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
                 }
             } else {
-                return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
+                resultMessage = MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
         } catch (DaoException e){
             log.error(e);
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
+        return resultMessage;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ProductService implements by.epam.store.service.ProductService {
             return productDao.findCollectionProductAndSort(beginPagination, typeStatus, idCollection, typeSort);
         } catch (DaoException e) {
             log.error(e);
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e);
         }
     }
 
@@ -114,7 +116,7 @@ public class ProductService implements by.epam.store.service.ProductService {
             return productDao.findRandomProduct(amount);
         } catch (DaoException e) {
             log.error(e);
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e);
         }
     }
 
@@ -123,9 +125,9 @@ public class ProductService implements by.epam.store.service.ProductService {
         String resultMessage;
         try {
             if(FormValidator.isFormValid(parameters)) {
-                long idProduct = Long.parseLong(parameters.get(RequestParameter.ID_PRODUCT));
-                BigDecimal priceProduct = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameter.PRICE_PRODUCT)));
-                String info = parameters.get(RequestParameter.INFO_PRODUCT);
+                long idProduct = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_PRODUCT));
+                BigDecimal priceProduct = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
+                String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
                 Optional<Product> optionalProduct = productDao.findEntityById(idProduct);
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
@@ -142,13 +144,13 @@ public class ProductService implements by.epam.store.service.ProductService {
             }
         } catch (DaoException e) {
             log.error(e);
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e);
         }
         return resultMessage;
     }
 
     @Override
-    public String changeProductImage(String id, String imageName) throws ServiceException {
+    public String changeImage(String id, String imageName) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
             if(NumberValidator.isLongValid(id)) {

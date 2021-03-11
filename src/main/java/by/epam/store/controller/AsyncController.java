@@ -2,10 +2,8 @@ package by.epam.store.controller;
 
 import by.epam.store.command.CommandAsync;
 import by.epam.store.command.CommandProviderAsync;
-import by.epam.store.command.async.AddProductToCartCommand;
 import by.epam.store.exception.CommandException;
-import by.epam.store.util.RequestParameter;
-import lombok.extern.log4j.Log4j2;
+import by.epam.store.util.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,14 +30,15 @@ public class AsyncController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<CommandAsync> command = CommandProviderAsync.commandDefine(request.getParameter(RequestParameter.COMMAND));
-        try{
-            if(command.isPresent()) {
+        String commandName = request.getParameter(RequestParameterAndAttribute.COMMAND);
+        Optional<CommandAsync> command = CommandProviderAsync.commandDefine(commandName);
+        try {
+            if (command.isPresent()) {
                 command.get().execute(request, response);
             } else {
                 response.sendError(404);
             }
-        } catch (CommandException e){
+        } catch (CommandException e) {
             log.error(e);
             response.sendError(500);
         }

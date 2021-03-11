@@ -1,6 +1,6 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,12 +30,12 @@ public class DoublePostingPreventingFilter implements Filter {
         }else{
             session = request.getSession();
             int serverToken = (Integer)session.getAttribute(SessionAttribute.SERVER_TOKEN);
-            if(req.getParameter(RequestParameter.CLIENT_TOKEN)!=null&&
-            serverToken == Integer.parseInt(req.getParameter(RequestParameter.CLIENT_TOKEN))){
+            if(req.getParameter(RequestParameterAndAttribute.CLIENT_TOKEN)!=null&&
+            serverToken == Integer.parseInt(req.getParameter(RequestParameterAndAttribute.CLIENT_TOKEN))){
                 session.setAttribute(SessionAttribute.SERVER_TOKEN,  new Random().nextInt(10000));
                 chain.doFilter(req, res);
             } else {
-                log.info("Tokens: "+serverToken+"-"+req.getParameter(RequestParameter.CLIENT_TOKEN));
+                log.info("Tokens: "+serverToken+"-"+req.getParameter(RequestParameterAndAttribute.CLIENT_TOKEN));
                 session.setAttribute(SessionAttribute.SERVER_TOKEN,  new Random().nextInt(10000));
                 HttpServletResponse response = (HttpServletResponse) res;
                 response.sendRedirect(request.getContextPath()+session.getAttribute(SessionAttribute.PAGE));

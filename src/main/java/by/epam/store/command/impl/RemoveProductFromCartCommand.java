@@ -5,7 +5,7 @@ import by.epam.store.controller.Router;
 import by.epam.store.entity.Cart;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.SessionAttribute;
 import by.epam.store.validator.NumberValidator;
 import org.apache.logging.log4j.LogManager;
@@ -16,18 +16,19 @@ import javax.servlet.http.HttpSession;
 
 public class RemoveProductFromCartCommand implements Command {
     private final static Logger log = LogManager.getLogger(RemoveProductFromCartCommand.class);
+
     @Override
     public Router execute(HttpServletRequest request) {
-        String idStr = request.getParameter(RequestParameter.ID_PRODUCT);
+        String idStr = request.getParameter(RequestParameterAndAttribute.ID_PRODUCT);
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
-        if(NumberValidator.isLongValid(idStr)){
+        if (NumberValidator.isLongValid(idStr)) {
             long id = Long.parseLong(idStr);
             cart.deleteProduct(id);
-            return Router.redirectTo(PagePath.CART,request);
+            return Router.redirectTo(PagePath.CART, request);
         } else {
-            request.setAttribute(RequestParameter.MESSAGE,MessageKey.ERROR_UNKNOWN_PRODUCT);
-            return Router.forwardTo(PagePath.CART,request);
+            request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_UNKNOWN_PRODUCT);
+            return Router.forwardTo(PagePath.CART, request);
         }
     }
 }

@@ -18,7 +18,7 @@ public class AccessTag  extends TagSupport {
     public int doStartTag() throws JspException {
         HttpSession session = pageContext.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        if(user.getRole().toString().equals(access)){
+        if(user.getRole().name().equalsIgnoreCase(access)){
             return EVAL_BODY_INCLUDE;
         }
         return SKIP_BODY;

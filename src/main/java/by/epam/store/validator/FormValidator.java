@@ -1,6 +1,6 @@
 package by.epam.store.validator;
 
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 
 import java.util.Map;
 
@@ -17,144 +17,144 @@ public class FormValidator {
 
     public static boolean isFormValid(Map<String, String> dataMap) {
         boolean valid = true;
-        if (dataMap.containsKey(RequestParameter.NAME_COLLECTION)) {
-            String title = dataMap.get(RequestParameter.NAME_COLLECTION);
+        if (dataMap.containsKey(RequestParameterAndAttribute.NAME_COLLECTION)) {
+            String title = dataMap.get(RequestParameterAndAttribute.NAME_COLLECTION);
             if(!isStringLess(title,MAX_NAME_SIZE)){
-                dataMap.remove(RequestParameter.NAME_COLLECTION);
+                dataMap.remove(RequestParameterAndAttribute.NAME_COLLECTION);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.INFO_COLLECTION)) {
-            String title = dataMap.get(RequestParameter.INFO_COLLECTION);
+        if (dataMap.containsKey(RequestParameterAndAttribute.INFO_COLLECTION)) {
+            String title = dataMap.get(RequestParameterAndAttribute.INFO_COLLECTION);
             if(!isStringLess(title,MAX_INFO_500_SIZE)){
-                dataMap.remove(RequestParameter.INFO_COLLECTION);
+                dataMap.remove(RequestParameterAndAttribute.INFO_COLLECTION);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.NEWS_TITLE)) {
-            String title = dataMap.get(RequestParameter.NEWS_TITLE);
+        if (dataMap.containsKey(RequestParameterAndAttribute.NEWS_TITLE)) {
+            String title = dataMap.get(RequestParameterAndAttribute.NEWS_TITLE);
             if(!isStringLess(title,MAX_TITLE_NEWS_SIZE)){
-                dataMap.remove(RequestParameter.NEWS_TITLE);
+                dataMap.remove(RequestParameterAndAttribute.NEWS_TITLE);
                 valid = false;
             }
         }
-        if(dataMap.containsKey(RequestParameter.ID_COLLECTION)){
-            String id = dataMap.get(RequestParameter.ID_COLLECTION);
+        if(dataMap.containsKey(RequestParameterAndAttribute.ID_COLLECTION)){
+            String id = dataMap.get(RequestParameterAndAttribute.ID_COLLECTION);
             if(!NumberValidator.isLongValid(id)){
-                dataMap.remove(RequestParameter.ID_COLLECTION);
+                dataMap.remove(RequestParameterAndAttribute.ID_COLLECTION);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.NEWS_INFO)) {
-            String info = dataMap.get(RequestParameter.NEWS_INFO);
+        if (dataMap.containsKey(RequestParameterAndAttribute.NEWS_INFO)) {
+            String info = dataMap.get(RequestParameterAndAttribute.NEWS_INFO);
             if(!isStringLess(info,MAX_INFO_SIZE)){
-                dataMap.remove(RequestParameter.NEWS_INFO);
+                dataMap.remove(RequestParameterAndAttribute.NEWS_INFO);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.INFO_PRODUCT)) {
-            String info = dataMap.get(RequestParameter.INFO_PRODUCT);
+        if (dataMap.containsKey(RequestParameterAndAttribute.INFO_PRODUCT)) {
+            String info = dataMap.get(RequestParameterAndAttribute.INFO_PRODUCT);
             if(!isStringLess(info,MAX_INFO_SIZE)){
-                dataMap.remove(RequestParameter.INFO_PRODUCT);
+                dataMap.remove(RequestParameterAndAttribute.INFO_PRODUCT);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.PASSWORD)) {
-            String password = dataMap.get(RequestParameter.PASSWORD);
+        if (dataMap.containsKey(RequestParameterAndAttribute.PASSWORD)) {
+            String password = dataMap.get(RequestParameterAndAttribute.PASSWORD);
             if(!isPasswordValid(password)){
-                dataMap.remove(RequestParameter.PASSWORD);
+                dataMap.remove(RequestParameterAndAttribute.PASSWORD);
                 valid = false;
             }
-            if (dataMap.containsKey(RequestParameter.REPEAT_PASSWORD)) {
-                String repeatPassword = dataMap.get(RequestParameter.PASSWORD);
+            if (dataMap.containsKey(RequestParameterAndAttribute.REPEAT_PASSWORD)) {
+                String repeatPassword = dataMap.get(RequestParameterAndAttribute.PASSWORD);
                 if(!password.equals(repeatPassword)){
-                    dataMap.remove(RequestParameter.PASSWORD);
+                    dataMap.remove(RequestParameterAndAttribute.PASSWORD);
                     valid = false;
                 }
             }
         }
-        if (dataMap.containsKey(RequestParameter.EMAIL)) {
-            String email = dataMap.get(RequestParameter.EMAIL);
+        if (dataMap.containsKey(RequestParameterAndAttribute.EMAIL)) {
+            String email = dataMap.get(RequestParameterAndAttribute.EMAIL);
             if(!isEmailValid(email)){
-                dataMap.remove(RequestParameter.EMAIL);
+                dataMap.remove(RequestParameterAndAttribute.EMAIL);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.NAME)) {
-            String name = dataMap.get(RequestParameter.NAME);
+        if (dataMap.containsKey(RequestParameterAndAttribute.NAME)) {
+            String name = dataMap.get(RequestParameterAndAttribute.NAME);
             if(!isStringLess(name,MAX_NAME_SIZE)){
-                dataMap.remove(RequestParameter.NAME);
+                dataMap.remove(RequestParameterAndAttribute.NAME);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.NAME_PRODUCT)) {
-            String name = dataMap.get(RequestParameter.NAME_PRODUCT);
+        if (dataMap.containsKey(RequestParameterAndAttribute.NAME_PRODUCT)) {
+            String name = dataMap.get(RequestParameterAndAttribute.NAME_PRODUCT);
             if(!isStringLess(name,MAX_NAME_SIZE)){
-                dataMap.remove(RequestParameter.NAME_PRODUCT);
+                dataMap.remove(RequestParameterAndAttribute.NAME_PRODUCT);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.NAME)) {
-            String name = dataMap.get(RequestParameter.NAME);
+        if (dataMap.containsKey(RequestParameterAndAttribute.NAME)) {
+            String name = dataMap.get(RequestParameterAndAttribute.NAME);
             if(!isStringLess(name,MAX_NAME_SIZE)){
-                dataMap.remove(RequestParameter.NAME);
+                dataMap.remove(RequestParameterAndAttribute.NAME);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.PRICE_PRODUCT)) {
-            String price = dataMap.get(RequestParameter.PRICE_PRODUCT);
+        if (dataMap.containsKey(RequestParameterAndAttribute.PRICE_PRODUCT)) {
+            String price = dataMap.get(RequestParameterAndAttribute.PRICE_PRODUCT);
             if(!NumberValidator.isNumberValidForBigDecimal(price)){
-                dataMap.remove(RequestParameter.PRICE_PRODUCT);
+                dataMap.remove(RequestParameterAndAttribute.PRICE_PRODUCT);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.REPEAT_PASSWORD)) {
-            String pass = dataMap.get(RequestParameter.REPEAT_PASSWORD);
+        if (dataMap.containsKey(RequestParameterAndAttribute.REPEAT_PASSWORD)) {
+            String pass = dataMap.get(RequestParameterAndAttribute.REPEAT_PASSWORD);
             if(!isPasswordValid(pass)){
-                dataMap.remove(RequestParameter.REPEAT_PASSWORD);
+                dataMap.remove(RequestParameterAndAttribute.REPEAT_PASSWORD);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.ID_PRODUCT)) {
-            String idProduct = dataMap.get(RequestParameter.ID_PRODUCT);
+        if (dataMap.containsKey(RequestParameterAndAttribute.ID_PRODUCT)) {
+            String idProduct = dataMap.get(RequestParameterAndAttribute.ID_PRODUCT);
             if(!NumberValidator.isLongValid(idProduct)){
-                dataMap.remove(RequestParameter.ID_PRODUCT);
+                dataMap.remove(RequestParameterAndAttribute.ID_PRODUCT);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.FEEDBACK)) {
-            String feedback = dataMap.get(RequestParameter.FEEDBACK);
+        if (dataMap.containsKey(RequestParameterAndAttribute.FEEDBACK)) {
+            String feedback = dataMap.get(RequestParameterAndAttribute.FEEDBACK);
             if(!isStringLess(feedback,MAX_FEEDBACK_SIZE)){
-                dataMap.remove(RequestParameter.FEEDBACK);
+                dataMap.remove(RequestParameterAndAttribute.FEEDBACK);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.EVALUATION)) {
-            String evaluation = dataMap.get(RequestParameter.EVALUATION);
+        if (dataMap.containsKey(RequestParameterAndAttribute.EVALUATION)) {
+            String evaluation = dataMap.get(RequestParameterAndAttribute.EVALUATION);
             if(!NumberValidator.isLongValid(evaluation)||
                     !(Integer.parseInt(evaluation)>=1&&Integer.parseInt(evaluation)<=5)){
-                dataMap.remove(RequestParameter.EVALUATION);
+                dataMap.remove(RequestParameterAndAttribute.EVALUATION);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.ID_COLLECTION)) {
-            String idCollection = dataMap.get(RequestParameter.ID_COLLECTION);
+        if (dataMap.containsKey(RequestParameterAndAttribute.ID_COLLECTION)) {
+            String idCollection = dataMap.get(RequestParameterAndAttribute.ID_COLLECTION);
             if(!NumberValidator.isLongValid(idCollection)){
-                dataMap.remove(RequestParameter.ID_COLLECTION);
+                dataMap.remove(RequestParameterAndAttribute.ID_COLLECTION);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.PHONE)) {
-            String phone = dataMap.get(RequestParameter.PHONE);
+        if (dataMap.containsKey(RequestParameterAndAttribute.PHONE)) {
+            String phone = dataMap.get(RequestParameterAndAttribute.PHONE);
             if(!isPhoneValid(phone)){
-                dataMap.remove(RequestParameter.PHONE);
+                dataMap.remove(RequestParameterAndAttribute.PHONE);
                 valid = false;
             }
         }
-        if (dataMap.containsKey(RequestParameter.ADDRESS)) {
-            String address = dataMap.get(RequestParameter.ADDRESS);
+        if (dataMap.containsKey(RequestParameterAndAttribute.ADDRESS)) {
+            String address = dataMap.get(RequestParameterAndAttribute.ADDRESS);
             if(!isStringLess(address,MAX_ADDRESS_SIZE)){
-                dataMap.remove(RequestParameter.ADDRESS);
+                dataMap.remove(RequestParameterAndAttribute.ADDRESS);
                 valid = false;
             }
         }

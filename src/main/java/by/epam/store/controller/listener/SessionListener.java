@@ -1,9 +1,9 @@
-package by.epam.store.controller.listner;
+package by.epam.store.controller.listener;
 
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeRole;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;

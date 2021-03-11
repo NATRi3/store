@@ -6,7 +6,7 @@ import by.epam.store.entity.Product;
 import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.ProductService;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.ResponseWriterUtil;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -14,19 +14,19 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 public class SearchProductCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(SearchProductCommand.class);
     private static final ProductService productService = ServiceCreator.getInstance().getProductService();
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
-            String search = request.getParameter(RequestParameter.SEARCH);
+            String search = request.getParameter(RequestParameterAndAttribute.SEARCH);
             List<Product> productList = productService.searchProduct(search);
             String json = new Gson().toJson(productList);
-            ResponseWriterUtil.writeJsonToResponse(response,json);
+            ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {
             log.error(e);
             throw new CommandException(e);

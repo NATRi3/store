@@ -1,10 +1,10 @@
 package by.epam.store.controller.filter;
 
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
+import by.epam.store.entity.TypeRole;
 import by.epam.store.util.MessageCreator;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,7 @@ public class AccessAsyncCommandFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestCommand;
-        requestCommand = request.getParameter(RequestParameter.COMMAND);
+        requestCommand = request.getParameter(RequestParameterAndAttribute.COMMAND);
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         for(Map.Entry<TypeRole,Set<String>> entry:asyncCommandRoleAccess.entrySet()){

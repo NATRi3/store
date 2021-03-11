@@ -1,11 +1,8 @@
 package by.epam.store.tag;
 
-import by.epam.store.entity.User;
-import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;

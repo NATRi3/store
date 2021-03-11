@@ -2,8 +2,8 @@ package by.epam.store.service.impl;
 
 import by.epam.store.dao.impl.UserDao;
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeRole;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.DaoCreator;
@@ -16,7 +16,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,7 +44,6 @@ public class UserService implements by.epam.store.service.UserService {
             }
             return MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT;
         } catch (DaoException e) {
-            log.error("Failed activation attempt");
             throw new ServiceException(e);
         }
     }
@@ -80,7 +78,6 @@ public class UserService implements by.epam.store.service.UserService {
                 resultMessage = Optional.of(MessageKey.ERROR_MESSAGE_WRONG_EMAIL_OR_PASS);
             }
         } catch (DaoException e) {
-            log.info(e);
             throw new ServiceException(e);
         }
         return resultMessage;
@@ -90,9 +87,9 @@ public class UserService implements by.epam.store.service.UserService {
     public Optional<String> registerClient(Map<String, String> parameters) throws ServiceException {
         try {
             if(FormValidator.isFormValid(parameters)){
-                String email = parameters.get(RequestParameter.EMAIL);
-                String name = parameters.get(RequestParameter.NAME);
-                String password = parameters.get(RequestParameter.PASSWORD);
+                String email = parameters.get(RequestParameterAndAttribute.EMAIL);
+                String name = parameters.get(RequestParameterAndAttribute.NAME);
+                String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
                 if(!userDao.isEmailExists(email)) {
                     User user;
                     user = new User(name, email,TypeRole.CLIENT);
@@ -100,14 +97,13 @@ public class UserService implements by.epam.store.service.UserService {
                     SendMail.sendActivationMailTo(email, user.getId());
                     return Optional.empty();
                 }else {
-                    parameters.remove(RequestParameter.EMAIL);
+                    parameters.remove(RequestParameterAndAttribute.EMAIL);
                     return Optional.of(MessageKey.ERROR_MESSAGE_EMAIL_EXIST);
                 }
             } else {
                 return Optional.of(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
         } catch (DaoException e) {
-            log.error(e);
             throw new ServiceException(e);
         }
     }
@@ -123,7 +119,6 @@ public class UserService implements by.epam.store.service.UserService {
             }
             resultUser = optionalUser.get();
         } catch (DaoException e) {
-            log.error(e);
             throw new ServiceException(e);
         }
         return resultUser;
@@ -134,7 +129,6 @@ public class UserService implements by.epam.store.service.UserService {
         try {
             return userDao.update(user);
         } catch (DaoException e){
-            log.error(e);
             throw new ServiceException(e);
         }
     }
@@ -155,7 +149,6 @@ public class UserService implements by.epam.store.service.UserService {
             }
             return Optional.of(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         } catch (DaoException e) {
-            log.error(e);
             throw new ServiceException(e);
         }
     }
@@ -172,7 +165,6 @@ public class UserService implements by.epam.store.service.UserService {
             int beginPagination = Integer.parseInt(begin);
             return userDao.findUserByRoleAndStatus(userStatus,beginPagination);
         } catch (DaoException e){
-            log.error(e);
             throw new ServiceException(e);
         }
     }
@@ -191,11 +183,15 @@ public class UserService implements by.epam.store.service.UserService {
                     resultMessage = MessageKey.SUCCESSFUL_CHANGE_STATUS;
                 }
             } catch (DaoException e) {
-                log.error(e);
                 throw new ServiceException(e);
             }
         }
         return resultMessage;
+    }
+
+    @Override
+    public Optional<String> registerAdmin(Map<String, String> parameters) throws ServiceException {
+        return Optional.empty();
     }
 
     private String encryption(String pass){
@@ -204,5 +200,20 @@ public class UserService implements by.epam.store.service.UserService {
 
     private String generatePassword(){
         return RandomStringUtils.random(8,0,27,true,true,"QqWwEeRrTtSsHhMmCc123456789".toCharArray());
+    }
+
+    @Override
+    public String changeImage(String id, String imageName) throws ServiceException {
+        String message;
+        try {
+            if (userDao.changeImageById(Long.parseLong(id), imageName)) {
+                    message = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
+            } else {
+                message = MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT;
+            }
+        } catch (DaoException e){
+            throw new ServiceException(e);
+        }
+        return message;
     }
 }

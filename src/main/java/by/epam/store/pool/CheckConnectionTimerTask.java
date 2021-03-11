@@ -11,16 +11,19 @@ public class CheckConnectionTimerTask extends TimerTask {
     @Override
     public void run() {
         CustomConnectionPool instance = CustomConnectionPool.getInstance();
-        CustomConnectionPool.timeTaskIsWork.set(true);
-        while (CustomConnectionPool.getInstance().getSize()<CustomConnectionPool.POOL_SIZE) {
-            try {
-                ProxyConnection newConnection = new ProxyConnection(ConnectionCreator.getConnection());
-                instance.closeConnection(newConnection);
-            } catch (SQLException e) {
-                log.warn(e);
+        instance.readWriteLock.writeLock().lock();
+        try {
+            while (CustomConnectionPool.getInstance().getSize() < CustomConnectionPool.POOL_SIZE) {
+                try {
+                    ProxyConnection newConnection = new ProxyConnection(ConnectionCreator.getConnection());
+                    instance.closeConnection(newConnection);
+                } catch (SQLException e) {
+                    log.warn(e);
 
+                }
             }
+        } finally {
+            instance.readWriteLock.writeLock().unlock();
         }
-        CustomConnectionPool.timeTaskIsWork.set(false);
     }
 }

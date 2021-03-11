@@ -7,9 +7,7 @@ import by.epam.store.entity.Cart;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.OrderService;
-import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameter;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,28 +15,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CreateOrderCommand implements Command {
     private final static Logger log = LogManager.getLogger(CreateOrderCommand.class);
     private static final OrderService orderService = ServiceCreator.getInstance().getOrderService();
+
     @Override
     public Router execute(HttpServletRequest request) {
-        Map<String,String> parameters = new HashMap<>();
-        parameters.put(RequestParameter.PHONE,request.getParameter(RequestParameter.PHONE));
-        parameters.put(RequestParameter.ADDRESS,request.getParameter(RequestParameter.ADDRESS));
+        Router page;
+        Map<String, String> parameters =
+                RequestUtil.getAllParametersFrom(request,
+                        Set.of(RequestParameterAndAttribute.PHONE, RequestParameterAndAttribute.ADDRESS));
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
-        try{
+        try {
             String message = orderService.createOrder(parameters, user, cart);
-            request.setAttribute(RequestParameter.MESSAGE,message);
-            for(Map.Entry<String,String> entry: parameters.entrySet()){
-                request.setAttribute(entry.getKey(),entry.getValue());
-            }
-            return Router.forwardTo(PagePath.CART,request);
+            page = RouterResponseHelper.router(request,message,PagePath.CART);
         } catch (ServiceException e) {
             log.error(e);
-            return Router.redirectTo(PagePath.PAGE_500,request);
+            page = Router.redirectTo(PagePath.PAGE_500, request);
         }
+        return page;
     }
 }

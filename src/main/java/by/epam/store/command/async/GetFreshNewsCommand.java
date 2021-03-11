@@ -6,7 +6,7 @@ import by.epam.store.entity.News;
 import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.impl.NewsService;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.ResponseWriterUtil;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -14,20 +14,20 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 public class GetFreshNewsCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetFreshNewsCommand.class);
     private static final NewsService newsService = ServiceCreator.getInstance().getNewsService();
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         List<News> productList;
-        String count = request.getParameter(RequestParameter.NEWS_AMOUNT);
+        String count = request.getParameter(RequestParameterAndAttribute.NEWS_AMOUNT);
         try {
-            productList = newsService.getFreshNews(count);
+            productList = newsService.findFreshNews(count);
             String json = new Gson().toJson(productList);
-            ResponseWriterUtil.writeJsonToResponse(response,json);
+            ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {
             log.error(e);
             throw new CommandException(e);

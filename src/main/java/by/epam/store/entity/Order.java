@@ -1,15 +1,11 @@
 package by.epam.store.entity;
 
-import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.util.HashMapAdapter;
 import com.google.gson.annotations.JsonAdapter;
-
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
-
 
 public class Order {
     private long id;
@@ -124,12 +120,31 @@ public class Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Order order = (Order) o;
-        return id == order.id && idUser == order.idUser && Objects.equals(phone, order.phone) && Objects.equals(address, order.address) && Objects.equals(price, order.price) && Objects.equals(product, order.product);
+
+        if (id != order.id) return false;
+        if (idUser != order.idUser) return false;
+        if (user != null ? !user.equals(order.user) : order.user != null) return false;
+        if (phone != null ? !phone.equals(order.phone) : order.phone != null) return false;
+        if (address != null ? !address.equals(order.address) : order.address != null) return false;
+        if (price != null ? !price.equals(order.price) : order.price != null) return false;
+        if (status != order.status) return false;
+        if (date != null ? !date.equals(order.date) : order.date != null) return false;
+        return product != null ? product.equals(order.product) : order.product == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idUser, phone, address, price, product);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (idUser ^ (idUser >>> 32));
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        return result;
     }
 }

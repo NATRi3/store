@@ -5,16 +5,13 @@ import by.epam.store.entity.User;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameter;
+import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class FeedbackService implements by.epam.store.service.FeedbackService {
     private final static Logger log = LogManager.getLogger(FeedbackService.class);
@@ -36,9 +33,9 @@ public class FeedbackService implements by.epam.store.service.FeedbackService {
     public Optional<String> createFeedback(Map<String, String> parameters, User user) throws ServiceException {
         try {
             if (FormValidator.isFormValid(parameters)) {
-                String info = parameters.get(RequestParameter.FEEDBACK);
-                byte evaluation = Byte.parseByte(parameters.get(RequestParameter.EVALUATION));
-                long idProduct = Long.parseLong(parameters.get(RequestParameter.ID_PRODUCT));
+                String info = parameters.get(RequestParameterAndAttribute.FEEDBACK);
+                byte evaluation = Byte.parseByte(parameters.get(RequestParameterAndAttribute.EVALUATION));
+                long idProduct = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_PRODUCT));
                 Date date = new Date();
                 Feedback feedback = new Feedback(info,evaluation,idProduct,user,date);
                 feedbackDao.create(feedback);

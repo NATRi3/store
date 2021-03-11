@@ -3,6 +3,8 @@ package by.epam.store.util;
 import java.util.UUID;
 
 public class FileNameGenerator {
+    private FileNameGenerator(){}
+
     public static String generate(String fileName) {
         StringBuilder result = new StringBuilder();
         result.append(UUID.randomUUID());

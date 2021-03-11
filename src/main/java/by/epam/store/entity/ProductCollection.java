@@ -1,8 +1,10 @@
 package by.epam.store.entity;
 
+import lombok.Builder;
+
 import java.util.Date;
 import java.util.Objects;
-
+@Builder
 public class ProductCollection {
     private long idCollection;
     private String name;
@@ -61,12 +63,21 @@ public class ProductCollection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ProductCollection that = (ProductCollection) o;
-        return idCollection == that.idCollection && Objects.equals(name, that.name) && Objects.equals(info, that.info) && Objects.equals(date, that.date);
+
+        if (idCollection != that.idCollection) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (info != null ? !info.equals(that.info) : that.info != null) return false;
+        return date != null ? date.equals(that.date) : that.date == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idCollection, name, info, date);
+        int result = (int) (idCollection ^ (idCollection >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 }

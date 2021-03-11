@@ -1,10 +1,7 @@
 package by.epam.store.entity;
 
-import by.epam.store.entity.type.TypeStatus;
-
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class Product {
     private long id;
@@ -115,12 +112,29 @@ public class Product {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Product product = (Product) o;
-        return id == product.id && idCollection == product.idCollection && Objects.equals(name, product.name) && Objects.equals(info, product.info) && status == product.status && Objects.equals(price, product.price) && Objects.equals(imageName, product.imageName) && Objects.equals(rating, product.rating);
+
+        if (id != product.id) return false;
+        if (idCollection != product.idCollection) return false;
+        if (name != null ? !name.equals(product.name) : product.name != null) return false;
+        if (info != null ? !info.equals(product.info) : product.info != null) return false;
+        if (status != product.status) return false;
+        if (price != null ? !price.equals(product.price) : product.price != null) return false;
+        if (imageName != null ? !imageName.equals(product.imageName) : product.imageName != null) return false;
+        return rating != null ? rating.equals(product.rating) : product.rating == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, info, status, price, imageName, idCollection, rating);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (imageName != null ? imageName.hashCode() : 0);
+        result = 31 * result + (int) (idCollection ^ (idCollection >>> 32));
+        result = 31 * result + (rating != null ? rating.hashCode() : 0);
+        return result;
     }
 }

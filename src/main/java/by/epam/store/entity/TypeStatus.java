@@ -1,4 +1,4 @@
-package by.epam.store.entity.type;
+package by.epam.store.entity;
 
 public enum TypeStatus {
     WAIT,

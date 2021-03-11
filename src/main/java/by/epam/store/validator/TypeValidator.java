@@ -1,9 +1,8 @@
 package by.epam.store.validator;
 
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
+import by.epam.store.entity.TypeRole;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.service.TypeSort;
-import com.google.gson.JsonArray;
 
 import java.util.Set;
 

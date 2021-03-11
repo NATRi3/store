@@ -1,13 +1,12 @@
 package by.epam.store.service;
 
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface UserService {
+public interface UserService extends ImageService {
 
     String activate(String code)throws ServiceException;
 
@@ -24,4 +23,6 @@ public interface UserService {
     List<User> findUsersByRoleAndStatus(String status, String begin) throws ServiceException;
 
     String changeStatusFromTo(String id, String statusFrom, String statusTo) throws ServiceException;
+
+    Optional<String> registerAdmin(Map<String,String> parameters) throws ServiceException;
 }

@@ -1,9 +1,9 @@
 package by.epam.store.dao.impl;
 
 import by.epam.store.dao.BaseDao;
+import by.epam.store.entity.TypeRole;
+import by.epam.store.entity.TypeStatus;
 import by.epam.store.entity.User;
-import by.epam.store.entity.type.TypeRole;
-import by.epam.store.entity.type.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +31,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
     public static final String SQL_UPDATE_PASSWORD ="UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
     private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE access=?  LIMIT 10 OFFSET ?";
     private static final String SQL_SET_STATUS_FROM_TO = "UPDATE l4tsmab3ywpoc8m0.accounts SET access=? WHERE id_accounts=? and access=? LIMIT 1";
+    private static final String SQL_SET_IMAGE_BY_ID = "UPDATE l4tsmab3ywpoc8m0.accounts SET image=? WHERE id_accounts=? LIMIT 1";
 
     @Override
     public List<User> findAll() throws DaoException {
@@ -188,6 +189,19 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
             statement.setString(1,statusTo.toString());
             statement.setString(2,statusFrom.toString());
             statement.setLong(3,id);
+            return statement.executeUpdate()==1;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean changeImageById(long id, String imageName) throws DaoException {
+        try(Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_SET_IMAGE_BY_ID)) {
+            statement.setString(1,imageName);
+            statement.setLong(2,id);
             return statement.executeUpdate()==1;
         } catch (SQLException e) {
             log.error(e);

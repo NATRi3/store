@@ -1,8 +1,6 @@
 package by.epam.store.util;
 
 
-import java.util.Optional;
-
 public class MessageKey {
     public static final String ERROR_MESSAGE_LOGIN_PLEASE = "message.login_please";
     public static final String ERROR_MESSAGE_WRONG_EMAIL_OR_PASS = "message.wrong.email_or_password";
