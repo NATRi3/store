@@ -10,11 +10,12 @@ public class ResponseWriterUtil {
 
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(ResponseWriterUtil.class);
 
-    private ResponseWriterUtil(){}
+    private ResponseWriterUtil() {
+    }
 
-    public static void writeTextToResponse (HttpServletRequest request, HttpServletResponse response, String messageKey){
+    public static void writeTextToResponse(HttpServletRequest request, HttpServletResponse response, String messageKey) {
         try {
-            String message = MessageCreator.getMessageFromBundleByLocale(messageKey,request);
+            String message = MessageCreator.getMessageFromBundleByLocale(messageKey, request);
             response.setContentType("application/text");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(message);
@@ -23,7 +24,7 @@ public class ResponseWriterUtil {
         }
     }
 
-    public static void writeJsonToResponse (HttpServletResponse response, String json){
+    public static void writeJsonToResponse(HttpServletResponse response, String json) {
         try {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

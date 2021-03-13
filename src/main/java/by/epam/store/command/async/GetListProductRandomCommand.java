@@ -1,11 +1,11 @@
 package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.Product;
 import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.impl.ProductService;
+import by.epam.store.service.ProductService;
+import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.ResponseWriterUtil;
 import com.google.gson.Gson;
@@ -18,13 +18,13 @@ import java.util.List;
 
 public class GetListProductRandomCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListProductRandomCommand.class);
-    private static final ProductService productService = ServiceCreator.getInstance().getProductService();
+    private static final ProductService BASE_PRODUCT_SERVICE = ServiceCreator.getInstance().getProductService();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             String amount = request.getParameter(RequestParameterAndAttribute.PRODUCT_AMOUNT);
-            List<Product> randomProduct = productService.findRandomProduct(amount);
+            List<Product> randomProduct = BASE_PRODUCT_SERVICE.findRandomProduct(amount);
             String json = new Gson().toJson(randomProduct);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

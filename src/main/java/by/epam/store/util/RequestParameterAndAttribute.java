@@ -43,5 +43,6 @@ public class RequestParameterAndAttribute {
     public static final String FEEDBACK = "feedback";
     public static final String PRODUCT = "product";
 
-    private RequestParameterAndAttribute(){ }
+    private RequestParameterAndAttribute() {
+    }
 }

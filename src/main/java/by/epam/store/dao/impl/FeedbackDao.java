@@ -34,9 +34,9 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     public List<Feedback> findAll() throws DaoException {
         List<Feedback> feedbacks = new ArrayList<>();
         try (Connection connection = connection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)){
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)) {
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Optional<Feedback> optionalFeedback = getFeedbackFromResultSet(resultSet);
                 optionalFeedback.ifPresent(feedbacks::add);
             }
@@ -51,10 +51,10 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     public List<Feedback> findAllByProductId(long id) throws DaoException {
         List<Feedback> feedbacks = new ArrayList<>();
         try (Connection connection = connection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_BY_PRODUCT_ID)){
-            statement.setLong(1,id);
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_BY_PRODUCT_ID)) {
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Optional<Feedback> optionalFeedback = getFeedbackFromResultSet(resultSet);
                 optionalFeedback.ifPresent(feedbacks::add);
             }
@@ -69,10 +69,10 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     public Optional<Feedback> findEntityById(Long id) throws DaoException {
         Optional<Feedback> optionalFeedback = Optional.empty();
         try (Connection connection = connection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)){
-            statement.setLong(1,id);
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 optionalFeedback = getFeedbackFromResultSet(resultSet);
             }
         } catch (SQLException e) {
@@ -86,9 +86,9 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     public boolean delete(Long id) throws DaoException {
         Optional<Feedback> optionalFeedback = Optional.empty();
         try (Connection connection = connection();
-             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)){
-            statement.setLong(1,id);
-            return 1==statement.executeUpdate();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
+            statement.setLong(1, id);
+            return 1 == statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e);
             throw new DaoException(e);
@@ -103,12 +103,12 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     @Override
     public Feedback create(Feedback feedback) throws DaoException {
         try (Connection connection = connection();
-             PreparedStatement statementUpdate = connection.prepareStatement(SQL_CREATE,Statement.RETURN_GENERATED_KEYS)){
-            statementUpdate.setString(1,feedback.getFeedback());
-            statementUpdate.setInt(2,feedback.getEvaluation());
-            statementUpdate.setLong(3,feedback.getIdProduct());
-            statementUpdate.setLong(4,feedback.getUser().getId());
-            statementUpdate.setLong(5,feedback.getDate().getTime());
+             PreparedStatement statementUpdate = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            statementUpdate.setString(1, feedback.getFeedback());
+            statementUpdate.setInt(2, feedback.getEvaluation());
+            statementUpdate.setLong(3, feedback.getIdProduct());
+            statementUpdate.setLong(4, feedback.getUser().getId());
+            statementUpdate.setLong(5, feedback.getDate().getTime());
             statementUpdate.executeUpdate();
             return feedback;
         } catch (SQLException e) {
@@ -118,7 +118,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
     }
 
     private Optional<Feedback> getFeedbackFromResultSet(ResultSet resultSet) throws SQLException {
-        if(resultSet.getString(DataBaseColumn.ID_FEEDBACK)!=null) {
+        if (resultSet.getString(DataBaseColumn.ID_FEEDBACK) != null) {
             long id = resultSet.getLong(DataBaseColumn.ID_FEEDBACK);
             String feedback = resultSet.getString(DataBaseColumn.FEEDBACK);
             byte evaluation = resultSet.getByte(DataBaseColumn.FEEDBACK_EVALUATION);
@@ -131,7 +131,7 @@ public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedb
             TypeStatus access = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS));
             TypeRole role = TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE));
             java.util.Date dateRegister = new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE));
-            User user = new User(idUser,email,role,name,image,access,dateRegister);
+            User user = new User(idUser, email, role, name, image, access, dateRegister);
             return Optional.of(new Feedback(id, feedback, evaluation, idProduct, user, date));
         } else {
             return Optional.empty();

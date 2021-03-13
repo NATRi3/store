@@ -39,5 +39,6 @@ public class DataBaseColumn {
     public static final String ORDER_ADDRESS = "address";
     public static final String ORDER_PHONE = "phone";
 
-    private DataBaseColumn(){ }
+    private DataBaseColumn() {
+    }
 }

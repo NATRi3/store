@@ -1,5 +1,6 @@
 package by.epam.store.service;
 
+import by.epam.store.dao.DaoCreator;
 import by.epam.store.dao.impl.FeedbackDao;
 import by.epam.store.entity.Feedback;
 import by.epam.store.entity.User;
@@ -10,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface FeedbackService {
-    static final FeedbackDao feedbackDao = DaoCreator.getInstance().getFeedbackDao();
+    FeedbackDao feedbackDao = DaoCreator.getInstance().getFeedbackDao();
 
     List<Feedback> getFeedbackByIdProduct(String idProduct) throws ServiceException;
 

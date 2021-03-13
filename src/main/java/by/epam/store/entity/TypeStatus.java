@@ -7,5 +7,5 @@ public enum TypeStatus {
     COMPLETED,
     ACTIVE,
     NONACTIVE,
-    BLOCKED;
+    BLOCKED
 }

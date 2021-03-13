@@ -18,14 +18,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class AccessCommandAndJspFilter implements Filter {
-    private final static Logger log = LogManager.getLogger(AccessCommandAndJspFilter.class);
-    public static final String CONTROLLER_PREFIX = "/controller";
+    private static final Logger log = LogManager.getLogger(AccessCommandAndJspFilter.class);
+    private static final String CONTROLLER_PREFIX = "/controller";
     private static Map<TypeRole, Set<String>> commandRoleAccess;
     private static Map<TypeRole, Set<String>> jspRoleAccess;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        commandRoleAccess = CommandAccessMap.getINSTANCE();
+        commandRoleAccess = CommandAccessMap.getInstance();
         jspRoleAccess = JspAccessMap.getINSTANCE();
     }
 
@@ -36,19 +36,19 @@ public class AccessCommandAndJspFilter implements Filter {
         if (request.getRequestURI().contains(CONTROLLER_PREFIX)) {
             requestPath = request.getParameter(RequestParameterAndAttribute.COMMAND);
         } else {
-            requestPath = request.getRequestURI().replace(request.getContextPath(),"");
+            requestPath = request.getRequestURI().replace(request.getContextPath(), "");
         }
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         Result result = new Result();
-        checkMapForPathAndUserRole(user,result,commandRoleAccess,requestPath);
-        checkMapForPathAndUserRole(user,result,jspRoleAccess,requestPath);
+        checkMapForPathAndUserRole(user, result, commandRoleAccess, requestPath);
+        checkMapForPathAndUserRole(user, result, jspRoleAccess, requestPath);
         if (result.isAccess()) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             log.info("Wrong access " + requestPath + user.getRole());
             RequestDispatcher dispatcher;
-            if(!result.isExists()) {
+            if (!result.isExists()) {
                 HttpServletResponse res = (HttpServletResponse) servletResponse;
                 res.sendRedirect(PagePath.PAGE_404);
                 return;
@@ -63,7 +63,7 @@ public class AccessCommandAndJspFilter implements Filter {
         }
     }
 
-    private void checkMapForPathAndUserRole(User user, Result result, Map<TypeRole, Set<String>> map, String path){
+    private void checkMapForPathAndUserRole(User user, Result result, Map<TypeRole, Set<String>> map, String path) {
         for (Map.Entry<TypeRole, Set<String>> entry : map.entrySet()) {
             if (entry.getValue().contains(path)) {
                 if (user.getRole().equals(entry.getKey())) {
@@ -74,31 +74,31 @@ public class AccessCommandAndJspFilter implements Filter {
         }
     }
 
-    private static class Result{
+    private static class Result {
         private boolean isExists;
         private boolean access;
 
-        Result(boolean access, boolean isExists){
+        Result(boolean access, boolean isExists) {
             this.isExists = isExists;
             this.access = access;
         }
 
-        public Result() {
+        private Result() {
         }
 
-        public void setExists(boolean exists) {
+        private void setExists(boolean exists) {
             isExists = exists;
         }
 
-        public void setAccess(boolean access) {
+        private void setAccess(boolean access) {
             this.access = access;
         }
 
-        public boolean isExists() {
+        private boolean isExists() {
             return isExists;
         }
 
-        public boolean isAccess() {
+        private boolean isAccess() {
             return access;
         }
     }

@@ -1,5 +1,6 @@
 package by.epam.store.service;
 
+import by.epam.store.dao.DaoCreator;
 import by.epam.store.dao.impl.OrderDao;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.Order;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    static final OrderDao orderDao = DaoCreator.getInstance().getOrderDao();
+    OrderDao orderDao = DaoCreator.getInstance().getOrderDao();
 
     String createOrder(Map<String, String> parameters, User user, Cart cart) throws ServiceException;
 

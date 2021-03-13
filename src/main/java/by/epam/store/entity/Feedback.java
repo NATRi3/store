@@ -11,7 +11,7 @@ public class Feedback {
     private User user;
     private Date date;
 
-    public Feedback(String feedback, byte evaluation, long idProduct, User user,Date date) {
+    public Feedback(String feedback, byte evaluation, long idProduct, User user, Date date) {
         this.feedback = feedback;
         this.evaluation = evaluation;
         this.idProduct = idProduct;

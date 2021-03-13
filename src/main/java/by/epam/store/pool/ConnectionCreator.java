@@ -32,10 +32,10 @@ public class ConnectionCreator {
         }
     }
 
-    private ConnectionCreator(){
+    private ConnectionCreator() {
     }
 
     static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL,user,pass);
+        return DriverManager.getConnection(DB_URL, user, pass);
     }
 }

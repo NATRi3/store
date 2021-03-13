@@ -21,7 +21,7 @@ public class News {
         this.date = date;
     }
 
-    public News(String title, String info, Date date){
+    public News(String title, String info, Date date) {
         this.title = title;
         this.info = info;
         this.date = date;

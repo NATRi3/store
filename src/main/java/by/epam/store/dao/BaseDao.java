@@ -15,17 +15,17 @@ public interface BaseDao<K> {
 
     List<K> findAll() throws DaoException;
 
-    Optional<K> findEntityById (Long id) throws DaoException;
+    Optional<K> findEntityById(Long id) throws DaoException;
 
-    boolean delete (Long id) throws DaoException;
+    boolean delete(Long id) throws DaoException;
 
     boolean update(K k) throws DaoException;
 
-    K create (K k) throws DaoException;
+    K create(K k) throws DaoException;
 
-    default void close(Statement statement){
+    default void close(Statement statement) {
         try {
-            if(statement!=null) {
+            if (statement != null) {
                 statement.close();
             }
         } catch (SQLException e) {
@@ -33,9 +33,9 @@ public interface BaseDao<K> {
         }
     }
 
-    default void close(Connection connection){
+    default void close(Connection connection) {
         try {
-            if(connection!=null) {
+            if (connection != null) {
                 connection.close();
             }
         } catch (SQLException e) {

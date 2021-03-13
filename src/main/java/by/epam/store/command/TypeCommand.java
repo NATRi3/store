@@ -3,9 +3,7 @@ package by.epam.store.command;
 
 import by.epam.store.command.impl.*;
 
-import java.util.function.Supplier;
-
-public enum TypeCommand{
+public enum TypeCommand {
     CREATE_FEEDBACK(new CreateFeedbackCommand()),
     CREATE_ORDER(new CreateOrderCommand()),
     REDIRECT_TO_SINGLE_PRODUCT(new RedirectToSingleProductCommand()),
@@ -26,7 +24,8 @@ public enum TypeCommand{
     REMOVE_PRODUCT_FROM_CART(new RemoveProductFromCartCommand()),
     FORGOT_PASSWORD(new ForgotPasswordCommand()),
     CHANGE_LOCALE(new ChangeLocaleCommand()),
-    ERROR_NOT_FOUND(new NotFoundCommand());
+    ERROR_NOT_FOUND(new NotFoundCommand()),
+    NOSQL(new NoSQLCommand());
 
     private final Command command;
 

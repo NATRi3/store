@@ -11,16 +11,17 @@ public class MessageCreator {
 
     static {
         bundleMap.put("en-Us", ResourceBundle.getBundle("property/error", Locale.US));
-        bundleMap.put("ru-RU",ResourceBundle.getBundle("property/error", Locale.forLanguageTag("ru-Ru")));
-        bundleMap.put("default",ResourceBundle.getBundle("property/error",Locale.getDefault()));
+        bundleMap.put("ru-RU", ResourceBundle.getBundle("property/error", Locale.forLanguageTag("ru-Ru")));
+        bundleMap.put("default", ResourceBundle.getBundle("property/error", Locale.getDefault()));
     }
 
-    private MessageCreator(){}
+    private MessageCreator() {
+    }
 
-    public static String getMessageFromBundleByLocale(String key, HttpServletRequest request){
+    public static String getMessageFromBundleByLocale(String key, HttpServletRequest request) {
         String locale = String.valueOf(request.getSession().getAttribute(SessionAttribute.LOCALE));
         ResourceBundle bundle = bundleMap.get(locale);
-        if(bundle==null){
+        if (bundle == null) {
             bundle = bundleMap.get("default");
         }
         return bundle.getString(key);

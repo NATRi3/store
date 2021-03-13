@@ -11,7 +11,7 @@ public class Router {
         this.isRedirect = isRedirect;
     }
 
-    public static Router forwardTo(String page, HttpServletRequest request) {
+    public static Router forwardTo(String page) {
         return new Router(page, false);
     }
 

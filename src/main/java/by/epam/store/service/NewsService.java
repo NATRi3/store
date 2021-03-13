@@ -1,5 +1,6 @@
 package by.epam.store.service;
 
+import by.epam.store.dao.DaoCreator;
 import by.epam.store.dao.impl.NewsDao;
 import by.epam.store.entity.News;
 import by.epam.store.exception.ServiceException;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface NewsService extends ImageService {
-    static final NewsDao newsDao = DaoCreator.getInstance().getNewsDao();
+    NewsDao newsDao = DaoCreator.getInstance().getNewsDao();
 
     List<News> findFreshNews(String count) throws ServiceException;
 

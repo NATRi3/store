@@ -2,19 +2,20 @@ package by.epam.store.service;
 
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public interface UserService extends ImageService {
 
-    String activate(String code)throws ServiceException;
+    String activate(String code) throws ServiceException;
 
     Optional<String> login(User user, String password) throws ServiceException;
 
     Optional<String> registerClient(Map<String, String> parameters) throws ServiceException;
 
-    User findUserById(long id) throws ServiceException;
+    Optional<User> findUserById(long id) throws ServiceException;
 
     boolean updateById(User user) throws ServiceException;
 
@@ -24,5 +25,5 @@ public interface UserService extends ImageService {
 
     String changeStatusFromTo(String id, String statusFrom, String statusTo) throws ServiceException;
 
-    Optional<String> registerAdmin(Map<String,String> parameters) throws ServiceException;
+    Optional<String> registerAdmin(Map<String, String> parameters) throws ServiceException;
 }

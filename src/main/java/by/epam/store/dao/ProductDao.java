@@ -7,9 +7,9 @@ import by.epam.store.exception.DaoException;
 import java.util.List;
 
 public interface ProductDao {
-    public boolean changeStatus(Long id, TypeStatus status) throws DaoException;
+    boolean changeStatus(Long id, TypeStatus status) throws DaoException;
 
-    public List<Product> findCollectionProductAndSort(int begin, TypeStatus status, String idCollection, String typeSort)
+    List<Product> findCollectionProductAndSort(int begin, TypeStatus status, String idCollection, String typeSort)
             throws DaoException;
 
     List<Product> findRandomProduct(int amount) throws DaoException;

@@ -17,5 +17,6 @@ public class PagePath {
     public static final String PAGE_404 = "/jsp/error/error404.jsp";
     public static final String SINGLE_PRODUCT = "/WEB-INF/page/single-product.jsp";
 
-    private PagePath() { }
+    private PagePath() {
+    }
 }

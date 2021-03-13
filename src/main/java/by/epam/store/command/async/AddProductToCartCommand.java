@@ -1,12 +1,12 @@
 package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.impl.ProductService;
+import by.epam.store.service.ProductService;
+import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.ResponseWriterUtil;
@@ -21,14 +21,14 @@ import java.util.Optional;
 
 public class AddProductToCartCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(AddProductToCartCommand.class);
-    private static final ProductService productService = ServiceCreator.getInstance().getProductService();
+    private static final ProductService BASE_PRODUCT_SERVICE = ServiceCreator.getInstance().getProductService();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String idStr = request.getParameter(RequestParameterAndAttribute.ID_PRODUCT);
         String messageKey;
         try {
-            Optional<Product> optionalProduct = productService.findProductById(idStr);
+            Optional<Product> optionalProduct = BASE_PRODUCT_SERVICE.findProductById(idStr);
             if (optionalProduct.isPresent()) {
                 if (optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
                     HttpSession session = request.getSession();

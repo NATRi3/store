@@ -3,7 +3,6 @@ package by.epam.store.controller.filter;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Map;
 
 public class XSSProtectFilter implements Filter {
@@ -17,15 +16,15 @@ public class XSSProtectFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         RequestWrapper wrapper = new RequestWrapper(request);
         Map<String, String[]> enumeration = wrapper.getParameterMap();
-        for (Map.Entry<String, String[]> entry: enumeration.entrySet()){
+        for (Map.Entry<String, String[]> entry : enumeration.entrySet()) {
             String parameter = entry.getValue()[0];
-            if(parameter != null){
-                String newParameter = parameter.replaceAll("<", "&lt;").replaceAll(">","&gt;").
-                        replaceAll("\"","&#34;").replaceAll("'","&#39;");
-                wrapper.setParameter(entry.getKey(),newParameter);
+            if (parameter != null) {
+                String newParameter = parameter.replaceAll("<", "&lt;").replaceAll(">", "&gt;").
+                        replaceAll("\"", "&#34;").replaceAll("'", "&#39;");
+                wrapper.setParameter(entry.getKey(), newParameter);
             }
         }
-        filterChain.doFilter(wrapper,servletResponse);
+        filterChain.doFilter(wrapper, servletResponse);
     }
 
     @Override

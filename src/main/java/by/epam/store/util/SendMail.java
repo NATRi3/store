@@ -26,7 +26,8 @@ public class SendMail {
         properties.put("mail.smtp.starttls.enable", "true");
     }
 
-    private SendMail(){}
+    private SendMail() {
+    }
 
     public static void sendActivationMailTo(String mail, long id) {
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
@@ -41,12 +42,12 @@ public class SendMail {
                     new InternetAddress(mail));
             message.setSubject("WatchStoreEpam");
             message.setText("Your activation link \n "
-                    +ACTIVATION_URL+id+
+                    + ACTIVATION_URL + id +
                     "\n If You don't registrant on our service just ignore this message");
             Transport.send(message);
             log.info("Message activation successfully send");
         } catch (MessagingException e) {
-            log.error("Failed activation mail send!"+ e);
+            log.error("Failed activation mail send!" + e);
         }
     }
 
@@ -63,11 +64,11 @@ public class SendMail {
                     new InternetAddress(email));
             message.setSubject("UGOBOSS");
             message.setText("Your new password \n "
-                    +password+
+                    + password +
                     "\n If You don't want to change password." +
                     "\n Please contact to out support.");
             Transport.send(message);
-            log.info("Message forgot successfully send to "+email);
+            log.info("Message forgot successfully send to " + email);
         } catch (MessagingException e) {
             log.error("Failed forgot mail send! " + e);
         }

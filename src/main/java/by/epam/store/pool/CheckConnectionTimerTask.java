@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 public class CheckConnectionTimerTask extends TimerTask {
     private static final Logger log = LogManager.getLogger(CheckConnectionTimerTask.class);
+
     @Override
     public void run() {
         CustomConnectionPool instance = CustomConnectionPool.getInstance();

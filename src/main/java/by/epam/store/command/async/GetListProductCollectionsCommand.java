@@ -1,11 +1,11 @@
 package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.ProductCollection;
 import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.impl.ProductCollectionService;
+import by.epam.store.service.CollectionService;
+import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.ResponseWriterUtil;
 import com.google.gson.Gson;
@@ -18,13 +18,13 @@ import java.util.List;
 
 public class GetListProductCollectionsCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListProductCollectionsCommand.class);
-    public static final ProductCollectionService productCollectionService = ServiceCreator.getInstance().getCollectionService();
+    public static final CollectionService BASE_PRODUCT_COLLECTION_SERVICE = ServiceCreator.getInstance().getCollectionService();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String status = request.getParameter(RequestParameterAndAttribute.TYPE_STATUS);
         try {
-            List<ProductCollection> collectionList = productCollectionService.findAllProductCollections();
+            List<ProductCollection> collectionList = BASE_PRODUCT_COLLECTION_SERVICE.findAllProductCollections();
             String json = new Gson().toJson(collectionList);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

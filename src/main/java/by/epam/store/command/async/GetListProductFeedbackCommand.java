@@ -1,11 +1,11 @@
 package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.Feedback;
 import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.impl.FeedbackService;
+import by.epam.store.service.FeedbackService;
+import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.ResponseWriterUtil;
 import com.google.gson.Gson;
@@ -18,13 +18,13 @@ import java.util.List;
 
 public class GetListProductFeedbackCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListProductFeedbackCommand.class);
-    public static final FeedbackService feedbackService = ServiceCreator.getInstance().getFeedbackService();
+    public static final FeedbackService BASE_FEEDBACK_SERVICE = ServiceCreator.getInstance().getFeedbackService();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String id = request.getParameter(RequestParameterAndAttribute.ID_PRODUCT);
         try {
-            List<Feedback> feedbacks = feedbackService.getFeedbackByIdProduct(id);
+            List<Feedback> feedbacks = BASE_FEEDBACK_SERVICE.getFeedbackByIdProduct(id);
             String json = new Gson().toJson(feedbacks);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

@@ -30,11 +30,12 @@ public class CustomConnectionPool {
     static final int POOL_SIZE = 4;
     private final Timer timerTask = new Timer();
     final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private CustomConnectionPool(){
+
+    private CustomConnectionPool() {
         freeConnections = new LinkedBlockingQueue<>();
         givenAwayConnection = new LinkedList<>();
-        try{
-            for(int i = 0; i<POOL_SIZE;i++){
+        try {
+            for (int i = 0; i < POOL_SIZE; i++) {
                 Connection connection = ConnectionCreator.getConnection();
                 ProxyConnection proxyConnection = new ProxyConnection(connection);
                 freeConnections.add(proxyConnection);
@@ -43,13 +44,13 @@ public class CustomConnectionPool {
             log.fatal(e);
             throw new RuntimeException();
         }
-        timerTask.schedule(new CheckConnectionTimerTask(), 14400000,14400000);
+        timerTask.schedule(new CheckConnectionTimerTask(), 14400000, 14400000);
     }
 
-    public static CustomConnectionPool getInstance(){
-        if(isInitialized.get()){
+    public static CustomConnectionPool getInstance() {
+        if (isInitialized.get()) {
             locking.lock();
-            if(instance == null) {
+            if (instance == null) {
                 instance = new CustomConnectionPool();
                 isInitialized.set(false);
             }
@@ -58,7 +59,7 @@ public class CustomConnectionPool {
         return instance;
     }
 
-    public Connection getConnection(){
+    public Connection getConnection() {
         readWriteLock.readLock().lock();
         ProxyConnection connection = null;
         try {
@@ -67,7 +68,7 @@ public class CustomConnectionPool {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             log.error(e);
-        }finally {
+        } finally {
             readWriteLock.readLock().unlock();
         }
         return connection;
@@ -88,8 +89,8 @@ public class CustomConnectionPool {
 
     }
 
-    public void closePool(){
-        for(int i=0; i<getSize(); i++){
+    public void closePool() {
+        for (int i = 0; i < getSize(); i++) {
             try {
                 ProxyConnection proxyConnection = freeConnections.take();
                 proxyConnection.reallyClose();
@@ -112,8 +113,8 @@ public class CustomConnectionPool {
         }
     }
 
-    int getSize(){
-        return freeConnections.size()+givenAwayConnection.size();
+    int getSize() {
+        return freeConnections.size() + givenAwayConnection.size();
     }
 
 }

@@ -10,8 +10,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
-public class MessageTag  extends TagSupport {
+public class MessageTag extends TagSupport {
     private static final Logger log = LogManager.getLogger(MessageTag.class);
+
     @Override
     public int doStartTag() throws JspException {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
@@ -44,7 +45,7 @@ public class MessageTag  extends TagSupport {
                             "</div>");
                 }
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             log.error(e);
         }
         return SKIP_BODY;

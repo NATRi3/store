@@ -1,11 +1,12 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.controller.Router;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.impl.UserService;
+import by.epam.store.service.ImageService;
+import by.epam.store.service.ServiceCreator;
+import by.epam.store.service.UserService;
 import by.epam.store.util.*;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -19,34 +20,36 @@ import java.util.Optional;
 
 public class UploadFileCommand implements Command {
     private final static Logger log = LogManager.getLogger(UploadFileCommand.class);
-    private static final UserService userService = ServiceCreator.getInstance().getUserService();
+    private static final UserService BASE_USER_SERVICE = ServiceCreator.getInstance().getUserService();
     private static final String PREFIX_SUCCESS = "successful";
+
     @Override
     public Router execute(HttpServletRequest request) {
-        Router page;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        ServletFileUpload upload = FileUtil.createUpload();
-        String currentImage = user.getImageName();
+        String page = (String) session.getAttribute(SessionAttribute.PAGE);
+        Router router = Router.forwardTo(page);
         try {
-            Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
-            page = ImageUtil
-                    .changeImage(request, userService,
-                            String.valueOf(user.getId()), optionalFileName,
-                            PagePath.ACCOUNT, MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE);
-            if(!request.getAttribute(RequestParameterAndAttribute.MESSAGE).toString().contains(PREFIX_SUCCESS)){
-                user.setImageName(currentImage);
-            }
-        } catch (IOException | FileUploadException e){
-            user.setImageName(currentImage);
+            Optional<String> fileName = changeImageVar(request, BASE_USER_SERVICE, String.valueOf(user.getId()));
+            fileName.ifPresent(user::setImageName);
+        } catch (ServiceException | IOException | FileUploadException e) {
             log.error(e);
-            request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_UPLOAD_FILE);
-            page = Router.forwardTo(PagePath.ADMIN_PANEL, request);
-        } catch(ServiceException e) {
-            user.setImageName(currentImage);
-            log.error(e);
-            page = Router.redirectTo(PagePath.PAGE_500, request);
+            router = Router.redirectTo(PagePath.PAGE_500, request);
         }
-        return page;
+        return router;
+    }
+
+    static Optional<String> changeImageVar(HttpServletRequest request,
+                                           ImageService imageService,
+                                           String id) throws ServiceException, FileUploadException, IOException {
+        ServletFileUpload upload = FileUtil.createUpload();
+        Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
+        if (optionalFileName.isPresent()) {
+            String message = imageService.changeImage(id, optionalFileName.get());
+            request.setAttribute(RequestParameterAndAttribute.MESSAGE, message);
+        } else {
+            request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE);
+        }
+        return optionalFileName;
     }
 }

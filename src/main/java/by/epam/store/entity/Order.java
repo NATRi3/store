@@ -17,7 +17,7 @@ public class Order {
     private TypeStatus status;
     private Date date;
     @JsonAdapter(HashMapAdapter.class)
-    private Map<Product,Integer> product;
+    private Map<Product, Integer> product;
 
     public Order() {
     }
@@ -64,7 +64,7 @@ public class Order {
         this.date = date;
     }
 
-    public void setDate(long date){
+    public void setDateFromLong(long date) {
         this.date = new Date(date);
     }
 

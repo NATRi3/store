@@ -28,7 +28,7 @@ public class RemoveProductFromCartCommand implements Command {
             return Router.redirectTo(PagePath.CART, request);
         } else {
             request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_UNKNOWN_PRODUCT);
-            return Router.forwardTo(PagePath.CART, request);
+            return Router.forwardTo(PagePath.CART);
         }
     }
 }

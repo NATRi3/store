@@ -1,11 +1,11 @@
 package by.epam.store.command.async;
 
 import by.epam.store.command.CommandAsync;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.entity.Order;
 import by.epam.store.entity.User;
 import by.epam.store.exception.CommandException;
-import by.epam.store.service.impl.OrderService;
+import by.epam.store.service.OrderService;
+import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.ResponseWriterUtil;
 import by.epam.store.util.SessionAttribute;
 import com.google.gson.Gson;
@@ -20,14 +20,14 @@ import java.util.List;
 
 public class GetUserOrdersCommand implements CommandAsync {
     private static final Logger log = LogManager.getLogger(GetUserOrdersCommand.class);
-    private static final OrderService orderService = ServiceCreator.getInstance().getOrderService();
+    private static final OrderService BASE_ORDER_SERVICE = ServiceCreator.getInstance().getOrderService();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         try {
-            List<Order> orderList = orderService.findUserOrders(user.getId());
+            List<Order> orderList = BASE_ORDER_SERVICE.findUserOrders(user.getId());
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(orderList);
             ResponseWriterUtil.writeJsonToResponse(response, json);

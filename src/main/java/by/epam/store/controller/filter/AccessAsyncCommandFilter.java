@@ -1,7 +1,7 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.entity.User;
 import by.epam.store.entity.TypeRole;
+import by.epam.store.entity.User;
 import by.epam.store.util.MessageCreator;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameterAndAttribute;
@@ -33,22 +33,22 @@ public class AccessAsyncCommandFilter implements Filter {
         requestCommand = request.getParameter(RequestParameterAndAttribute.COMMAND);
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        for(Map.Entry<TypeRole,Set<String>> entry:asyncCommandRoleAccess.entrySet()){
+        for (Map.Entry<TypeRole, Set<String>> entry : asyncCommandRoleAccess.entrySet()) {
             if (user.getRole().equals(entry.getKey())) {
                 if (entry.getValue().contains(requestCommand)) {
-                    filterChain.doFilter(servletRequest,servletResponse);
+                    filterChain.doFilter(servletRequest, servletResponse);
                 } else {
                     log.info("Wrong access " + requestCommand + user.getRole());
                     HttpServletResponse response = (HttpServletResponse) servletResponse;
-                    if(user.getRole().equals(TypeRole.GUEST)){
+                    if (user.getRole().equals(TypeRole.GUEST)) {
                         response.sendError(402);
                     } else {
-                        if(response.getContentType().contains("text")) {
+                        if (response.getContentType().contains("text")) {
                             String message = MessageCreator.getMessageFromBundleByLocale(MessageKey.ERROR_MESSAGE_WRONG_ACCESS, request);
                             response.setContentType("application/text");
                             response.setCharacterEncoding("UTF-8");
                             response.getWriter().write(message);
-                        }else {
+                        } else {
                             response.sendError(403);
                         }
                     }

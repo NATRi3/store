@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HashMapAdapter  extends TypeAdapter<HashMap<Product,Integer>> {
+public class HashMapAdapter extends TypeAdapter<HashMap<Product, Integer>> {
 
     @Override
-    public void write(JsonWriter writer, HashMap<Product,Integer> products) throws IOException {
+    public void write(JsonWriter writer, HashMap<Product, Integer> products) throws IOException {
         writer.beginArray();
-        for(Map.Entry<Product,Integer> productIntegerEntry: products.entrySet()) {
+        for (Map.Entry<Product, Integer> productIntegerEntry : products.entrySet()) {
             Product product = productIntegerEntry.getKey();
             Integer amount = productIntegerEntry.getValue();
             writer.beginObject();
@@ -32,7 +32,7 @@ public class HashMapAdapter  extends TypeAdapter<HashMap<Product,Integer>> {
     }
 
     @Override
-    public HashMap<Product,Integer> read(JsonReader reader) throws IOException {
+    public HashMap<Product, Integer> read(JsonReader reader) throws IOException {
         return null;
     }
 }

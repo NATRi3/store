@@ -37,5 +37,6 @@ public class MessageKey {
     public static final String SUCCESSFUL_CREATE_COLLECTION = "message.successful_create_collection";
     public static final String SUCCESSFUL_CHANGE_STATUS = "message.successful_change_status";
 
-    private MessageKey(){ }
+    private MessageKey() {
+    }
 }

@@ -6,7 +6,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +24,10 @@ public class FileUtil {
     private static final int FILE_MAX_SIZE = 1024 * 1024;
     private static final int MEM_MAX_SIZE = 1024 * 1024 * 5;
 
-    private FileUtil(){}
+    private FileUtil() {
+    }
 
-    public static ServletFileUpload createUpload(){
+    public static ServletFileUpload createUpload() {
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         diskFileItemFactory.setSizeThreshold(MEM_MAX_SIZE);
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
@@ -36,9 +36,9 @@ public class FileUtil {
     }
 
     public static Optional<String> saveFile(List<FileItem> fileItems) throws IOException {
-        for(FileItem fileItem: fileItems){
+        for (FileItem fileItem : fileItems) {
             if (!fileItem.isFormField()) {
-                if(FILE_TYPE.contains(fileItem.getContentType())) {
+                if (FILE_TYPE.contains(fileItem.getContentType())) {
                     byte[] file = fileItem.get();
                     Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                             CLOUD_NAME, NAME,

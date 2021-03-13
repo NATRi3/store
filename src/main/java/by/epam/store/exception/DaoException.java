@@ -1,6 +1,6 @@
 package by.epam.store.exception;
 
-public class DaoException extends Exception{
+public class DaoException extends Exception {
     public DaoException() {
     }
 

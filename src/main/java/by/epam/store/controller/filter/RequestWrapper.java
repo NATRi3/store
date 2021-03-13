@@ -10,14 +10,15 @@ import java.util.*;
 
 public class RequestWrapper extends HttpServletRequestWrapper {
     private static final Logger log = LogManager.getLogger("RequestWrapper");
-    private final Map<String,String> params = new HashMap<>();
+    private final Map<String, String> params = new HashMap<>();
 
     public RequestWrapper(HttpServletRequest request) {
         super(request);
     }
+
     @Override
-    public String getParameter(String name){
-        if(params.get(name)!=null){
+    public String getParameter(String name) {
+        if (params.get(name) != null) {
             return params.get(name);
         }
         return super.getParameter(name);
@@ -27,7 +28,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
     @Override
     public Map<String, String[]> getParameterMap() {
         Map<String, String[]> superParameters = super.getParameterMap();
-        for(Map.Entry<String,String> entry : params.entrySet()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             superParameters.put(entry.getKey(), new String[]{entry.getValue()});
         }
         return superParameters;
@@ -49,8 +50,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
         return collection.toArray(new String[0]);
     }
 
-    public void setParameter(String name, String parameter){
-        if(super.getParameter(name)==null||!super.getParameter(name).equals(parameter)) {
+    public void setParameter(String name, String parameter) {
+        if (super.getParameter(name) == null || !super.getParameter(name).equals(parameter)) {
             params.put(name, parameter);
         }
     }

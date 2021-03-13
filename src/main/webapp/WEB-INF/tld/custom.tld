@@ -20,9 +20,4 @@
         <tag-class>by.epam.store.tag.MessageTag</tag-class>
         <body-content>empty</body-content>
     </tag>
-    <tag>
-        <name>footer</name>
-        <tag-class>by.epam.store.tag.FooterTag</tag-class>
-        <body-content>empty</body-content>
-    </tag>
 </taglib>

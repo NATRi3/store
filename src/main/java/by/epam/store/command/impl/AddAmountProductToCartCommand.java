@@ -1,13 +1,13 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
-import by.epam.store.command.ServiceCreator;
 import by.epam.store.controller.Router;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.impl.ProductService;
+import by.epam.store.service.ProductService;
+import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
 import by.epam.store.util.RequestParameterAndAttribute;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class AddAmountProductToCartCommand implements Command {
     private final static Logger log = LogManager.getLogger(AddAmountProductToCartCommand.class);
-    private static final ProductService productService = ServiceCreator.getInstance().getProductService();
+    private static final ProductService BASE_PRODUCT_SERVICE = ServiceCreator.getInstance().getProductService();
 
     @Override
     public Router execute(HttpServletRequest request) {
@@ -33,7 +33,7 @@ public class AddAmountProductToCartCommand implements Command {
         Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
         try {
             if (NumberValidator.isLongValid(amount)) {
-                Optional<Product> optionalProduct = productService.findProductById(idStr);
+                Optional<Product> optionalProduct = BASE_PRODUCT_SERVICE.findProductById(idStr);
                 if (optionalProduct.isPresent()) {
                     if (optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
                         cart.addProduct(optionalProduct.get(), Integer.parseInt(amount));

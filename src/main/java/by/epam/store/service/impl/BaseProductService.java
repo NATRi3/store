@@ -1,9 +1,12 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.dao.DaoCreator;
+import by.epam.store.dao.impl.ProductDao;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
+import by.epam.store.service.ProductService;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
@@ -17,17 +20,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ProductService implements by.epam.store.service.ProductService {
-    private final static Logger log = LogManager.getLogger(ProductService.class);
+public class BaseProductService implements ProductService {
+    private static final Logger log = LogManager.getLogger(BaseProductService.class);
+    private static final ProductDao productDao = DaoCreator.getInstance().getProductDao();
+
     @Override
     public Optional<Product> findProductById(String idProduct) throws ServiceException {
         try {
-            if(NumberValidator.isLongValid(idProduct)) {
-                long id = Long.parseLong(idProduct);
-                return productDao.findEntityById(id);
-            } else {
-                return Optional.empty();
-            }
+            long id = Long.parseLong(idProduct);
+            return productDao.findEntityById(id);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
@@ -37,17 +38,13 @@ public class ProductService implements by.epam.store.service.ProductService {
     @Override
     public String saveProduct(Map<String, String> parameters) throws ServiceException {
         try {
-            if(FormValidator.isFormValid(parameters)) {
-                long idCollection = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_COLLECTION));
-                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
-                String name = parameters.get(RequestParameterAndAttribute.NAME_PRODUCT);
-                String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
-                Product product = new Product(name, info, price, idCollection);
-                productDao.create(product);
-                return MessageKey.SUCCESSFUL_PRODUCT_ADD;
-            } else {
-                return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
-            }
+            long idCollection = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_COLLECTION));
+            BigDecimal price = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
+            String name = parameters.get(RequestParameterAndAttribute.NAME_PRODUCT);
+            String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
+            Product product = new Product(name, info, price, idCollection);
+            productDao.create(product);
+            return MessageKey.SUCCESSFUL_PRODUCT_ADD;
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
@@ -55,10 +52,10 @@ public class ProductService implements by.epam.store.service.ProductService {
     }
 
     @Override
-    public String changeStatus(String idProduct, TypeStatus status) throws ServiceException{
+    public String changeStatus(String idProduct, TypeStatus status) throws ServiceException {
         String resultMessage;
         try {
-            if(NumberValidator.isLongValid(idProduct)) {
+            if (NumberValidator.isLongValid(idProduct)) {
                 long id = Long.parseLong(idProduct);
                 Optional<Product> optionalProduct = productDao.findEntityById(id);
                 if (optionalProduct.isPresent()) {
@@ -72,7 +69,7 @@ public class ProductService implements by.epam.store.service.ProductService {
             } else {
                 resultMessage = MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
-        } catch (DaoException e){
+        } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
         }
@@ -84,18 +81,18 @@ public class ProductService implements by.epam.store.service.ProductService {
             throws ServiceException {
         try {
             int beginPagination;
-            if(!TypeValidator.isTypeProductSort(typeSort)||
-                !NumberValidator.isLongValid(begin)||
-                !TypeValidator.isTypeStatus(status)){
+            if (!TypeValidator.isTypeProductSort(typeSort) ||
+                    !NumberValidator.isLongValid(begin) ||
+                    !TypeValidator.isTypeStatus(status)) {
                 log.error("Invalid param " + begin + "-" + typeSort + "-" + status);
                 throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
-            if(!NumberValidator.isLongValid(idCollection)){
-                log.info("unknown collection "+ idCollection);
+            if (!NumberValidator.isLongValid(idCollection)) {
+                log.info("unknown collection " + idCollection);
                 throw new ServiceException(MessageKey.ERROR_UNKNOWN_COLLECTION);
             }
-            if(Long.parseLong(idCollection)==0){
-                idCollection="%";
+            if (Long.parseLong(idCollection) == 0) {
+                idCollection = "%";
             }
             beginPagination = Integer.parseInt(begin);
             TypeStatus typeStatus = TypeStatus.valueOf(status);
@@ -109,7 +106,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     @Override
     public List<Product> findRandomProduct(String amountStr) throws ServiceException {
         try {
-            if(!NumberValidator.isLongValid(amountStr)){
+            if (!NumberValidator.isLongValid(amountStr)) {
                 throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
             int amount = Integer.parseInt(amountStr);
@@ -124,7 +121,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     public String changeProduct(Map<String, String> parameters) throws ServiceException {
         String resultMessage;
         try {
-            if(FormValidator.isFormValid(parameters)) {
+            if (FormValidator.isFormValid(parameters)) {
                 long idProduct = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_PRODUCT));
                 BigDecimal priceProduct = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
                 String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
@@ -139,7 +136,7 @@ public class ProductService implements by.epam.store.service.ProductService {
                 } else {
                     resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
                 }
-            }else {
+            } else {
                 resultMessage = MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
         } catch (DaoException e) {
@@ -153,7 +150,7 @@ public class ProductService implements by.epam.store.service.ProductService {
     public String changeImage(String id, String imageName) throws ServiceException {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
-            if(NumberValidator.isLongValid(id)) {
+            if (NumberValidator.isLongValid(id)) {
                 Optional<Product> optionalProduct = productDao.findEntityById(Long.valueOf(id));
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
@@ -169,24 +166,24 @@ public class ProductService implements by.epam.store.service.ProductService {
             } else {
                 resultMessage = MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e);
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
         return resultMessage;
     }
 
     @Override
     public List<Product> searchProduct(String searchRequest) throws ServiceException {
-        try{
-            if(searchRequest.contains(" ")) {
+        try {
+            if (searchRequest.contains(" ")) {
                 String[] search = searchRequest.split(" ");
                 for (int i = 0; i < search.length; i++) {
                     search[i] = "%" + search[i] + "%";
                 }
                 return productDao.findProductByName(search);
             } else {
-                return productDao.findProductByName("%"+searchRequest+"%");
+                return productDao.findProductByName("%" + searchRequest + "%");
             }
         } catch (DaoException e) {
             log.error(e);

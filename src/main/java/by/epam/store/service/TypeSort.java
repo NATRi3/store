@@ -10,10 +10,10 @@ public enum TypeSort {
     DATEDESC("date DESC"),
     TITLE("title"),
     TITLEDESC("title DESC");
-    private String string;
+    private final String string;
 
-    TypeSort(String string){
-        this.string=string;
+    TypeSort(String string) {
+        this.string = string;
     }
 
     @Override
