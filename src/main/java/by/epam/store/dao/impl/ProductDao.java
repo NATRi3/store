@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductDao implements BaseDao<Product>, by.epam.store.dao.ProductDao {
+public class ProductDao implements by.epam.store.dao.ProductDao {
     private final static Logger log = LogManager.getLogger(ProductDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =

@@ -21,7 +21,7 @@ public class JspAccessMap extends HashMap<TypeRole, Set<String>> {
         put(TypeRole.GUEST,
                 Set.of(PagePath.LOGIN, PagePath.SHOP, PagePath.MAIN, PagePath.REGISTRATION,
                         PagePath.FORGOT_PASSWORD, PagePath.PAGE_404, PagePath.PAGE_500,
-                        PagePath.SINGLE_PRODUCT, "/jsp/TestNoSQL.jsp"));//todo delete
+                        PagePath.SINGLE_PRODUCT));
     }
 
     public static JspAccessMap getINSTANCE() {

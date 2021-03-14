@@ -1,5 +1,7 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.dao.DaoCreator;
+import by.epam.store.dao.NewsDao;
 import by.epam.store.entity.News;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
@@ -15,6 +17,15 @@ import java.util.Map;
 
 public class BaseNewsService implements NewsService {
     private static final Logger log = LogManager.getLogger(BaseNewsService.class);
+    private final NewsDao newsDao;
+
+    public BaseNewsService(NewsDao newsDao) {
+        this.newsDao = newsDao;
+    }
+
+    public BaseNewsService() {
+        newsDao = DaoCreator.getInstance().getNewsDao();
+    }
 
     @Override
     public List<News> findFreshNews(String count) throws ServiceException {

@@ -12,6 +12,7 @@ public class Product {
     private String imageName;
     private long idCollection;
     private String rating;
+    private int countInOrder;
 
     public Product() {
     }
@@ -42,6 +43,14 @@ public class Product {
         this.price = price;
         this.imageName = image;
         this.idCollection = idCollection;
+    }
+
+    public int getCountInOrder() {
+        return countInOrder;
+    }
+
+    public void setCountInOrder(int countInOrder) {
+        this.countInOrder = countInOrder;
     }
 
     public long getId() {

@@ -1,5 +1,8 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.dao.DaoCreator;
+import by.epam.store.dao.OrderDao;
+import by.epam.store.dao.impl.NoSQLDao;
 import by.epam.store.entity.*;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
@@ -10,13 +13,19 @@ import by.epam.store.util.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BaseOrderService implements OrderService {
     private final static Logger log = LogManager.getLogger(BaseOrderService.class);
+    private final OrderDao orderDao;
+
+    public BaseOrderService(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
+
+    public BaseOrderService() {
+        orderDao = DaoCreator.getInstance().getOrderDao();
+    }
 
     @Override
     public String createOrder(Map<String, String> parameters, User user, Cart cart) throws ServiceException {
@@ -24,11 +33,13 @@ public class BaseOrderService implements OrderService {
             String phone = parameters.get(RequestParameterAndAttribute.PHONE);
             String address = parameters.get(RequestParameterAndAttribute.ADDRESS);
             Map<Product, Integer> cartMap = cart.getProducts();
-            Map<Product, Integer> orderMap = new HashMap<>();
+            List<Product> productList = new ArrayList<>();
             for (Map.Entry<Product, Integer> entry : cartMap.entrySet()) {
-                orderMap.put(entry.getKey(), entry.getValue());
+                Product product = entry.getKey();
+                product.setCountInOrder(entry.getValue());
+                productList.add(product);
             }
-            Order order = new Order(user.getId(), phone, address, cart.getTotalPrice(), orderMap, new Date());
+            Order order = new Order(user.getId(), phone, address, cart.getTotalPrice(), new Date(), productList);
             orderDao.create(order);
             cart.clear();
             return MessageKey.SUCCESSFUL_CREATE_ORDER;

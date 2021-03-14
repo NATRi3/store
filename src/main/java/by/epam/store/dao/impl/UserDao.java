@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
+public class UserDao implements by.epam.store.dao.UserDao {
     private final static Logger log = LogManager.getLogger(UserDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE email=?";
@@ -234,7 +234,7 @@ public class UserDao implements BaseDao<User>, by.epam.store.dao.UserDao {
         throw new UnsupportedOperationException();
     }
 
-    private User createUserFormResultSet(ResultSet resultSet) throws SQLException {
+    static User createUserFormResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt(DataBaseColumn.ID_ACCOUNT));
         user.setName(resultSet.getString(DataBaseColumn.ACCOUNT_NAME));

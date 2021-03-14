@@ -1,0 +1,73 @@
+package by.epam.store.service.impl;
+
+import by.epam.store.dao.impl.FeedbackDao;
+import by.epam.store.dao.impl.NoSQLDao;
+import by.epam.store.dao.impl.OrderDao;
+import by.epam.store.entity.Cart;
+import by.epam.store.entity.Order;
+import by.epam.store.entity.Product;
+import by.epam.store.entity.User;
+import by.epam.store.exception.ServiceException;
+import by.epam.store.service.FeedbackService;
+import by.epam.store.service.OrderService;
+import by.epam.store.util.RequestParameterAndAttribute;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.mockito.Mockito;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+import static org.testng.Assert.*;
+
+public class BaseOrderServiceTest {
+    private static final Logger log = LogManager.getLogger(BaseFeedbackService.class);
+    private OrderService service;
+
+    @BeforeMethod
+    public void setUp() {
+        OrderDao mockito = Mockito.mock(OrderDao.class);
+        service = new BaseOrderService(mockito);
+    }
+
+    @AfterMethod
+    public void tearDown() {
+    }
+
+    @Test
+    public void testCreateOrder() {
+        Map<String,String> params = new HashMap<>();
+        Cart cart = new Cart();
+        cart.setTotalPrice(BigDecimal.valueOf(0));
+        User user = new User();
+        user.setId(1);
+        params.put(RequestParameterAndAttribute.PHONE,"1");
+        params.put(RequestParameterAndAttribute.ADDRESS,"1");
+        try {
+            assertNotNull(service.createOrder(params,user,cart));
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testFindUserOrders() {
+        try {
+            assertNotNull(service.findUserOrders(1));
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testFindOrderList() {
+        try {
+            assertNotNull(service.findOrderList("1","price","WAIT"));
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+}

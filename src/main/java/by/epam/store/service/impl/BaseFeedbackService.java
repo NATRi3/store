@@ -1,5 +1,7 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.dao.DaoCreator;
+import by.epam.store.dao.impl.FeedbackDao;
 import by.epam.store.entity.Feedback;
 import by.epam.store.entity.User;
 import by.epam.store.exception.DaoException;
@@ -17,6 +19,15 @@ import java.util.Optional;
 
 public class BaseFeedbackService implements FeedbackService {
     private final static Logger log = LogManager.getLogger(BaseFeedbackService.class);
+    private final FeedbackDao feedbackDao;
+
+    public BaseFeedbackService() {
+        feedbackDao = DaoCreator.getInstance().getFeedbackDao();
+    }
+
+    public BaseFeedbackService(FeedbackDao feedbackDao) {
+        this.feedbackDao = feedbackDao;
+    }
 
     @Override
     public List<Feedback> getFeedbackByIdProduct(String idProduct) throws ServiceException {

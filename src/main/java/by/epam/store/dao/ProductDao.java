@@ -6,7 +6,7 @@ import by.epam.store.exception.DaoException;
 
 import java.util.List;
 
-public interface ProductDao {
+public interface ProductDao extends BaseDao<Product> {
     boolean changeStatus(Long id, TypeStatus status) throws DaoException;
 
     List<Product> findCollectionProductAndSort(int begin, TypeStatus status, String idCollection, String typeSort)

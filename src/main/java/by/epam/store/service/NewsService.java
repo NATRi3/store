@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface NewsService extends ImageService {
-    NewsDao newsDao = DaoCreator.getInstance().getNewsDao();
 
     List<News> findFreshNews(String count) throws ServiceException;
 

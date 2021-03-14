@@ -7,7 +7,7 @@ import by.epam.store.service.TypeSort;
 
 import java.util.List;
 
-public interface OrderDao {
+public interface OrderDao extends BaseDao<Order> {
     List<Order> findUserOrders(long id) throws DaoException;
 
     List<Order> findOrdersByStatusAndSort(int beginPagination, TypeSort typeSort, TypeStatus typeStatus) throws DaoException;

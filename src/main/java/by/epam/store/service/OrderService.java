@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    OrderDao orderDao = DaoCreator.getInstance().getOrderDao();
 
     String createOrder(Map<String, String> parameters, User user, Cart cart) throws ServiceException;
 

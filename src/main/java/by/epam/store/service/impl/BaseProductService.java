@@ -55,19 +55,15 @@ public class BaseProductService implements ProductService {
     public String changeStatus(String idProduct, TypeStatus status) throws ServiceException {
         String resultMessage;
         try {
-            if (NumberValidator.isLongValid(idProduct)) {
-                long id = Long.parseLong(idProduct);
-                Optional<Product> optionalProduct = productDao.findEntityById(id);
-                if (optionalProduct.isPresent()) {
-                    Product product = optionalProduct.get();
-                    product.setStatus(status);
-                    productDao.update(product);
-                    resultMessage = MessageKey.SUCCESSFUL_CHANGE;
-                } else {
-                    resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
-                }
+            long id = Long.parseLong(idProduct);
+            Optional<Product> optionalProduct = productDao.findEntityById(id);
+            if (optionalProduct.isPresent()) {
+                Product product = optionalProduct.get();
+                product.setStatus(status);
+                productDao.update(product);
+                resultMessage = MessageKey.SUCCESSFUL_CHANGE;
             } else {
-                resultMessage = MessageKey.ERROR_MESSAGE_INVALID_PARAM;
+                resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
             }
         } catch (DaoException e) {
             log.error(e);
@@ -80,21 +76,7 @@ public class BaseProductService implements ProductService {
     public List<Product> findProductByCollectionAndSort(String idCollection, String typeSort, String status, String begin)
             throws ServiceException {
         try {
-            int beginPagination;
-            if (!TypeValidator.isTypeProductSort(typeSort) ||
-                    !NumberValidator.isLongValid(begin) ||
-                    !TypeValidator.isTypeStatus(status)) {
-                log.error("Invalid param " + begin + "-" + typeSort + "-" + status);
-                throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
-            }
-            if (!NumberValidator.isLongValid(idCollection)) {
-                log.info("unknown collection " + idCollection);
-                throw new ServiceException(MessageKey.ERROR_UNKNOWN_COLLECTION);
-            }
-            if (Long.parseLong(idCollection) == 0) {
-                idCollection = "%";
-            }
-            beginPagination = Integer.parseInt(begin);
+            int beginPagination = Integer.parseInt(begin);
             TypeStatus typeStatus = TypeStatus.valueOf(status);
             return productDao.findCollectionProductAndSort(beginPagination, typeStatus, idCollection, typeSort);
         } catch (DaoException e) {

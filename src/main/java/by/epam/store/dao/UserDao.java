@@ -7,7 +7,7 @@ import by.epam.store.exception.DaoException;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserDao {
+public interface UserDao extends BaseDao<User> {
     boolean isEmailExists(String email) throws DaoException;
 
     Optional<User> findEntityByEmailAndPassword(String email, String pass) throws DaoException;

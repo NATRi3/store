@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.Date;
 import java.util.*;
 
-public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
+public class OrderDao implements by.epam.store.dao.OrderDao {
     private final static Logger log = LogManager.getLogger(OrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_INSERT_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, address=?, date=?";
@@ -133,7 +133,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
             List<Order> orderList = new ArrayList<>();
             while (resultSet.next()) {
                 Order order = getOrderFromResultSet(resultSet);
-                setUserFromResultSet(resultSet, order);
+                order.setUser(UserDao.createUserFormResultSet(resultSet));
                 orderList.add(order);
             }
             for (Order order : orderList) {
@@ -155,7 +155,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
         order.setPhone(resultSet.getString(DataBaseColumn.ORDER_PHONE));
         order.setPrice(resultSet.getBigDecimal(DataBaseColumn.ORDER_PRICE));
         order.setStatus(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.STATUS)));
-        order.setDateFromLong(resultSet.getLong(DataBaseColumn.DATE));
+        order.dateFromLong(resultSet.getLong(DataBaseColumn.DATE));
         return order;
     }
 
@@ -175,17 +175,5 @@ public class OrderDao implements by.epam.store.dao.OrderDao, BaseDao<Order> {
             productMap.put(product, amount);
         }
         order.setProduct(productMap);
-    }
-
-    private void setUserFromResultSet(ResultSet resultSet, Order order) throws SQLException {
-        User user = new User();
-        user.setId(resultSet.getInt(DataBaseColumn.ID_ACCOUNT));
-        user.setName(resultSet.getString(DataBaseColumn.ACCOUNT_NAME));
-        user.setEmail(resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL));
-        user.setImageName(resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE));
-        user.setAccess(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS)));
-        user.setRole(TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE)));
-        user.setRegisterDate(new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE)));
-        order.setUser(user);
     }
 }

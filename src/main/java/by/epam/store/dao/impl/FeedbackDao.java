@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class FeedbackDao implements by.epam.store.dao.FeedbackDao, BaseDao<Feedback> {
+public class FeedbackDao implements by.epam.store.dao.FeedbackDao{
     private final static Logger log = LogManager.getLogger(FeedbackDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =

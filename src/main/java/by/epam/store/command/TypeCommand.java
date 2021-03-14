@@ -24,8 +24,7 @@ public enum TypeCommand {
     REMOVE_PRODUCT_FROM_CART(new RemoveProductFromCartCommand()),
     FORGOT_PASSWORD(new ForgotPasswordCommand()),
     CHANGE_LOCALE(new ChangeLocaleCommand()),
-    ERROR_NOT_FOUND(new NotFoundCommand()),
-    NOSQL(new NoSQLCommand());
+    ERROR_NOT_FOUND(new NotFoundCommand());
 
     private final Command command;
 

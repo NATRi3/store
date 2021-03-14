@@ -5,7 +5,7 @@ import by.epam.store.exception.DaoException;
 
 import java.util.List;
 
-public interface NewsDao {
+public interface NewsDao extends BaseDao<News> {
     List<News> findFreshNews(int count) throws DaoException;
 
     List<News> findSortNews(String typeSort, int begin, int count) throws DaoException;

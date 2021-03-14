@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class NewsDao implements by.epam.store.dao.NewsDao, BaseDao<News> {
+public class NewsDao implements by.epam.store.dao.NewsDao {
     private final static Logger log = LogManager.getLogger(NewsDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_AMOUNT_FRESH_NEWS =

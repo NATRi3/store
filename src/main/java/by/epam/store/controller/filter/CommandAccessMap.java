@@ -41,8 +41,7 @@ public class CommandAccessMap extends HashMap<TypeRole, Set<String>> {
                 TypeCommand.ACTIVATION.toString().toLowerCase(),
                 TypeCommand.UPLOAD_IMAGE.toString().toLowerCase(),
                 TypeCommand.FORGOT_PASSWORD.toString().toLowerCase(),
-                TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.toString().toLowerCase(),
-                TypeCommand.NOSQL.toString().toLowerCase()));//todo delete
+                TypeCommand.REDIRECT_TO_SINGLE_PRODUCT.toString().toLowerCase()));
     }
 
     public static CommandAccessMap getInstance() {

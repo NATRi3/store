@@ -2,12 +2,17 @@ package by.epam.store.entity;
 
 import by.epam.store.util.HashMapAdapter;
 import com.google.gson.annotations.JsonAdapter;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class Order {
+    @BsonId
     private long id;
     private long idUser;
     private User user;
@@ -18,6 +23,7 @@ public class Order {
     private Date date;
     @JsonAdapter(HashMapAdapter.class)
     private Map<Product, Integer> product;
+    private List<Product> productList;
 
     public Order() {
     }
@@ -38,6 +44,23 @@ public class Order {
         this.price = price;
         this.product = product;
         this.date = date;
+    }
+
+    public Order(long idUser, String phone, String address, BigDecimal price, Date date, List<Product> productList) {
+        this.idUser = idUser;
+        this.phone = phone;
+        this.address = address;
+        this.price = price;
+        this.date = date;
+        this.productList = productList;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 
     public User getUser() {
@@ -64,7 +87,7 @@ public class Order {
         this.date = date;
     }
 
-    public void setDateFromLong(long date) {
+    public void dateFromLong(long date) {
         this.date = new Date(date);
     }
 
