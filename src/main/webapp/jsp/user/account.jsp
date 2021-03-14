@@ -47,14 +47,43 @@
                       </div>
                   </div>
                   <div class="profile-work">
-                      <form method="post" action="${pageContext.request.contextPath}/controller">
-                          <input type="hidden" name="command" value="get_orders"/>
-                          <input class="btn-light" type="submit" value="<fmt:message key="account.orders" bundle="${text}"/>">
-                      </form>
-                      <form method="post" action="${pageContext.request.contextPath}/controller">
-                          <input type="hidden" name="command" value="get_orders"/>
-                          <input class="btn-light" type="submit" value="<fmt:message key="account.change_pass" bundle="${text}"/>">
-                      </form>
+                      <button class="btn-light" type="submit">
+                          <fmt:message key="account.change_pass" bundle="${text}"/>
+                      </button>
+                      <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ADDPRODUCTMODAL'>
+                          <fmt:message key='account.change_pass' bundle='${text}'/>
+                      </button>
+                      <div class='modal fade' id='ADDPRODUCTMODAL' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='false'>
+                          <div class='modal-dialog' role='document'>
+                              <div class='modal-content'>
+                                  <form method="post" action="${pageContext.request.contextPath}/controller">
+                                      <div class='modal-header'>
+                                          <h5 class='modal-title'><fmt:message key='admin.menu_add_product' bundle='${text}'/></h5>
+                                      </div>
+                                      <div class='modal-body'>
+                                          <input type='hidden' name='command' value='create_admin'>
+                                          <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
+                                          <input maxlength="45" type="text" name="name" required
+                                                 value="${requestScope.name}"
+                                                 placeholder="<fmt:message bundle="${text}" key="registration.name"/>">
+                                          <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>"
+                                                 value="${requestScope.email}"
+                                                 type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+                                                 placeholder="<fmt:message bundle="${text}" key="registration.email"/>">
+                                          <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
+                                                 value="${requestScope.password}"
+                                                 type="password" name="password"
+                                                 placeholder="<fmt:message bundle="${text}" key="registration.password"/>" required>
+                                          <input maxlength="45" type="password" name="repeat_password"
+                                                 value="${requestScope.repeat_password}"
+                                                 placeholder="<fmt:message bundle="${text}" key="registration.repeat"/>"/>
+                                      </div>
+                                      <button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>
+                                      <input type='submit' value='<fmt:message key='button.save' bundle='${text}'/>' class='btn btn-primary'/>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
                   </div>
               </div>
               <div class="col-md-6">
@@ -73,7 +102,7 @@
                           </li>
                           <li class="nav-item">
                               <a class="nav-link" id="profile-tab" data-toggle="tab" href="#wallet" role="tab" aria-controls="profile" aria-selected="false">
-                                  <fmt:message key="account.wallet" bundle="${text}"/>
+                                  <fmt:message key="account.orders" bundle="${text}"/>
                               </a>
                           </li>
                       </ul>

@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.testng.Assert.*;
 
@@ -49,7 +50,10 @@ public class BaseFeedbackServiceTest {
         params.put(RequestParameterAndAttribute.ID_PRODUCT,"1");
         User user = new User();
         try {
-            assertFalse(feedbackService.createFeedback(params,user).isPresent());
+            Optional<String> expected = Optional.of("success");
+            Mockito.when(feedbackService.createFeedback(params,user)).thenReturn(expected);
+            Optional<String> actual = feedbackService.createFeedback(params,user);
+            assertEquals(actual,expected);
         } catch (ServiceException e) {
             fail();
         }

@@ -6,6 +6,7 @@ import by.epam.store.command.impl.*;
 public enum TypeCommand {
     CREATE_FEEDBACK(new CreateFeedbackCommand()),
     CREATE_ORDER(new CreateOrderCommand()),
+    CREATE_ADMIN(new CreateAdminCommand()),
     REDIRECT_TO_SINGLE_PRODUCT(new RedirectToSingleProductCommand()),
     ACTIVATION(new ActivationCommand()),
     REGISTRATION(new RegistrationCommand()),

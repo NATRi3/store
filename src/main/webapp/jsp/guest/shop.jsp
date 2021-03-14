@@ -114,14 +114,14 @@
                     var previous = document.createElement("button");
                     previous.setAttribute("class", "btn-primary");
                     previous.setAttribute("onclick", "getListProduct(" + (begin-12) + ","+collection+")")
-                    previous.innerHTML = "PREVIOS";
+                    previous.innerHTML = "<fmt:message key="button.previous">";
                     pagination.appendChild(previous);
                 }
                 if(res.length===12) {
                     var next = document.createElement("button");
                     next.setAttribute("class", "btn-primary");
                     next.setAttribute("onclick", "getListProduct(" + (begin + 12) + "," + collection + ")");
-                    next.innerHTML = "NEXT";
+                    next.innerHTML = "<fmt:message key="button.next">";
                     pagination.appendChild(next);
                 }
                 $.each(res, function (idx,product){

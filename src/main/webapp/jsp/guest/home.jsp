@@ -75,7 +75,7 @@
                 <div class="text">
                     <span><fmt:message key="home.instagram" bundle="${text}"/></span>
                 </div>
-                <a style="text-decoration:none; color: #0062cc;" href="#">Learn More</a>
+                <a style="text-decoration:none; color: #0062cc;" href="#"><fmt:message key="home.learn_more" bundle="${text}"/></a>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -87,7 +87,7 @@
                 <div class="text">
                     <span><fmt:message key="home.twitter" bundle="${text}"/></span>
                 </div>
-                <a style="text-decoration:none; color: #0062cc;" href="#">Learn More</a>
+                <a style="text-decoration:none; color: #0062cc;" href="#"><fmt:message key="home.learn_more" bundle="${text}"/></a>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -99,7 +99,7 @@
                 <div class="text">
                     <span><fmt:message key="home.facebook" bundle="${text}"/></span>
                 </div>
-                <a style="text-decoration:none; color: #0062cc;" href="#">Learn More</a>
+                <a style="text-decoration:none; color: #0062cc;" href="#"><fmt:message key="home.learn_more" bundle="${text}"/></a>
             </div>
         </div>
     </div>
@@ -158,16 +158,6 @@
     </div>
 
     <hr>
-
-    <%--<div class="row mb-4">
-        <div class="col-md-8">
-            <p></p>
-        </div>
-        <div class="col-md-4">
-            <a class="btn btn-lg btn-secondary btn-block" href="#">Call to Action</a>
-        </div>
-    </div>--%>
-
 </div>
 </body>
 </html>

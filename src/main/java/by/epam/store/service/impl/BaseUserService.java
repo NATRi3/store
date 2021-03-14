@@ -164,7 +164,22 @@ public class BaseUserService implements UserService {
 
     @Override
     public Optional<String> registerAdmin(Map<String, String> parameters) throws ServiceException {
-        return Optional.empty();
+        try {
+            String email = parameters.get(RequestParameterAndAttribute.EMAIL);
+            String name = parameters.get(RequestParameterAndAttribute.NAME);
+            String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
+            if (!userDao.isEmailExists(email)) {
+                User user;
+                user = new User(name, email, TypeRole.ADMIN);
+                userDao.createUser(user, encryption(password));
+                return Optional.empty();
+            } else {
+                parameters.remove(RequestParameterAndAttribute.EMAIL);
+                return Optional.of(MessageKey.ERROR_MESSAGE_EMAIL_EXIST);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     private String encryption(String pass) {
