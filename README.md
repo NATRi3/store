@@ -13,6 +13,7 @@ store
 -change account image and password
 -delete and create news
 -add products
+
     CLIENT’S SCOPE
 -change language
 -veiwing and changing account information
@@ -22,6 +23,7 @@ store
 -add and remove products to cart
 -create order by cart
 -create feedback on product
+
     GUEST’S SCOPE
 -change language
 -singing in
