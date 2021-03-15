@@ -17,6 +17,13 @@ public class User {
         this.role = role;
     }
 
+    public User(String email, String name, TypeRole role, TypeStatus access) {
+        this.email = email;
+        this.role = role;
+        this.name = name;
+        this.access = access;
+    }
+
     public User() {
     }
 

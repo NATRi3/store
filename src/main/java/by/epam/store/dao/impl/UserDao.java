@@ -25,13 +25,14 @@ public class UserDao implements by.epam.store.dao.UserDao {
     private static final String SQL_SELECT_EMAIL_BY_EMAIL = "SELECT email FROM l4tsmab3ywpoc8m0.accounts WHERE email = ?";
     private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE binary email = ? AND binary password = ?";
     private static final String SQL_SELECT_BY_ID = "SELECT name,email,register_date, image,id_accounts,access,role FROM l4tsmab3ywpoc8m0.accounts WHERE id_accounts = ?";
-    private static final String SQL_INSERT_USER = "INSERT INTO l4tsmab3ywpoc8m0.accounts (`email`, `name`, `register_date`, `password`,`role`)VALUES (?,?,?,?,?);";
+    private static final String SQL_INSERT_USER = "INSERT INTO l4tsmab3ywpoc8m0.accounts (`email`, `name`, `register_date`, `password`,`role`,`access`)VALUES (?,?,?,?,?,?);";
     private static final String SQL_DELETE_USER = "DELETE FROM l4tsmab3ywpoc8m0.accounts WHERE email=? AND password=?";
     private static final String SQL_UPDATE = "UPDATE l4tsmab3ywpoc8m0.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
     public static final String SQL_UPDATE_PASSWORD = "UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
     private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE access=?  LIMIT 10 OFFSET ?";
     private static final String SQL_SET_STATUS_FROM_TO = "UPDATE l4tsmab3ywpoc8m0.accounts SET access=? WHERE id_accounts=? and access=? LIMIT 1";
     private static final String SQL_SET_IMAGE_BY_ID = "UPDATE l4tsmab3ywpoc8m0.accounts SET image=? WHERE id_accounts=? LIMIT 1";
+    private static final String SQL_SET_PASSWORD_BY_ID_PASSWORD = "UPDATE l4tsmab3ywpoc8m0.accounts SET password=? WHERE id_accounts=? AND password=? LIMIT 1";
 
     @Override
     public List<User> findAll() throws DaoException {
@@ -123,7 +124,8 @@ public class UserDao implements by.epam.store.dao.UserDao {
             statement.setString(2, user.getName());
             statement.setLong(3, new Date().getTime());
             statement.setString(4, password);
-            statement.setString(5, user.getRole().toString());
+            statement.setString(5, user.getRole().name());
+            statement.setString(6,user.getAccess().name());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -189,8 +191,8 @@ public class UserDao implements by.epam.store.dao.UserDao {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_STATUS_FROM_TO)) {
             statement.setString(1, statusTo.toString());
-            statement.setString(2, statusFrom.toString());
-            statement.setLong(3, id);
+            statement.setLong(2, id);
+            statement.setString(3, statusFrom.toString());
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);
@@ -204,6 +206,20 @@ public class UserDao implements by.epam.store.dao.UserDao {
              PreparedStatement statement = connection.prepareStatement(SQL_SET_IMAGE_BY_ID)) {
             statement.setString(1, imageName);
             statement.setLong(2, id);
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean changePassword(long userId, String newPassword, String oldPassword) throws DaoException {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SET_PASSWORD_BY_ID_PASSWORD)) {
+            statement.setString(1, newPassword);
+            statement.setLong(2, userId);
+            statement.setString(3, oldPassword);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);

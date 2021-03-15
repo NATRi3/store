@@ -109,4 +109,13 @@ public class ValidationUserService implements UserService {
             return Optional.of(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
         }
     }
+
+    @Override
+    public String changePassword(Map<String, String> parameters) throws ServiceException {
+        if(FormValidator.isFormValid(parameters)) {
+            return baseUserService.changePassword(parameters);
+        } else {
+            return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
+        }
+    }
 }

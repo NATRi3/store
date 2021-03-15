@@ -25,4 +25,6 @@ public interface UserDao extends BaseDao<User> {
     boolean changeStatus(long id, TypeStatus statusFrom, TypeStatus statusTo) throws DaoException;
 
     boolean changeImageById(long id, String imageName) throws DaoException;
+
+    boolean changePassword(long userId, String newPassword, String oldPassword) throws DaoException;
 }

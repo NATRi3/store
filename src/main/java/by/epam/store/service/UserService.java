@@ -26,4 +26,6 @@ public interface UserService extends ImageService {
     String changeStatusFromTo(String id, String statusFrom, String statusTo) throws ServiceException;
 
     Optional<String> registerAdmin(Map<String, String> parameters) throws ServiceException;
+
+    String changePassword(Map<String, String> parameters) throws ServiceException;
 }

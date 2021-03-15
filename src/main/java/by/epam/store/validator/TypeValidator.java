@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class TypeValidator {
     private static final Set<String> typeProductSort = Set.of(TypeSort.PRICE.toString(),
-            TypeSort.NAME.toString(), TypeSort.PRICEDECS.toString(), TypeSort.NAMEDECS.toString());
+            TypeSort.NAME.toString(), TypeSort.PRICEDESC.toString(), TypeSort.NAMEDESC.toString());
     private static final Set<String> typeStatus = Set.of(TypeStatus.ACTIVE.toString(), TypeStatus.NONACTIVE.toString(),
             TypeStatus.BLOCKED.toString());
     private static final Set<String> typeNewsSort = Set.of(TypeSort.DATE.toString(), TypeSort.DATEDESC.toString(),
@@ -20,7 +20,7 @@ public class TypeValidator {
     private static final Set<String> typeOrderStatus = Set.of(TypeStatus.WAIT.toString(), TypeStatus.DECLINE.toString(),
             TypeStatus.COMPLETED.toString(), TypeStatus.INPROGRESS.toString());
     private static final Set<String> typeOrderSort = Set.of(TypeSort.DATE.toString(), TypeSort.PRICE.toString(),
-            TypeSort.DATEDESC.toString(), TypeSort.PRICEDECS.toString());
+            TypeSort.DATEDESC.toString(), TypeSort.PRICEDESC.toString());
 
     public static boolean isTypeProductSort(String sort) {
         if (sort == null) return false;

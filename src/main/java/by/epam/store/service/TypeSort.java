@@ -3,9 +3,9 @@ package by.epam.store.service;
 
 public enum TypeSort {
     PRICE("price"),
-    PRICEDECS("price DESC"),
+    PRICEDESC("price DESC"),
     NAME("name"),
-    NAMEDECS("name DESC"),
+    NAMEDESC("name DESC"),
     DATE("date"),
     DATEDESC("date DESC"),
     TITLE("title"),

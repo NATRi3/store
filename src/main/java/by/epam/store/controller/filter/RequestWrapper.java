@@ -44,10 +44,17 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String[] getParameterValues(String name) {
-        List<String> superValues = Arrays.asList(super.getParameterValues(name));
-        Collection<String> collection = params.values();
-        collection.addAll(superValues);
-        return collection.toArray(new String[0]);
+        if (params.get(name) != null) {
+            String[] superValues = super.getParameterValues(name);
+            String[] strings = new String[superValues.length + 1];
+            for (int i = 0; i < superValues.length; i++) {
+                strings[i] = superValues[i];
+            }
+            strings[superValues.length + 1] = params.get(name);
+            return strings;
+        } else {
+            return super.getParameterValues(name);
+        }
     }
 
     public void setParameter(String name, String parameter) {

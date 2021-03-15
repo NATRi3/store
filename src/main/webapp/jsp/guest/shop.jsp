@@ -57,7 +57,7 @@
             </div>
             <div id="collectionList" class="btn-group btn-lg btn-group-toggle">
                 <button class="btn btn-lg btn-block btn-secondary" onclick="getListProduct(0,0)">
-                    Показать все
+                    <fmt:message key="shop.show_all" bundle="${text}"/>
                 </button>
             </div>
             <div class="btn-group btn-lg btn-group-toggle" id="pagination">
@@ -114,14 +114,14 @@
                     var previous = document.createElement("button");
                     previous.setAttribute("class", "btn-primary");
                     previous.setAttribute("onclick", "getListProduct(" + (begin-12) + ","+collection+")")
-                    previous.innerHTML = "<fmt:message key="button.previous">";
+                    previous.innerHTML = "<fmt:message key="button.previous" bundle="${text}"/>";
                     pagination.appendChild(previous);
                 }
                 if(res.length===12) {
                     var next = document.createElement("button");
                     next.setAttribute("class", "btn-primary");
                     next.setAttribute("onclick", "getListProduct(" + (begin + 12) + "," + collection + ")");
-                    next.innerHTML = "<fmt:message key="button.next">";
+                    next.innerHTML = "<fmt:message key="button.next" bundle="${text}"/>";
                     pagination.appendChild(next);
                 }
                 $.each(res, function (idx,product){

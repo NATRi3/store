@@ -50,7 +50,7 @@ public class AccessCommandAndJspFilter implements Filter {
             RequestDispatcher dispatcher;
             if (!result.isExists()) {
                 HttpServletResponse res = (HttpServletResponse) servletResponse;
-                res.sendRedirect(PagePath.PAGE_404);
+                res.sendRedirect(request.getContextPath()+PagePath.PAGE_404);
                 return;
             } else if (user.getRole().equals(TypeRole.GUEST)) {
                 request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_MESSAGE_LOGIN_PLEASE);

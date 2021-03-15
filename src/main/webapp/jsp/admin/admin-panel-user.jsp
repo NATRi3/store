@@ -46,7 +46,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ADDPRODUCTMODAL'>
-                                    <fmt:message key='admin.add_product' bundle='${text}'/>
+                                    <fmt:message key='admin.add_admin' bundle='${text}'/>
                                 </button>
                                 <div class='modal fade' id='ADDPRODUCTMODAL' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='false'>
                                     <div class='modal-dialog' role='document'>
@@ -56,21 +56,25 @@
                                                     <h5 class='modal-title'><fmt:message key='admin.menu_add_product' bundle='${text}'/></h5>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <input type='hidden' name='command' value='add_product'>
+                                                    <input type='hidden' name='command' value='create_admin'>
                                                     <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
-                                                    <label><fmt:message key='admin.name' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='name_product' value="${requestScope.name_product}" required/>
-                                                    <label><fmt:message key='admin.info' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='info_product' value="${requestScope.info_product}" required/>
-                                                    <label><fmt:message key='admin.price' bundle='${text}'/></label>
-                                                    <input class='form-control' type='text' name='price_product' value="${requestScope.price_product}" required pattern="\d*+(\.\d{2})?"/>
-                                                    <label><fmt:message key='admin.collection' bundle='${text}'/></label>
-                                                    <select name="id_collection" id="selectorCollection">
-
-                                                    </select>
+                                                    <input maxlength="45" type="text" name="name" required
+                                                           value="${requestScope.name}"
+                                                           placeholder="<fmt:message bundle="${text}" key="registration.name"/>">
+                                                    <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>"
+                                                           value="${requestScope.email}"
+                                                           type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+                                                           placeholder="<fmt:message bundle="${text}" key="registration.email"/>">
+                                                    <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
+                                                           value="${requestScope.password}"
+                                                           type="password" name="password"
+                                                           placeholder="<fmt:message bundle="${text}" key="registration.password"/>" required>
+                                                    <input maxlength="45" type="password" name="repeat_password"
+                                                           value="${requestScope.repeat_password}"
+                                                           placeholder="<fmt:message bundle="${text}" key="registration.repeat"/>"/>
                                                 </div>
                                                 <button type='button' class='btn btn-secondary' data-dismiss='modal'><fmt:message key='button.close' bundle='${text}'/></button>
-                                                <input type='submit' value='<fmt:message key='button.save_changes' bundle='${text}'/>' class='btn btn-primary'/>
+                                                <input type='submit' value='<fmt:message key='button.save' bundle='${text}'/>' class='btn btn-primary'/>
                                             </form>
                                         </div>
                                     </div>
@@ -223,7 +227,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/async",
             type: 'GET',
-            data: "command=change_user_status&id_user="+userId + "status=ACTIVE&status=BLOCKED",
+            data: "command=change_user_status&id_user="+userId + "&type_status=ACTIVE&type_status=BLOCKED",
             statusCode:{
                 200: function(message){
                     viewMessage(message);
@@ -245,7 +249,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/async",
             type: 'POST',
-            data: "command=change_user_status&id_user="+userId + "status=BLOCKED&status=ACTIVE",
+            data: "command=change_user_status&id_user="+userId + "&type_status=BLOCKED&type_status=ACTIVE",
             statusCode: {
                 200: function (message){
                     viewMessage(message);

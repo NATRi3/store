@@ -83,7 +83,7 @@ public class BaseUserService implements UserService {
             String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
             if (!userDao.isEmailExists(email)) {
                 User user;
-                user = new User(name, email, TypeRole.CLIENT);
+                user = new User(name, email, TypeRole.CLIENT, TypeStatus.NONACTIVE);
                 userDao.createUser(user, encryption(password));
                 SendMail.sendActivationMailTo(email, user.getId());
                 return Optional.empty();
@@ -170,7 +170,7 @@ public class BaseUserService implements UserService {
             String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
             if (!userDao.isEmailExists(email)) {
                 User user;
-                user = new User(name, email, TypeRole.ADMIN);
+                user = new User(name, email, TypeRole.ADMIN, TypeStatus.ACTIVE);
                 userDao.createUser(user, encryption(password));
                 return Optional.empty();
             } else {
@@ -178,6 +178,24 @@ public class BaseUserService implements UserService {
                 return Optional.of(MessageKey.ERROR_MESSAGE_EMAIL_EXIST);
             }
         } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public String changePassword(Map<String, String> parameters) throws ServiceException {
+        String oldPassword = parameters.get(RequestParameterAndAttribute.CHANGE_PASSWORD_OLD);
+        String newPassword = parameters.get(RequestParameterAndAttribute.PASSWORD);
+        long userId = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_USER));
+        try {
+            if(userDao.changePassword(userId,newPassword,oldPassword)) {
+                return MessageKey.SUCCESSFUL_CHANGE;
+            } else {
+                parameters.remove(RequestParameterAndAttribute.CHANGE_PASSWORD_OLD);
+                return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
+            }
+        } catch (DaoException e) {
+            log.error(e);
             throw new ServiceException(e);
         }
     }

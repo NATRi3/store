@@ -15,8 +15,6 @@ public class RequestParameterAndAttribute {
     public static final String INFO_PRODUCT = "info_product";
     public static final String PRICE_PRODUCT = "price_product";
     public static final String CHANGE_PASSWORD_OLD = "old_password";
-    public static final String CHANGE_PASSWORD_NEW = "new_password";
-    public static final String CHANGE_PASSWORD_NEW_REPEAT = "new_password_repeat";
     public static final String TYPE_SORT = "type_sort";
     public static final String ID_COLLECTION = "id_collection";
     public static final String BEGIN_PAGINATION = "begin_pagination";

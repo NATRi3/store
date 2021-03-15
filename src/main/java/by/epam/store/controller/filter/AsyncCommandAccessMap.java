@@ -11,37 +11,37 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
 
     private AsyncCommandAccessMap() {
         put(TypeRole.ADMIN, Set.of(
-                TypeCommandAsync.GET_LIST_ORDERS.toString().toLowerCase(),
-                TypeCommandAsync.CHANGE_USER_STATUS.toString().toLowerCase(),
-                TypeCommandAsync.DELETE_FEEDBACK.toString().toLowerCase(),
-                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_NEWS.toString().toLowerCase(),
-                TypeCommandAsync.BLOCK_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.UNBLOCK_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.ACTIVATE_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.DEACTIVATE_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.toString().toLowerCase(),
-                TypeCommandAsync.GET_FRESH_NEWS.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_USERS_BY_ROLE_STATUS.toString().toLowerCase()));
+                TypeCommandAsync.GET_LIST_ORDERS.name().toLowerCase(),
+                TypeCommandAsync.CHANGE_USER_STATUS.name().toLowerCase(),
+                TypeCommandAsync.DELETE_FEEDBACK.name().toLowerCase(),
+                TypeCommandAsync.SEARCH_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_NEWS.name().toLowerCase(),
+                TypeCommandAsync.BLOCK_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.UNBLOCK_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.ACTIVATE_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.DEACTIVATE_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_COLLECTION.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.name().toLowerCase(),
+                TypeCommandAsync.GET_FRESH_NEWS.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_USERS_BY_ROLE_STATUS.name().toLowerCase()));
         put(TypeRole.CLIENT, Set.of(
-                TypeCommandAsync.GET_USER_ORDERS.toString().toLowerCase(),
-                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.toString().toLowerCase(),
-                TypeCommandAsync.GET_FRESH_NEWS.toString().toLowerCase(),
-                TypeCommandAsync.ADD_PRODUCT_TO_CART.toString().toLowerCase()));
+                TypeCommandAsync.GET_USER_ORDERS.name().toLowerCase(),
+                TypeCommandAsync.SEARCH_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_COLLECTION.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.name().toLowerCase(),
+                TypeCommandAsync.GET_FRESH_NEWS.name().toLowerCase(),
+                TypeCommandAsync.ADD_PRODUCT_TO_CART.name().toLowerCase()));
         put(TypeRole.GUEST, Set.of(
-                TypeCommandAsync.SEARCH_PRODUCT.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_COLLECTION.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.toString().toLowerCase(),
-                TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.toString().toLowerCase(),
-                TypeCommandAsync.GET_FRESH_NEWS.toString().toLowerCase()));
+                TypeCommandAsync.SEARCH_PRODUCT.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_RANDOM.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_COLLECTION.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_BY_COLLECTION.name().toLowerCase(),
+                TypeCommandAsync.GET_LIST_PRODUCT_FEEDBACK.name().toLowerCase(),
+                TypeCommandAsync.GET_FRESH_NEWS.name().toLowerCase()));
     }
 
     public static AsyncCommandAccessMap getINSTANCE() {

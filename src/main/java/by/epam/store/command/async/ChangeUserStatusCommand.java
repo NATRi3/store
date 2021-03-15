@@ -20,8 +20,8 @@ public class ChangeUserStatusCommand implements CommandAsync {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String id = request.getParameter(RequestParameterAndAttribute.ID_USER);
-        String statusFrom = request.getParameter(RequestParameterAndAttribute.TYPE_STATUS);
-        String statusTo = request.getParameter(RequestParameterAndAttribute.TYPE_STATUS);
+        String statusFrom = request.getParameterValues(RequestParameterAndAttribute.TYPE_STATUS)[0];
+        String statusTo = request.getParameterValues(RequestParameterAndAttribute.TYPE_STATUS)[1];
         try {
             String messageKey = BASE_USER_SERVICE.changeStatusFromTo(id, statusFrom, statusTo);
             ResponseWriterUtil.writeTextToResponse(request, response, messageKey);

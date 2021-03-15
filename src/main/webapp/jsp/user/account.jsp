@@ -47,9 +47,6 @@
                       </div>
                   </div>
                   <div class="profile-work">
-                      <button class="btn-light" type="submit">
-                          <fmt:message key="account.change_pass" bundle="${text}"/>
-                      </button>
                       <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ADDPRODUCTMODAL'>
                           <fmt:message key='account.change_pass' bundle='${text}'/>
                       </button>
@@ -63,13 +60,10 @@
                                       <div class='modal-body'>
                                           <input type='hidden' name='command' value='create_admin'>
                                           <input type='hidden' name='ctoken' value='${sessionScope.stoken}'/>
-                                          <input maxlength="45" type="text" name="name" required
-                                                 value="${requestScope.name}"
-                                                 placeholder="<fmt:message bundle="${text}" key="registration.name"/>">
-                                          <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.email" bundle="${text}"/>"
-                                                 value="${requestScope.email}"
-                                                 type="text" name="email" required pattern="^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
-                                                 placeholder="<fmt:message bundle="${text}" key="registration.email"/>">
+                                          <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
+                                                 value="${requestScope.old_password}"
+                                                 type="password" name="old_password"
+                                                 placeholder="<fmt:message bundle="${text}" key="registration.password"/>" required>
                                           <input maxlength="45" data-toggle="tooltip" title="<fmt:message key="toggle.password" bundle="${text}"/>"
                                                  value="${requestScope.password}"
                                                  type="password" name="password"
