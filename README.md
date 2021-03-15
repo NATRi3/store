@@ -1,7 +1,7 @@
-# store
-store
+## [Watch store](https://watchstoreepam.herokuapp.com)
 
-		[Watch store](https://watchstoreepam.herokuapp.com)
+## How it's works:
+Guest can find what he wants to buy. Then register and receive activation link on email. Then guest singing in and their status changes on user.User adding products to cart, manage their account and leave feedbacks on products.Admin can create new products, news, collections, admins. Admin can veiw orders and manage their.
 
 function | ADMIN’S SCOPE | CLIENT’S SCOPE | CLIENT’S SCOPE
 ---------| --------------|----------------|---------------
