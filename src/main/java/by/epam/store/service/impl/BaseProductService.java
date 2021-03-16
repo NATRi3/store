@@ -22,7 +22,15 @@ import java.util.Optional;
 
 public class BaseProductService implements ProductService {
     private static final Logger log = LogManager.getLogger(BaseProductService.class);
-    private static final ProductDao productDao = DaoCreator.getInstance().getProductDao();
+    private final ProductDao productDao;
+
+    public BaseProductService() {
+        productDao = DaoCreator.getInstance().getProductDao();
+    }
+
+    public BaseProductService(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     @Override
     public Optional<Product> findProductById(String idProduct) throws ServiceException {

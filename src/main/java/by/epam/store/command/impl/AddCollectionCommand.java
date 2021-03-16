@@ -24,8 +24,8 @@ public class AddCollectionCommand implements Command {
         Router page;
         Map<String, String> parameters = RequestUtil.getAllParametersFrom(request);
         try {
-            Optional<String> optionalMessage = collectionService.createCollection(parameters);
-            page = RouterResponseHelper.router(request, optionalMessage, parameters, PagePath.ADMIN_PANEL_NEWS);
+            String message = collectionService.createCollection(parameters);
+            page = RouterResponseHelper.router(request, message, parameters, PagePath.ADMIN_PANEL_NEWS);
         } catch (ServiceException e) {
             log.error(e);
             page = Router.redirectTo(PagePath.PAGE_500, request);

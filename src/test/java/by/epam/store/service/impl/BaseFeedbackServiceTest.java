@@ -55,6 +55,7 @@ public class BaseFeedbackServiceTest {
             Optional<String> actual = feedbackService.createFeedback(params,user);
             assertEquals(actual,expected);
         } catch (ServiceException e) {
+            log.error(e);
             fail();
         }
     }
@@ -64,6 +65,7 @@ public class BaseFeedbackServiceTest {
         try {
             assertNotNull(feedbackService.deleteFeedback("1"));
         } catch (ServiceException e) {
+            log.error(e);
             fail();
         }
     }

@@ -1,5 +1,7 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.dao.DaoCreator;
+import by.epam.store.dao.impl.CollectionDao;
 import by.epam.store.entity.ProductCollection;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
@@ -17,6 +19,15 @@ import java.util.Optional;
 
 public class BaseProductCollectionService implements CollectionService {
     private final static Logger log = LogManager.getLogger(BaseProductCollectionService.class);
+    private final CollectionDao collectionDao;
+
+    public BaseProductCollectionService() {
+        collectionDao = DaoCreator.getInstance().getCollectionDao();
+    }
+
+    public BaseProductCollectionService(CollectionDao collectionDao) {
+        this.collectionDao = collectionDao;
+    }
 
     @Override
     public List<ProductCollection> findAllProductCollectionsByStatus(String status) throws ServiceException {
@@ -40,14 +51,14 @@ public class BaseProductCollectionService implements CollectionService {
     }
 
     @Override
-    public Optional<String> createCollection(Map<String, String> parameters) throws ServiceException {
+    public String createCollection(Map<String, String> parameters) throws ServiceException {
         try {
             String name = parameters.get(RequestParameterAndAttribute.NAME_COLLECTION);
             String info = parameters.get(RequestParameterAndAttribute.INFO_COLLECTION);
             Date date = new Date();
             ProductCollection productCollection = new ProductCollection(name, info, date);
             collectionDao.create(productCollection);
-            return Optional.of(MessageKey.SUCCESSFUL_CREATE_COLLECTION);
+            return MessageKey.SUCCESSFUL_CREATE_COLLECTION;
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);

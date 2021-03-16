@@ -49,7 +49,8 @@ public class BaseOrderServiceTest {
         try {
             assertNotNull(service.createOrder(params,user,cart));
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -58,7 +59,8 @@ public class BaseOrderServiceTest {
         try {
             assertNotNull(service.findUserOrders(1));
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -67,7 +69,8 @@ public class BaseOrderServiceTest {
         try {
             assertNotNull(service.findOrderList("1","price","WAIT"));
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 }

@@ -35,7 +35,7 @@ public class ValidationProductCollectionService implements CollectionService {
     }
 
     @Override
-    public Optional<String> createCollection(Map<String, String> parameters) throws ServiceException {
+    public String createCollection(Map<String, String> parameters) throws ServiceException {
         if (FormValidator.isFormValid(parameters)) {
             return service.createCollection(parameters);
         } else {

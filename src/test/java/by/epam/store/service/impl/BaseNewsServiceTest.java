@@ -36,7 +36,8 @@ public class BaseNewsServiceTest {
         try {
             assertTrue(service.findFreshNews("3").isEmpty());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -45,7 +46,8 @@ public class BaseNewsServiceTest {
         try {
             assertTrue(service.findSortNews("title","0").isEmpty());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -54,7 +56,8 @@ public class BaseNewsServiceTest {
         try {
             assertFalse(service.deleteNews("3").isEmpty());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -66,7 +69,8 @@ public class BaseNewsServiceTest {
         try {
             assertFalse(service.createNews(params).isEmpty());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -75,7 +79,8 @@ public class BaseNewsServiceTest {
         try {
             assertFalse(service.changeImage("3","string").isEmpty());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 
@@ -88,7 +93,8 @@ public class BaseNewsServiceTest {
         try {
             assertFalse(service.changeNews(params).isEmpty());
         } catch (ServiceException e) {
-            e.printStackTrace();
+            log.error(e);
+            fail();
         }
     }
 }
