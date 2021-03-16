@@ -39,7 +39,7 @@ public class ValidationProductCollectionService implements CollectionService {
         if (FormValidator.isFormValid(parameters)) {
             return service.createCollection(parameters);
         } else {
-            return Optional.of(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
+            return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
         }
     }
 
