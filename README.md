@@ -11,8 +11,9 @@ Guest can find what he wants to buy. Then register and receive activation link o
 * Transactions
 * XSS and Double submit peventing filters
 * Timer task for recover connections
+* NoSQL and SQL database
 
-function | ADMIN’S SCOPE | CLIENT’S SCOPE | CLIENT’S SCOPE
+function | ADMIN’S SCOPE | CLIENT’S SCOPE | GUEST’S SCOPE
 ---------| --------------|----------------|---------------
 change language| * | * | * |
 creating new admin | * |   |  
