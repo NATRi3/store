@@ -2,7 +2,6 @@ package by.epam.store.service.impl;
 
 import by.epam.store.dao.DaoCreator;
 import by.epam.store.dao.OrderDao;
-import by.epam.store.dao.impl.NoSQLDao;
 import by.epam.store.entity.*;
 import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
@@ -24,7 +23,7 @@ public class BaseOrderService implements OrderService {
     }
 
     public BaseOrderService() {
-        orderDao = DaoCreator.getInstance().getOrderDao();
+        orderDao = DaoCreator.getInstance().getNoSQLOrderDao();
     }
 
     @Override
@@ -39,7 +38,7 @@ public class BaseOrderService implements OrderService {
                 product.setCountInOrder(entry.getValue());
                 productList.add(product);
             }
-            Order order = new Order(user.getId(), phone, address, cart.getTotalPrice(), new Date(), productList);
+            Order order = new Order(generateIdLong(), user.getId(), phone, address, cart.getTotalPrice(), new Date(), productList);
             orderDao.create(order);
             cart.clear();
             return MessageKey.SUCCESSFUL_CREATE_ORDER;
@@ -60,15 +59,18 @@ public class BaseOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> findOrderList(String begin, String sort, String status) throws ServiceException {
+    public List<Order> findOrderList(String begin, String sort) throws ServiceException {
         try {
             int beginPagination = Integer.parseInt(begin);
             TypeSort typeSort = TypeSort.valueOf(sort.toUpperCase());
-            TypeStatus typeStatus = TypeStatus.valueOf(status.toUpperCase());
-            return orderDao.findOrdersByStatusAndSort(beginPagination, typeSort, typeStatus);
+            return orderDao.findOrdersByStatusAndSort(beginPagination, typeSort);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
         }
+    }
+
+    private long generateIdLong(){
+        return Math.abs(new Random().nextLong());
     }
 }

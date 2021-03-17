@@ -70,8 +70,8 @@
                     </li>
                 </c:when>
             </c:choose>
-
         </ul>
+        <cus:setCurrentPage/>
         <form class="navbar-nav" name="submitForm" method="GET" action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="change_locale">
             <input type="hidden" name="newLocale" value="<fmt:message key="language.value" bundle="${text}"/>">

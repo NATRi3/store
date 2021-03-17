@@ -1,7 +1,8 @@
 package by.epam.store.service.impl;
 
 import by.epam.store.dao.DaoCreator;
-import by.epam.store.dao.impl.ProductDao;
+import by.epam.store.dao.ProductDao;
+import by.epam.store.dao.impl.BaseProductDao;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
@@ -11,7 +12,6 @@ import by.epam.store.util.MessageKey;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
-import by.epam.store.validator.TypeValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,21 +22,21 @@ import java.util.Optional;
 
 public class BaseProductService implements ProductService {
     private static final Logger log = LogManager.getLogger(BaseProductService.class);
-    private final ProductDao productDao;
+    private final ProductDao baseProductDao;
 
     public BaseProductService() {
-        productDao = DaoCreator.getInstance().getProductDao();
+        baseProductDao = DaoCreator.getInstance().getProductDao();
     }
 
-    public BaseProductService(ProductDao productDao) {
-        this.productDao = productDao;
+    public BaseProductService(BaseProductDao baseProductDao) {
+        this.baseProductDao = baseProductDao;
     }
 
     @Override
     public Optional<Product> findProductById(String idProduct) throws ServiceException {
         try {
             long id = Long.parseLong(idProduct);
-            return productDao.findEntityById(id);
+            return baseProductDao.findEntityById(id);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
@@ -51,7 +51,7 @@ public class BaseProductService implements ProductService {
             String name = parameters.get(RequestParameterAndAttribute.NAME_PRODUCT);
             String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
             Product product = new Product(name, info, price, idCollection);
-            productDao.create(product);
+            baseProductDao.create(product);
             return MessageKey.SUCCESSFUL_PRODUCT_ADD;
         } catch (DaoException e) {
             log.error(e);
@@ -64,11 +64,11 @@ public class BaseProductService implements ProductService {
         String resultMessage;
         try {
             long id = Long.parseLong(idProduct);
-            Optional<Product> optionalProduct = productDao.findEntityById(id);
+            Optional<Product> optionalProduct = baseProductDao.findEntityById(id);
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
                 product.setStatus(status);
-                productDao.update(product);
+                baseProductDao.update(product);
                 resultMessage = MessageKey.SUCCESSFUL_CHANGE;
             } else {
                 resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
@@ -86,7 +86,7 @@ public class BaseProductService implements ProductService {
         try {
             int beginPagination = Integer.parseInt(begin);
             TypeStatus typeStatus = TypeStatus.valueOf(status);
-            return productDao.findCollectionProductAndSort(beginPagination, typeStatus, idCollection, typeSort);
+            return baseProductDao.findCollectionProductAndSort(beginPagination, typeStatus, idCollection, typeSort);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
@@ -100,7 +100,7 @@ public class BaseProductService implements ProductService {
                 throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);
             }
             int amount = Integer.parseInt(amountStr);
-            return productDao.findRandomProduct(amount);
+            return baseProductDao.findRandomProduct(amount);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
@@ -115,12 +115,12 @@ public class BaseProductService implements ProductService {
                 long idProduct = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_PRODUCT));
                 BigDecimal priceProduct = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
                 String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
-                Optional<Product> optionalProduct = productDao.findEntityById(idProduct);
+                Optional<Product> optionalProduct = baseProductDao.findEntityById(idProduct);
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
                     product.setInfo(info);
                     product.setPrice(priceProduct);
-                    productDao.update(product);
+                    baseProductDao.update(product);
                     resultMessage = MessageKey.SUCCESSFUL_CHANGE_PRODUCT;
                     parameters.clear();
                 } else {
@@ -141,11 +141,11 @@ public class BaseProductService implements ProductService {
         String resultMessage = MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE;
         try {
             if (NumberValidator.isLongValid(id)) {
-                Optional<Product> optionalProduct = productDao.findEntityById(Long.valueOf(id));
+                Optional<Product> optionalProduct = baseProductDao.findEntityById(Long.valueOf(id));
                 if (optionalProduct.isPresent()) {
                     Product product = optionalProduct.get();
                     product.setImageName(imageName);
-                    if (productDao.update(product)) {
+                    if (baseProductDao.update(product)) {
                         resultMessage = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
                     } else {
                         resultMessage = MessageKey.ERROR_UNKNOWN_PRODUCT;
@@ -171,9 +171,9 @@ public class BaseProductService implements ProductService {
                 for (int i = 0; i < search.length; i++) {
                     search[i] = "%" + search[i] + "%";
                 }
-                return productDao.findProductByName(search);
+                return baseProductDao.findProductByName(search);
             } else {
-                return productDao.findProductByName("%" + searchRequest + "%");
+                return baseProductDao.findProductByName("%" + searchRequest + "%");
             }
         } catch (DaoException e) {
             log.error(e);

@@ -1,6 +1,5 @@
 package by.epam.store.dao.impl;
 
-import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.*;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
@@ -9,11 +8,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.*;
 
-public class OrderDao implements by.epam.store.dao.OrderDao {
-    private final static Logger log = LogManager.getLogger(OrderDao.class);
+public class BaseOrderDao implements by.epam.store.dao.OrderDao {
+    private final static Logger log = LogManager.getLogger(BaseOrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_INSERT_ORDER = "INSERT INTO l4tsmab3ywpoc8m0.orders SET id_account = ?, price = ?, phone=?, address=?, date=?";
     private static final String SQL_INSERT_ORDER_PRODUCT = "INSERT INTO l4tsmab3ywpoc8m0.order_product SET id_order = ?, id_product = ?, product_amount=?";
@@ -23,7 +21,7 @@ public class OrderDao implements by.epam.store.dao.OrderDao {
                     " from l4tsmab3ywpoc8m0.products LEFT JOIN (SELECT id_product,AVG(evaluation) as 'evaluation' FROM l4tsmab3ywpoc8m0.feedback) as t1 on t1.id_product=id_products ) p" +
                     " on order_product.id_product=p.id_products WHERE id_order=?";
     private static final String SQL_SELECT_ORDERS_BY_STATUS = "SELECT id_orders, price, phone, address, status, date, id_accounts, email, role, password, name, image, access, register_date FROM l4tsmab3ywpoc8m0.orders " +
-            "JOIN accounts a on a.id_accounts = orders.id_account WHERE status=? ORDER BY %s LIMIT 10 OFFSET ?";
+            "JOIN accounts a on a.id_accounts = orders.id_account ORDER BY %s LIMIT 10 OFFSET ?";
 
     @Override
     public List<Order> findAll() throws DaoException {
@@ -122,18 +120,17 @@ public class OrderDao implements by.epam.store.dao.OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersByStatusAndSort(int beginPagination, TypeSort typeSort, TypeStatus typeStatus) throws DaoException {
+    public List<Order> findOrdersByStatusAndSort(int beginPagination, TypeSort typeSort) throws DaoException {
         String sql = String.format(SQL_SELECT_ORDERS_BY_STATUS, typeSort.toString());
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statementOrder = connection.prepareStatement(sql);
              PreparedStatement statementProduct = connection.prepareStatement(SQL_SELECT_PRODUCTS_BY_ID_ORDER)) {
-            statementOrder.setString(1, typeStatus.toString());
-            statementOrder.setLong(2, beginPagination);
+            statementOrder.setLong(1, beginPagination);
             ResultSet resultSet = statementOrder.executeQuery();
             List<Order> orderList = new ArrayList<>();
             while (resultSet.next()) {
                 Order order = getOrderFromResultSet(resultSet);
-                order.setUser(UserDao.createUserFormResultSet(resultSet));
+                order.setUser(BaseUserDao.createUserFormResultSet(resultSet));
                 orderList.add(order);
             }
             for (Order order : orderList) {
@@ -154,7 +151,6 @@ public class OrderDao implements by.epam.store.dao.OrderDao {
         order.setAddress(resultSet.getString(DataBaseColumn.ORDER_ADDRESS));
         order.setPhone(resultSet.getString(DataBaseColumn.ORDER_PHONE));
         order.setPrice(resultSet.getBigDecimal(DataBaseColumn.ORDER_PRICE));
-        order.setStatus(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.STATUS)));
         order.dateFromLong(resultSet.getLong(DataBaseColumn.DATE));
         return order;
     }

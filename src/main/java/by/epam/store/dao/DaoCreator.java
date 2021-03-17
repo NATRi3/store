@@ -1,20 +1,22 @@
 package by.epam.store.dao;
 
-import by.epam.store.dao.impl.CollectionDao;
-import by.epam.store.dao.impl.FeedbackDao;
-import by.epam.store.dao.impl.NewsDao;
-import by.epam.store.dao.impl.OrderDao;
-import by.epam.store.dao.impl.ProductDao;
-import by.epam.store.dao.impl.UserDao;
+import by.epam.store.dao.impl.*;
+import by.epam.store.dao.impl.BaseCollectionDao;
+import by.epam.store.dao.impl.BaseFeedbackDao;
+import by.epam.store.dao.impl.BaseNewsDao;
+import by.epam.store.dao.impl.BaseOrderDao;
+import by.epam.store.dao.impl.BaseProductDao;
+import by.epam.store.dao.impl.BaseUserDao;
 
 public class DaoCreator {
     private static final DaoCreator instance = new DaoCreator();
-    private final by.epam.store.dao.impl.NewsDao newsDao = new by.epam.store.dao.impl.NewsDao();
-    private final by.epam.store.dao.impl.UserDao userDao = new by.epam.store.dao.impl.UserDao();
-    private final by.epam.store.dao.impl.ProductDao productDao = new by.epam.store.dao.impl.ProductDao();
-    private final by.epam.store.dao.impl.OrderDao orderDao = new by.epam.store.dao.impl.OrderDao();
-    private final by.epam.store.dao.impl.FeedbackDao feedbackDao = new by.epam.store.dao.impl.FeedbackDao();
-    private final by.epam.store.dao.impl.CollectionDao collectionDao = new by.epam.store.dao.impl.CollectionDao();
+    private final NewsDao newsDao = new BaseNewsDao();
+    private final UserDao userDao = new BaseUserDao();
+    private final ProductDao productDao = new BaseProductDao();
+    private final OrderDao orderDao = new BaseOrderDao();
+    private final FeedbackDao feedbackDao = new BaseFeedbackDao();
+    private final CollectionDao collectionDao = new BaseCollectionDao();
+    private final OrderDao noSQLOrderDao = new NoSQLDao();
 
     private DaoCreator() {
     }
@@ -33,6 +35,10 @@ public class DaoCreator {
 
     public ProductDao getProductDao() {
         return productDao;
+    }
+
+    public OrderDao getNoSQLOrderDao() {
+        return noSQLOrderDao;
     }
 
     public OrderDao getOrderDao() {

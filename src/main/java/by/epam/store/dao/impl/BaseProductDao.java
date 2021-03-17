@@ -1,6 +1,5 @@
 package by.epam.store.dao.impl;
 
-import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.Product;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
@@ -17,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductDao implements by.epam.store.dao.ProductDao {
-    private final static Logger log = LogManager.getLogger(ProductDao.class);
+public class BaseProductDao implements by.epam.store.dao.ProductDao {
+    private final static Logger log = LogManager.getLogger(BaseProductDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
             "SELECT id_products,name,info,price,status,image,id_collection,AVG(t1.evaluation) as 'evaluation' from " +

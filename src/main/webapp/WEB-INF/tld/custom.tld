@@ -20,4 +20,9 @@
         <tag-class>by.epam.store.tag.MessageTag</tag-class>
         <body-content>empty</body-content>
     </tag>
+    <tag>
+        <name>setCurrentPage</name>
+        <tag-class>by.epam.store.tag.PageTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 </taglib>

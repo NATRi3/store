@@ -39,12 +39,11 @@ public class ValidationOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> findOrderList(String begin, String sort, String status) throws ServiceException {
+    public List<Order> findOrderList(String begin, String sort) throws ServiceException {
         if (!NumberValidator.isLongValid(begin) &&
-                !TypeValidator.isTypeOrderSort(sort) &&
-                !TypeValidator.isTypeOrderStatus(status)) {
-            throw new ServiceException("Invalid params " + begin + " " + sort + " " + status);
+                !TypeValidator.isTypeOrderSort(sort)) {
+            throw new ServiceException("Invalid params " + begin + " " + sort);
         }
-        return service.findOrderList(begin, sort, status);
+        return service.findOrderList(begin, sort);
     }
 }

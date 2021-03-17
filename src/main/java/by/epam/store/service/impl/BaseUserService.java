@@ -1,7 +1,8 @@
 package by.epam.store.service.impl;
 
 import by.epam.store.dao.DaoCreator;
-import by.epam.store.dao.impl.UserDao;
+import by.epam.store.dao.UserDao;
+import by.epam.store.dao.impl.BaseUserDao;
 import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.entity.User;
@@ -22,14 +23,14 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BaseUserService implements UserService {
-    private static final UserDao userDao = DaoCreator.getInstance().getUserDao();
+    private static final UserDao BASE_USER_DAO = DaoCreator.getInstance().getUserDao();
     private final static Logger log = LogManager.getLogger(BaseUserService.class);
 
     @Override
     public String activate(String code) throws ServiceException {
         try {
             long id = Long.parseLong(code);
-            if (userDao.changeStatus(id, TypeStatus.NONACTIVE, TypeStatus.ACTIVE)) {
+            if (BASE_USER_DAO.changeStatus(id, TypeStatus.NONACTIVE, TypeStatus.ACTIVE)) {
                 log.info(code + "ACTIVATE");
                 return MessageKey.SUCCESSFUL_ACTIVATION;
             } else {
@@ -45,7 +46,7 @@ public class BaseUserService implements UserService {
         Optional<String> resultMessage = Optional.empty();
         try {
             Optional<User> optionalUser =
-                    userDao.findEntityByEmailAndPassword(user.getEmail(), encryption(password));
+                    BASE_USER_DAO.findEntityByEmailAndPassword(user.getEmail(), encryption(password));
             if (optionalUser.isPresent()) {
                 switch (optionalUser.get().getAccess()) {
                     case ACTIVE: {
@@ -81,10 +82,10 @@ public class BaseUserService implements UserService {
             String email = parameters.get(RequestParameterAndAttribute.EMAIL);
             String name = parameters.get(RequestParameterAndAttribute.NAME);
             String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
-            if (!userDao.isEmailExists(email)) {
+            if (!BASE_USER_DAO.isEmailExists(email)) {
                 User user;
                 user = new User(name, email, TypeRole.CLIENT, TypeStatus.NONACTIVE);
-                userDao.createUser(user, encryption(password));
+                BASE_USER_DAO.createUser(user, encryption(password));
                 SendMail.sendActivationMailTo(email, user.getId());
                 return Optional.empty();
             } else {
@@ -100,7 +101,7 @@ public class BaseUserService implements UserService {
     @Override
     public Optional<User> findUserById(long id) throws ServiceException {
         try {
-            return userDao.findEntityById(id);
+            return BASE_USER_DAO.findEntityById(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -109,7 +110,7 @@ public class BaseUserService implements UserService {
     @Override
     public boolean updateById(User user) throws ServiceException {
         try {
-            return userDao.update(user);
+            return BASE_USER_DAO.update(user);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -119,11 +120,11 @@ public class BaseUserService implements UserService {
     public Optional<String> changePasswordSendForgotMailMessage(String email) throws ServiceException {
         try {
             if (FormValidator.isEmailValid(email)) {
-                Optional<User> optionalUser = userDao.findUserByEmail(email);
+                Optional<User> optionalUser = BASE_USER_DAO.findUserByEmail(email);
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();
                     String newPassword = generatePassword();
-                    userDao.updatePassword(user, encryption(newPassword));
+                    BASE_USER_DAO.updatePassword(user, encryption(newPassword));
                     SendMail.sendForgotPasswordMessage(email, newPassword);
                 } else {
                     return Optional.of(MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT);
@@ -140,7 +141,7 @@ public class BaseUserService implements UserService {
         try {
             TypeStatus userStatus = TypeStatus.valueOf(status.toUpperCase());
             int beginPagination = Integer.parseInt(begin);
-            return userDao.findUserByRoleAndStatus(userStatus, beginPagination);
+            return BASE_USER_DAO.findUserByRoleAndStatus(userStatus, beginPagination);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -153,7 +154,7 @@ public class BaseUserService implements UserService {
             long idUser = Long.parseLong(id);
             TypeStatus typeStatusFrom = TypeStatus.valueOf(statusFrom);
             TypeStatus typeStatusTo = TypeStatus.valueOf(statusTo);
-            if (userDao.changeStatus(idUser, typeStatusFrom, typeStatusTo)) {
+            if (BASE_USER_DAO.changeStatus(idUser, typeStatusFrom, typeStatusTo)) {
                 resultMessage = MessageKey.SUCCESSFUL_CHANGE_STATUS;
             }
         } catch (DaoException e) {
@@ -168,10 +169,10 @@ public class BaseUserService implements UserService {
             String email = parameters.get(RequestParameterAndAttribute.EMAIL);
             String name = parameters.get(RequestParameterAndAttribute.NAME);
             String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
-            if (!userDao.isEmailExists(email)) {
+            if (!BASE_USER_DAO.isEmailExists(email)) {
                 User user;
                 user = new User(name, email, TypeRole.ADMIN, TypeStatus.ACTIVE);
-                userDao.createUser(user, encryption(password));
+                BASE_USER_DAO.createUser(user, encryption(password));
                 return Optional.empty();
             } else {
                 parameters.remove(RequestParameterAndAttribute.EMAIL);
@@ -188,7 +189,7 @@ public class BaseUserService implements UserService {
         String newPassword = parameters.get(RequestParameterAndAttribute.PASSWORD);
         long userId = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_USER));
         try {
-            if(userDao.changePassword(userId,newPassword,oldPassword)) {
+            if(BASE_USER_DAO.changePassword(userId,newPassword,oldPassword)) {
                 return MessageKey.SUCCESSFUL_CHANGE;
             } else {
                 parameters.remove(RequestParameterAndAttribute.CHANGE_PASSWORD_OLD);
@@ -212,7 +213,7 @@ public class BaseUserService implements UserService {
     public String changeImage(String id, String imageName) throws ServiceException {
         String message;
         try {
-            if (userDao.changeImageById(Long.parseLong(id), imageName)) {
+            if (BASE_USER_DAO.changeImageById(Long.parseLong(id), imageName)) {
                 message = MessageKey.SUCCESSFUL_CHANGE_IMAGE;
             } else {
                 message = MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT;

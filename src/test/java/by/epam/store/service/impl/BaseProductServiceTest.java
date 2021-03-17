@@ -1,6 +1,6 @@
 package by.epam.store.service.impl;
 
-import by.epam.store.dao.impl.ProductDao;
+import by.epam.store.dao.impl.BaseProductDao;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ProductService;
@@ -12,7 +12,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ public class BaseProductServiceTest {
 
     @BeforeMethod
     public void setUp() {
-        ProductDao dao = Mockito.mock(ProductDao.class);
+        BaseProductDao dao = Mockito.mock(BaseProductDao.class);
         service = new BaseProductService(dao);
     }
 

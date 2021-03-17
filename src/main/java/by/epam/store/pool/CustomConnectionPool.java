@@ -21,15 +21,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class CustomConnectionPool {
     private static final Logger log = LogManager.getLogger(CustomConnectionPool.class);
     private static CustomConnectionPool instance;
-    private static final AtomicBoolean isInitialized = new AtomicBoolean(true);
+    private static final AtomicBoolean isInitialized = new AtomicBoolean(false);
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenAwayConnection;
     private static final Lock locking = new ReentrantLock();
-    static final Lock lockConnection = new ReentrantLock();
-    static final AtomicBoolean timeTaskIsWork = new AtomicBoolean(false);
     static final int POOL_SIZE = 4;
     private final Timer timerTask = new Timer();
-    final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    final ReentrantReadWriteLock timerTaskLocker = new ReentrantReadWriteLock();
 
     private CustomConnectionPool() {
         freeConnections = new LinkedBlockingQueue<>();
@@ -48,11 +46,11 @@ public class CustomConnectionPool {
     }
 
     public static CustomConnectionPool getInstance() {
-        if (isInitialized.get()) {
+        if (!isInitialized.get()) {
             locking.lock();
             if (instance == null) {
                 instance = new CustomConnectionPool();
-                isInitialized.set(false);
+                isInitialized.set(true);
             }
             locking.unlock();
         }
@@ -60,7 +58,7 @@ public class CustomConnectionPool {
     }
 
     public Connection getConnection() {
-        readWriteLock.readLock().lock();
+        timerTaskLocker.readLock().lock();
         ProxyConnection connection = null;
         try {
             connection = freeConnections.take();
@@ -69,13 +67,13 @@ public class CustomConnectionPool {
             Thread.currentThread().interrupt();
             log.error(e);
         } finally {
-            readWriteLock.readLock().unlock();
+            timerTaskLocker.readLock().unlock();
         }
         return connection;
     }
 
     void closeConnection(Connection connection) {
-        readWriteLock.readLock().lock();
+        timerTaskLocker.readLock().lock();
         try {
             if (connection instanceof ProxyConnection) {
                 givenAwayConnection.remove(connection);
@@ -84,7 +82,7 @@ public class CustomConnectionPool {
                 log.warn("Connection is not proxy or null!");
             }
         } finally {
-            readWriteLock.readLock().unlock();
+            timerTaskLocker.readLock().unlock();
         }
 
     }

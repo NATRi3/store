@@ -1,6 +1,5 @@
 package by.epam.store.dao.impl;
 
-import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.entity.User;
@@ -16,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class UserDao implements by.epam.store.dao.UserDao {
-    private final static Logger log = LogManager.getLogger(UserDao.class);
+public class BaseUserDao implements by.epam.store.dao.UserDao {
+    private final static Logger log = LogManager.getLogger(BaseUserDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE email=?";
     private static final String SQL_SELECT_ALL =

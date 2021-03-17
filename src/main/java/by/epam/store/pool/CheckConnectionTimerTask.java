@@ -12,7 +12,7 @@ public class CheckConnectionTimerTask extends TimerTask {
     @Override
     public void run() {
         CustomConnectionPool instance = CustomConnectionPool.getInstance();
-        instance.readWriteLock.writeLock().lock();
+        instance.timerTaskLocker.writeLock().lock();
         try {
             while (CustomConnectionPool.getInstance().getSize() < CustomConnectionPool.POOL_SIZE) {
                 try {
@@ -24,7 +24,7 @@ public class CheckConnectionTimerTask extends TimerTask {
                 }
             }
         } finally {
-            instance.readWriteLock.writeLock().unlock();
+            instance.timerTaskLocker.writeLock().unlock();
         }
     }
 }

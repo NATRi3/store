@@ -1,7 +1,5 @@
 package by.epam.store.service;
 
-import by.epam.store.dao.DaoCreator;
-import by.epam.store.dao.impl.FeedbackDao;
 import by.epam.store.entity.Feedback;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;

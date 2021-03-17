@@ -22,11 +22,10 @@ public class GetListOrdersCommand implements CommandAsync {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String status = request.getParameter(RequestParameterAndAttribute.TYPE_STATUS);
         String sort = request.getParameter(RequestParameterAndAttribute.TYPE_SORT);
         String begin = request.getParameter(RequestParameterAndAttribute.BEGIN_PAGINATION);
         try {
-            List<Order> orderList = BASE_ORDER_SERVICE.findOrderList(begin, sort, status);
+            List<Order> orderList = BASE_ORDER_SERVICE.findOrderList(begin, sort);
             String json = new Gson().toJson(orderList);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

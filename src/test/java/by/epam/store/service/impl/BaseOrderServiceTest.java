@@ -1,14 +1,9 @@
 package by.epam.store.service.impl;
 
-import by.epam.store.dao.impl.FeedbackDao;
-import by.epam.store.dao.impl.NoSQLDao;
-import by.epam.store.dao.impl.OrderDao;
+import by.epam.store.dao.impl.BaseOrderDao;
 import by.epam.store.entity.Cart;
-import by.epam.store.entity.Order;
-import by.epam.store.entity.Product;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.FeedbackService;
 import by.epam.store.service.OrderService;
 import by.epam.store.util.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +24,7 @@ public class BaseOrderServiceTest {
 
     @BeforeMethod
     public void setUp() {
-        OrderDao mockito = Mockito.mock(OrderDao.class);
+        BaseOrderDao mockito = Mockito.mock(BaseOrderDao.class);
         service = new BaseOrderService(mockito);
     }
 
@@ -67,7 +62,7 @@ public class BaseOrderServiceTest {
     @Test
     public void testFindOrderList() {
         try {
-            assertNotNull(service.findOrderList("1","price","WAIT"));
+            assertNotNull(service.findOrderList("1","price"));
         } catch (ServiceException e) {
             log.error(e);
             fail();

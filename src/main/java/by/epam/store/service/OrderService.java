@@ -1,7 +1,5 @@
 package by.epam.store.service;
 
-import by.epam.store.dao.DaoCreator;
-import by.epam.store.dao.impl.OrderDao;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.Order;
 import by.epam.store.entity.User;
@@ -16,5 +14,5 @@ public interface OrderService {
 
     List<Order> findUserOrders(long id) throws ServiceException;
 
-    List<Order> findOrderList(String begin, String sort, String status) throws ServiceException;
+    List<Order> findOrderList(String begin, String sort) throws ServiceException;
 }

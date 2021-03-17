@@ -1,6 +1,5 @@
 package by.epam.store.dao.impl;
 
-import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.Feedback;
 import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.TypeStatus;
@@ -16,8 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class FeedbackDao implements by.epam.store.dao.FeedbackDao{
-    private final static Logger log = LogManager.getLogger(FeedbackDao.class);
+public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
+    private final static Logger log = LogManager.getLogger(BaseFeedbackDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     private static final String SQL_SELECT_ALL =
             "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account";

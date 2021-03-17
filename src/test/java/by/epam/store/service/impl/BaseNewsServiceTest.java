@@ -1,8 +1,7 @@
 package by.epam.store.service.impl;
 
-import by.epam.store.dao.impl.NewsDao;
+import by.epam.store.dao.impl.BaseNewsDao;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.service.FeedbackService;
 import by.epam.store.service.NewsService;
 import by.epam.store.util.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +22,7 @@ public class BaseNewsServiceTest {
 
     @BeforeMethod
     public void setUp() {
-        NewsDao dao = Mockito.mock(NewsDao.class);
+        BaseNewsDao dao = Mockito.mock(BaseNewsDao.class);
         service = new BaseNewsService(dao);
     }
 

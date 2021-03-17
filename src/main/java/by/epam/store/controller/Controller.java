@@ -4,6 +4,7 @@ import by.epam.store.command.Command;
 import by.epam.store.command.CommandProvider;
 import by.epam.store.command.TypeCommand;
 import by.epam.store.pool.CustomConnectionPool;
+import by.epam.store.pool.NoSQLConnectionPool;
 import by.epam.store.util.RequestParameterAndAttribute;
 import by.epam.store.util.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
@@ -50,9 +51,10 @@ public class Controller extends HttpServlet {
     public void destroy() {
         super.destroy();
         CustomConnectionPool.getInstance().closePool();
+        NoSQLConnectionPool.getInstance().close();
     }
 
-    private void setPageToSession(HttpServletRequest request, String page) {
+     private void setPageToSession(HttpServletRequest request, String page) {
         if (request.getSession(false) != null) {
             if (page.contains("/WEB-INF/")) {
                 request.getSession().setAttribute(SessionAttribute.PAGE, request.getRequestURI() + "?" + request.getQueryString());

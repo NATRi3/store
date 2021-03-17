@@ -1,6 +1,6 @@
 package by.epam.store.service.impl;
 
-import by.epam.store.dao.impl.CollectionDao;
+import by.epam.store.dao.impl.BaseCollectionDao;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.CollectionService;
@@ -24,7 +24,7 @@ public class BaseProductCollectionServiceTest {
 
     @BeforeMethod
     public void setUp() {
-        CollectionDao dao = Mockito.mock(CollectionDao.class);
+        BaseCollectionDao dao = Mockito.mock(BaseCollectionDao.class);
         service = new BaseProductCollectionService(dao);
     }
 

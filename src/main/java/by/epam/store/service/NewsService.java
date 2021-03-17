@@ -1,7 +1,5 @@
 package by.epam.store.service;
 
-import by.epam.store.dao.DaoCreator;
-import by.epam.store.dao.impl.NewsDao;
 import by.epam.store.entity.News;
 import by.epam.store.exception.ServiceException;
 

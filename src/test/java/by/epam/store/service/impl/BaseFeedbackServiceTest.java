@@ -1,7 +1,6 @@
 package by.epam.store.service.impl;
 
-import by.epam.store.dao.impl.FeedbackDao;
-import by.epam.store.entity.Feedback;
+import by.epam.store.dao.impl.BaseFeedbackDao;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.FeedbackService;
@@ -25,7 +24,7 @@ public class BaseFeedbackServiceTest {
 
     @BeforeMethod
     public void setUp() {
-        FeedbackDao mockito = Mockito.mock(FeedbackDao.class);
+        BaseFeedbackDao mockito = Mockito.mock(BaseFeedbackDao.class);
         feedbackService = new BaseFeedbackService(mockito);
     }
 

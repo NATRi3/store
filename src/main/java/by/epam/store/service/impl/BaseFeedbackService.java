@@ -1,7 +1,8 @@
 package by.epam.store.service.impl;
 
 import by.epam.store.dao.DaoCreator;
-import by.epam.store.dao.impl.FeedbackDao;
+import by.epam.store.dao.FeedbackDao;
+import by.epam.store.dao.impl.BaseFeedbackDao;
 import by.epam.store.entity.Feedback;
 import by.epam.store.entity.User;
 import by.epam.store.exception.DaoException;
@@ -19,21 +20,21 @@ import java.util.Optional;
 
 public class BaseFeedbackService implements FeedbackService {
     private final static Logger log = LogManager.getLogger(BaseFeedbackService.class);
-    private final FeedbackDao feedbackDao;
+    private final FeedbackDao baseFeedbackDao;
 
     public BaseFeedbackService() {
-        feedbackDao = DaoCreator.getInstance().getFeedbackDao();
+        baseFeedbackDao = DaoCreator.getInstance().getFeedbackDao();
     }
 
-    public BaseFeedbackService(FeedbackDao feedbackDao) {
-        this.feedbackDao = feedbackDao;
+    public BaseFeedbackService(BaseFeedbackDao baseFeedbackDao) {
+        this.baseFeedbackDao = baseFeedbackDao;
     }
 
     @Override
     public List<Feedback> getFeedbackByIdProduct(String idProduct) throws ServiceException {
         try {
             long id = Long.parseLong(idProduct);
-            return feedbackDao.findAllByProductId(id);
+            return baseFeedbackDao.findAllByProductId(id);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e.getMessage(), e);
@@ -48,7 +49,7 @@ public class BaseFeedbackService implements FeedbackService {
             long idProduct = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_PRODUCT));
             Date date = new Date();
             Feedback feedback = new Feedback(info, evaluation, idProduct, user, date);
-            feedbackDao.create(feedback);
+            baseFeedbackDao.create(feedback);
             return Optional.empty();
         } catch (DaoException e) {
             log.error(e);
@@ -60,7 +61,7 @@ public class BaseFeedbackService implements FeedbackService {
     public String deleteFeedback(String id) throws ServiceException {
         try {
             long idFeedback = Long.parseLong(id);
-            if (feedbackDao.delete(idFeedback)) {
+            if (baseFeedbackDao.delete(idFeedback)) {
                 return MessageKey.SUCCESSFUL_DELETE;
             } else {
                 return MessageKey.ERROR_UNKNOWN_FEEDBACK;

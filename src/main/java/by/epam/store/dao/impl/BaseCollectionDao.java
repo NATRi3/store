@@ -1,6 +1,5 @@
 package by.epam.store.dao.impl;
 
-import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.ProductCollection;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
@@ -14,11 +13,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class CollectionDao implements by.epam.store.dao.CollectionDao {
+public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
     public static final String SQL_SELECT_BY_STATUS = "SELECT id_collection, name, info, date, status FROM l4tsmab3ywpoc8m0.collection WHERE status=?";
-    private final static Logger log = LogManager.getLogger(CollectionDao.class);
+    private final static Logger log = LogManager.getLogger(BaseCollectionDao.class);
     private static final String SQL_INSERT = "INSERT INTO l4tsmab3ywpoc8m0.collection (`name`,`info`,`date`,`status`) VALUES (?,?,?,?);";
     private static final String SQL_SET_STATUS_BY_ID = "UPDATE l4tsmab3ywpoc8m0.collection SET status=? WHERE id_collection=?";
     private static final String SQL_SET_INFO_BY_ID = "UPDATE l4tsmab3ywpoc8m0.collection SET info=? WHERE id_collection=?";

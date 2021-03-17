@@ -19,13 +19,16 @@ public class Order {
     private String phone;
     private String address;
     private BigDecimal price;
-    private TypeStatus status;
     private Date date;
     @JsonAdapter(HashMapAdapter.class)
     private Map<Product, Integer> product;
     private List<Product> productList;
 
     public Order() {
+    }
+
+    public Order(long idUser){
+        this.idUser = idUser;
     }
 
     public Order(long id, long idUser, String phone, String address, BigDecimal price, Map<Product, Integer> product) {
@@ -35,6 +38,16 @@ public class Order {
         this.address = address;
         this.price = price;
         this.product = product;
+    }
+
+    public Order(long id, long idUser, String phone, String address, BigDecimal price, Date date, List<Product> productList) {
+        this.id = id;
+        this.idUser = idUser;
+        this.phone = phone;
+        this.address = address;
+        this.price = price;
+        this.date = date;
+        this.productList = productList;
     }
 
     public Order(long userId, String phone, String address, BigDecimal price, Map<Product, Integer> product, Date date) {
@@ -69,14 +82,6 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public TypeStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TypeStatus status) {
-        this.status = status;
     }
 
     public Date getDate() {
@@ -152,7 +157,6 @@ public class Order {
         if (phone != null ? !phone.equals(order.phone) : order.phone != null) return false;
         if (address != null ? !address.equals(order.address) : order.address != null) return false;
         if (price != null ? !price.equals(order.price) : order.price != null) return false;
-        if (status != order.status) return false;
         if (date != null ? !date.equals(order.date) : order.date != null) return false;
         return product != null ? product.equals(order.product) : order.product == null;
     }
@@ -165,7 +169,6 @@ public class Order {
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         return result;

@@ -1,6 +1,5 @@
 package by.epam.store.dao.impl;
 
-import by.epam.store.dao.BaseDao;
 import by.epam.store.entity.News;
 import by.epam.store.exception.DaoException;
 import by.epam.store.pool.CustomConnectionPool;
@@ -13,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class NewsDao implements by.epam.store.dao.NewsDao {
-    private final static Logger log = LogManager.getLogger(NewsDao.class);
+public class BaseNewsDao implements by.epam.store.dao.NewsDao {
+    private final static Logger log = LogManager.getLogger(BaseNewsDao.class);
     public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
     public static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
             "SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
