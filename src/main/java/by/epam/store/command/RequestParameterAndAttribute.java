@@ -1,4 +1,4 @@
-package by.epam.store.util;
+package by.epam.store.command;
 
 public class RequestParameterAndAttribute {
     /**

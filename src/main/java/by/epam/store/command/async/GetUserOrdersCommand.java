@@ -6,8 +6,7 @@ import by.epam.store.entity.User;
 import by.epam.store.exception.CommandException;
 import by.epam.store.service.OrderService;
 import by.epam.store.service.ServiceCreator;
-import by.epam.store.util.ResponseWriterUtil;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.SessionAttribute;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * The Get user orders command.
+ */
 public class GetUserOrdersCommand implements CommandAsync {
     private static final Logger log = LogManager.getLogger(GetUserOrdersCommand.class);
     private static final OrderService BASE_ORDER_SERVICE = ServiceCreator.getInstance().getOrderService();

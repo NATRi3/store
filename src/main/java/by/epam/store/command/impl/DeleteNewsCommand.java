@@ -6,13 +6,15 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.NewsService;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.RouterResponseHelper;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The Delete news command.
+ */
 public class DeleteNewsCommand implements Command {
     private final static Logger log = LogManager.getLogger(DeleteNewsCommand.class);
     private static final NewsService BASE_NEWS_SERVICE = ServiceCreator.getInstance().getNewsService();

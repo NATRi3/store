@@ -5,7 +5,7 @@ import by.epam.store.entity.Cart;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.OrderService;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mockito.Mockito;

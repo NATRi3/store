@@ -9,7 +9,7 @@ import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.CollectionService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,14 +17,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Base product collection service.
+ */
 public class BaseProductCollectionService implements CollectionService {
     private final static Logger log = LogManager.getLogger(BaseProductCollectionService.class);
     private final CollectionDao baseCollectionDao;
 
+    /**
+     * Instantiates a new Base product collection service.
+     */
     public BaseProductCollectionService() {
         baseCollectionDao = DaoCreator.getInstance().getCollectionDao();
     }
 
+    /**
+     * Instantiates a new Base product collection service.
+     *
+     * @param baseCollectionDao the base collection dao
+     */
     public BaseProductCollectionService(BaseCollectionDao baseCollectionDao) {
         this.baseCollectionDao = baseCollectionDao;
     }
@@ -55,8 +66,11 @@ public class BaseProductCollectionService implements CollectionService {
         try {
             String name = parameters.get(RequestParameterAndAttribute.NAME_COLLECTION);
             String info = parameters.get(RequestParameterAndAttribute.INFO_COLLECTION);
-            Date date = new Date();
-            ProductCollection productCollection = new ProductCollection(name, info, date);
+            ProductCollection productCollection = ProductCollection.builder()
+                    .date(new Date())
+                    .info(info)
+                    .name(name)
+                    .build();
             baseCollectionDao.create(productCollection);
             return MessageKey.SUCCESSFUL_CREATE_COLLECTION;
         } catch (DaoException e) {

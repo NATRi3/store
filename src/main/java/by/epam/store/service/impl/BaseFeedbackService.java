@@ -9,7 +9,7 @@ import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.FeedbackService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,14 +18,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Base feedback service.
+ */
 public class BaseFeedbackService implements FeedbackService {
     private final static Logger log = LogManager.getLogger(BaseFeedbackService.class);
     private final FeedbackDao baseFeedbackDao;
 
+    /**
+     * Instantiates a new Base feedback service.
+     */
     public BaseFeedbackService() {
         baseFeedbackDao = DaoCreator.getInstance().getFeedbackDao();
     }
 
+    /**
+     * Instantiates a new Base feedback service.
+     *
+     * @param baseFeedbackDao the base feedback dao
+     */
     public BaseFeedbackService(BaseFeedbackDao baseFeedbackDao) {
         this.baseFeedbackDao = baseFeedbackDao;
     }
@@ -48,7 +59,13 @@ public class BaseFeedbackService implements FeedbackService {
             byte evaluation = Byte.parseByte(parameters.get(RequestParameterAndAttribute.EVALUATION));
             long idProduct = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_PRODUCT));
             Date date = new Date();
-            Feedback feedback = new Feedback(info, evaluation, idProduct, user, date);
+            Feedback feedback = Feedback.builder()
+                    .feedback(info)
+                    .evaluation(evaluation)
+                    .idProduct(idProduct)
+                    .user(user)
+                    .date(date)
+                    .build();
             baseFeedbackDao.create(feedback);
             return Optional.empty();
         } catch (DaoException e) {

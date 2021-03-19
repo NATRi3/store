@@ -4,8 +4,8 @@ import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.User;
 import by.epam.store.util.MessageCreator;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The filter for check Access to async command.
+ */
 public class AccessAsyncCommandFilter implements Filter {
     private final static Logger log = LogManager.getLogger(AccessAsyncCommandFilter.class);
     private static Map<TypeRole, Set<String>> asyncCommandRoleAccess;
@@ -44,7 +47,7 @@ public class AccessAsyncCommandFilter implements Filter {
                         response.sendError(402);
                     } else {
                         if (response.getContentType().contains("text")) {
-                            String message = MessageCreator.getMessageFromBundleByLocale(MessageKey.ERROR_MESSAGE_WRONG_ACCESS, request);
+                            String message = MessageCreator.instance.getMessageFromBundleByLocale(MessageKey.ERROR_MESSAGE_WRONG_ACCESS, request);
                             response.setContentType("application/text");
                             response.setCharacterEncoding("UTF-8");
                             response.getWriter().write(message);

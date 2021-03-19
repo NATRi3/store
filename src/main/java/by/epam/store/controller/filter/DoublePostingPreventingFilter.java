@@ -1,7 +1,7 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,6 +12,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * The type Double posting preventing filter.
+ * Which prevent double posting by using Tokens.
+ */
 public class DoublePostingPreventingFilter implements Filter {
     private final static Logger log = LogManager.getLogger(DoublePostingPreventingFilter.class);
 

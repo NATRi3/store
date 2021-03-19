@@ -3,7 +3,7 @@ package by.epam.store.controller;
 import by.epam.store.command.CommandAsync;
 import by.epam.store.command.CommandProviderAsync;
 import by.epam.store.exception.CommandException;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The type Async controller.
+ */
 @WebServlet("/async")
 public class AsyncController extends HttpServlet {
     private final static Logger log = LogManager.getLogger(AsyncController.class);

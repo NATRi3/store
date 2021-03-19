@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Base feedback dao.
+ */
 public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
     private final static Logger log = LogManager.getLogger(BaseFeedbackDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
@@ -32,12 +35,11 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
     @Override
     public List<Feedback> findAll() throws DaoException {
         List<Feedback> feedbacks = new ArrayList<>();
-        try (Connection connection = connection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Optional<Feedback> optionalFeedback = getFeedbackFromResultSet(resultSet);
-                optionalFeedback.ifPresent(feedbacks::add);
+                feedbacks.add(getFeedbackFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             log.error(e);
@@ -49,13 +51,12 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
     @Override
     public List<Feedback> findAllByProductId(long id) throws DaoException {
         List<Feedback> feedbacks = new ArrayList<>();
-        try (Connection connection = connection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_BY_PRODUCT_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Optional<Feedback> optionalFeedback = getFeedbackFromResultSet(resultSet);
-                optionalFeedback.ifPresent(feedbacks::add);
+                feedbacks.add(getFeedbackFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             log.error(e);
@@ -67,12 +68,12 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
     @Override
     public Optional<Feedback> findEntityById(Long id) throws DaoException {
         Optional<Feedback> optionalFeedback = Optional.empty();
-        try (Connection connection = connection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                optionalFeedback = getFeedbackFromResultSet(resultSet);
+                optionalFeedback = Optional.of(getFeedbackFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             log.error(e);
@@ -84,7 +85,7 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
     @Override
     public boolean delete(Long id) throws DaoException {
         Optional<Feedback> optionalFeedback = Optional.empty();
-        try (Connection connection = connection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
             statement.setLong(1, id);
             return 1 == statement.executeUpdate();
@@ -96,12 +97,12 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
 
     @Override
     public boolean update(Feedback feedback) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Feedback create(Feedback feedback) throws DaoException {
-        try (Connection connection = connection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statementUpdate = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statementUpdate.setString(1, feedback.getFeedback());
             statementUpdate.setInt(2, feedback.getEvaluation());
@@ -116,28 +117,24 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
         }
     }
 
-    private Optional<Feedback> getFeedbackFromResultSet(ResultSet resultSet) throws SQLException {
-        if (resultSet.getString(DataBaseColumn.ID_FEEDBACK) != null) {
-            long id = resultSet.getLong(DataBaseColumn.ID_FEEDBACK);
-            String feedback = resultSet.getString(DataBaseColumn.FEEDBACK);
-            byte evaluation = resultSet.getByte(DataBaseColumn.FEEDBACK_EVALUATION);
-            long idProduct = resultSet.getLong(DataBaseColumn.FEEDBACK_ID_PRODUCT);
-            long idUser = resultSet.getInt(DataBaseColumn.ID_ACCOUNT);
-            String name = resultSet.getString(DataBaseColumn.ACCOUNT_NAME);
-            String email = resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL);
-            String image = resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE);
-            Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
-            TypeStatus access = TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS));
-            TypeRole role = TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE));
-            java.util.Date dateRegister = new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE));
-            User user = new User(idUser, email, role, name, image, access, dateRegister);
-            return Optional.of(new Feedback(id, feedback, evaluation, idProduct, user, date));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    private Connection connection() throws SQLException {
-        return connectionPool.getConnection();
+    private Feedback getFeedbackFromResultSet(ResultSet resultSet) throws SQLException {
+        return Feedback
+                .builder()
+                .id(resultSet.getLong(DataBaseColumn.ID_FEEDBACK))
+                .feedback(resultSet.getString(DataBaseColumn.FEEDBACK))
+                .evaluation(resultSet.getByte(DataBaseColumn.FEEDBACK_EVALUATION))
+                .idProduct(resultSet.getLong(DataBaseColumn.FEEDBACK_ID_PRODUCT))
+                .user(User
+                        .builder()
+                        .id(resultSet.getInt(DataBaseColumn.ID_ACCOUNT))
+                        .name(resultSet.getString(DataBaseColumn.ACCOUNT_NAME))
+                        .email(resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL))
+                        .imageName(resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE))
+                        .registerDate(new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE)))
+                        .access(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS)))
+                        .role(TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE)))
+                        .build())
+                .date(new Date(resultSet.getLong(DataBaseColumn.DATE)))
+                .build();
     }
 }

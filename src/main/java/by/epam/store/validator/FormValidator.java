@@ -1,9 +1,12 @@
 package by.epam.store.validator;
 
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 
 import java.util.Map;
 
+/**
+ * The type Form validator.
+ */
 public class FormValidator {
     private static final int MAX_FEEDBACK_SIZE = 200;
     private static final int MAX_TITLE_NEWS_SIZE = 70;
@@ -15,6 +18,12 @@ public class FormValidator {
     private static final int MAX_ADDRESS_SIZE = 70;
     private static final int MAX_INFO_500_SIZE = 500;
 
+    /**
+     * Is form valid boolean.
+     *
+     * @param dataMap the data map
+     * @return the boolean
+     */
     public static boolean isFormValid(Map<String, String> dataMap) {
         boolean valid = true;
         if (dataMap.containsKey(RequestParameterAndAttribute.NAME_COLLECTION)) {
@@ -63,12 +72,14 @@ public class FormValidator {
             String password = dataMap.get(RequestParameterAndAttribute.PASSWORD);
             if (!isPasswordValid(password)) {
                 dataMap.remove(RequestParameterAndAttribute.PASSWORD);
+                dataMap.remove(RequestParameterAndAttribute.REPEAT_PASSWORD);
                 valid = false;
             }
             if (dataMap.containsKey(RequestParameterAndAttribute.REPEAT_PASSWORD)) {
-                String repeatPassword = dataMap.get(RequestParameterAndAttribute.PASSWORD);
+                String repeatPassword = dataMap.get(RequestParameterAndAttribute.REPEAT_PASSWORD);
                 if (!password.equals(repeatPassword)) {
                     dataMap.remove(RequestParameterAndAttribute.PASSWORD);
+                    dataMap.remove(RequestParameterAndAttribute.REPEAT_PASSWORD);
                     valid = false;
                 }
             }
@@ -167,6 +178,12 @@ public class FormValidator {
         return phone.matches(PHONE_REGEX);
     }
 
+    /**
+     * Is email valid boolean.
+     *
+     * @param email the email
+     * @return the boolean
+     */
     public static boolean isEmailValid(String email) {
         if (email == null) return false;
         return email.matches(EMAIL_REGEX);
@@ -177,6 +194,12 @@ public class FormValidator {
         return password.matches(PASSWORD_REGEX);
     }
 
+    /**
+     * Is evaluation valid boolean.
+     *
+     * @param evaluation the evaluation
+     * @return the boolean
+     */
     public static boolean isEvaluationValid(byte evaluation) {
         return evaluation <= 10 && evaluation >= 1;
     }

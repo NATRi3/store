@@ -16,11 +16,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Validator product service.
+ */
 public class ValidatorProductService implements ProductService {
     private static final Logger log = LogManager.getLogger(ValidatorProductService.class);
 
     private final BaseProductService productService;
 
+    /**
+     * Instantiates a new Validator product service.
+     *
+     * @param productService the product service
+     */
     public ValidatorProductService(BaseProductService productService) {
         this.productService = productService;
     }

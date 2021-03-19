@@ -6,6 +6,9 @@ import by.epam.store.util.PagePath;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * The map which contains role and available jsp.
+ */
 public class JspAccessMap extends HashMap<TypeRole, Set<String>> {
     private static JspAccessMap INSTANCE;
 
@@ -24,6 +27,11 @@ public class JspAccessMap extends HashMap<TypeRole, Set<String>> {
                         PagePath.SINGLE_PRODUCT));
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static JspAccessMap getINSTANCE() {
         if (INSTANCE == null) {
             INSTANCE = new JspAccessMap();

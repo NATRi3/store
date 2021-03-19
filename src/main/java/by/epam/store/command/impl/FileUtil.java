@@ -1,4 +1,4 @@
-package by.epam.store.util;
+package by.epam.store.command.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * The type File util.
+ */
 public class FileUtil {
     private static final Set<String> FILE_TYPE = Set.of("image/jpg", "image/png", "image/gif", "image/jpeg");
     public static final String CLOUD_NAME = "cloud_name";
@@ -27,7 +30,12 @@ public class FileUtil {
     private FileUtil() {
     }
 
-    public static ServletFileUpload createUpload() {
+    /**
+     * Create upload servlet file upload.
+     *
+     * @return the servlet file upload
+     */
+    static ServletFileUpload createUpload() {
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         diskFileItemFactory.setSizeThreshold(MEM_MAX_SIZE);
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
@@ -35,7 +43,14 @@ public class FileUtil {
         return upload;
     }
 
-    public static Optional<String> saveFile(List<FileItem> fileItems) throws IOException {
+    /**
+     * Save file optional.
+     *
+     * @param fileItems the file items
+     * @return the optional
+     * @throws IOException the io exception
+     */
+    static Optional<String> saveFile(List<FileItem> fileItems) throws IOException {
         for (FileItem fileItem : fileItems) {
             if (!fileItem.isFormField()) {
                 if (FILE_TYPE.contains(fileItem.getContentType())) {

@@ -163,7 +163,7 @@
             }
         });
     }
-    var totalAmountCart = ${sessionScope.cart.getTotalAmount()};
+    var totalAmountCart = ${sessionScope.cart.totalAmount()};
     function addToCart(id){
         $.ajax({
             url: "${pageContext.request.contextPath}/async?" +

@@ -5,14 +5,16 @@ import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.FeedbackService;
 import by.epam.store.service.ServiceCreator;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.ResponseWriterUtil;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The Delete feedback command.
+ */
 public class DeleteFeedbackCommand implements CommandAsync {
     private static final Logger log = LogManager.getLogger(DeleteFeedbackCommand.class);
     private static final FeedbackService BASE_FEEDBACK_SERVICE = ServiceCreator.getInstance().getFeedbackService();

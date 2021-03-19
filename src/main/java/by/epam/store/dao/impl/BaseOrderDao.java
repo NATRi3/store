@@ -9,7 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
+/**
+ * The type Base order dao.
+ */
 public class BaseOrderDao implements by.epam.store.dao.OrderDao {
     private final static Logger log = LogManager.getLogger(BaseOrderDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
@@ -25,22 +29,22 @@ public class BaseOrderDao implements by.epam.store.dao.OrderDao {
 
     @Override
     public List<Order> findAll() throws DaoException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Optional<Order> findEntityById(Long aLong) throws DaoException {
-        return Optional.empty();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean delete(Long id) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean update(Order order) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -50,7 +54,7 @@ public class BaseOrderDao implements by.epam.store.dao.OrderDao {
         PreparedStatement statementCreateOrderProduct = null;
         try {
             try {
-                connection = connection();
+                connection = connectionPool.getConnection();
                 connection.setAutoCommit(false);
                 statementCreateOrder = connection.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
                 statementCreateOrderProduct = connection.prepareStatement(SQL_INSERT_ORDER_PRODUCT);
@@ -92,9 +96,6 @@ public class BaseOrderDao implements by.epam.store.dao.OrderDao {
         return order;
     }
 
-    private Connection connection() throws SQLException {
-        return connectionPool.getConnection();
-    }
 
     @Override
     public List<Order> findUserOrders(long id) throws DaoException {
@@ -146,29 +147,33 @@ public class BaseOrderDao implements by.epam.store.dao.OrderDao {
     }
 
     private Order getOrderFromResultSet(ResultSet resultSet) throws SQLException {
-        Order order = new Order();
-        order.setId(resultSet.getLong(DataBaseColumn.ID_ORDER));
-        order.setAddress(resultSet.getString(DataBaseColumn.ORDER_ADDRESS));
-        order.setPhone(resultSet.getString(DataBaseColumn.ORDER_PHONE));
-        order.setPrice(resultSet.getBigDecimal(DataBaseColumn.ORDER_PRICE));
-        order.dateFromLong(resultSet.getLong(DataBaseColumn.DATE));
-        return order;
+        return Order
+                .builder()
+                .id(resultSet.getLong(DataBaseColumn.ID_ORDER))
+                .address(resultSet.getString(DataBaseColumn.ORDER_ADDRESS))
+                .phone(resultSet.getString(DataBaseColumn.ORDER_PHONE))
+                .price(resultSet.getBigDecimal(DataBaseColumn.ORDER_PRICE))
+                .date(new Date(resultSet.getLong(DataBaseColumn.DATE)))
+                .build();
     }
 
     private void setMapFromResultSet(ResultSet resultSet, Order order) throws SQLException {
         Map<Product, Integer> productMap = new HashMap<>();
         while (resultSet.next()) {
-            Product product = new Product();
-            product.setId(resultSet.getLong(DataBaseColumn.ID_PRODUCT));
-            product.setName(resultSet.getString(DataBaseColumn.PRODUCT_NAME));
-            product.setInfo(resultSet.getString(DataBaseColumn.PRODUCT_INFO));
-            product.setPrice(resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE));
-            product.setStatus(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.STATUS)));
-            product.setIdCollection(resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION));
-            product.setImageName(resultSet.getString(DataBaseColumn.PRODUCT_IMAGE));
-            product.setRating(resultSet.getString(DataBaseColumn.FEEDBACK_EVALUATION));
-            int amount = resultSet.getInt(DataBaseColumn.ORDER_PRODUCT_PRODUCT_AMOUNT);
-            productMap.put(product, amount);
+            productMap.put(
+                Product.builder()
+                        .id(resultSet.getLong(DataBaseColumn.ID_PRODUCT))
+                        .name(resultSet.getString(DataBaseColumn.PRODUCT_NAME))
+                        .info(resultSet.getString(DataBaseColumn.PRODUCT_INFO))
+                        .price(resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE))
+                        .status(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.STATUS)))
+                        .idCollection(resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION))
+                        .imageName(resultSet.getString(DataBaseColumn.PRODUCT_IMAGE))
+                        .rating(resultSet.getString(DataBaseColumn.FEEDBACK_EVALUATION))
+                        .countInOrder(resultSet.getInt(DataBaseColumn.ORDER_PRODUCT_PRODUCT_AMOUNT))
+                        .build(),
+                resultSet.getInt(DataBaseColumn.ORDER_PRODUCT_PRODUCT_AMOUNT)
+            );
         }
         order.setProduct(productMap);
     }

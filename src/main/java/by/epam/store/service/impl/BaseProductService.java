@@ -9,7 +9,7 @@ import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ProductService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
 import org.apache.logging.log4j.LogManager;
@@ -20,14 +20,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Base product service.
+ */
 public class BaseProductService implements ProductService {
     private static final Logger log = LogManager.getLogger(BaseProductService.class);
     private final ProductDao baseProductDao;
 
+    /**
+     * Instantiates a new Base product service.
+     */
     public BaseProductService() {
         baseProductDao = DaoCreator.getInstance().getProductDao();
     }
 
+    /**
+     * Instantiates a new Base product service.
+     *
+     * @param baseProductDao the base product dao
+     */
     public BaseProductService(BaseProductDao baseProductDao) {
         this.baseProductDao = baseProductDao;
     }
@@ -50,7 +61,12 @@ public class BaseProductService implements ProductService {
             BigDecimal price = BigDecimal.valueOf(Double.parseDouble(parameters.get(RequestParameterAndAttribute.PRICE_PRODUCT)));
             String name = parameters.get(RequestParameterAndAttribute.NAME_PRODUCT);
             String info = parameters.get(RequestParameterAndAttribute.INFO_PRODUCT);
-            Product product = new Product(name, info, price, idCollection);
+            Product product = Product.builder()
+                    .idCollection(idCollection)
+                    .price(price)
+                    .name(name)
+                    .info(info)
+                    .build();
             baseProductDao.create(product);
             return MessageKey.SUCCESSFUL_PRODUCT_ADD;
         } catch (DaoException e) {

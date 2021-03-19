@@ -18,15 +18,24 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * The type Custom connection pool.
+ */
 public class CustomConnectionPool {
     private static final Logger log = LogManager.getLogger(CustomConnectionPool.class);
-    private static CustomConnectionPool instance;
+    private static final Lock locking = new ReentrantLock();
     private static final AtomicBoolean isInitialized = new AtomicBoolean(false);
+    private static CustomConnectionPool instance;
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenAwayConnection;
-    private static final Lock locking = new ReentrantLock();
-    static final int POOL_SIZE = 4;
     private final Timer timerTask = new Timer();
+    /**
+     * The Pool size.
+     */
+    static final int POOL_SIZE = 4;
+    /**
+     * The Timer task locker.
+     */
     final ReentrantReadWriteLock timerTaskLocker = new ReentrantReadWriteLock();
 
     private CustomConnectionPool() {
@@ -45,6 +54,11 @@ public class CustomConnectionPool {
         timerTask.schedule(new CheckConnectionTimerTask(), 14400000, 14400000);
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static CustomConnectionPool getInstance() {
         if (!isInitialized.get()) {
             locking.lock();
@@ -57,6 +71,11 @@ public class CustomConnectionPool {
         return instance;
     }
 
+    /**
+     * Gets connection from connection pool.
+     *
+     * @return the connection
+     */
     public Connection getConnection() {
         timerTaskLocker.readLock().lock();
         ProxyConnection connection = null;
@@ -72,6 +91,11 @@ public class CustomConnectionPool {
         return connection;
     }
 
+    /**
+     * Return connection to connection pool.
+     *
+     * @param connection the connection
+     */
     void closeConnection(Connection connection) {
         timerTaskLocker.readLock().lock();
         try {
@@ -87,6 +111,9 @@ public class CustomConnectionPool {
 
     }
 
+    /**
+     * Close pool.
+     */
     public void closePool() {
         for (int i = 0; i < getSize(); i++) {
             try {
@@ -111,6 +138,11 @@ public class CustomConnectionPool {
         }
     }
 
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
     int getSize() {
         return freeConnections.size() + givenAwayConnection.size();
     }

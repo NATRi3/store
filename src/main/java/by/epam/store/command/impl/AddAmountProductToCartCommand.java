@@ -10,8 +10,8 @@ import by.epam.store.service.ProductService;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import by.epam.store.validator.NumberValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * The Add amount product to cart command.
+ */
 public class AddAmountProductToCartCommand implements Command {
     private final static Logger log = LogManager.getLogger(AddAmountProductToCartCommand.class);
     private static final ProductService BASE_PRODUCT_SERVICE = ServiceCreator.getInstance().getProductService();

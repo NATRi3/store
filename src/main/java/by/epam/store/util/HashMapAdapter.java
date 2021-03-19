@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Hash map adapter.
+ */
 public class HashMapAdapter extends TypeAdapter<HashMap<Product, Integer>> {
 
     @Override

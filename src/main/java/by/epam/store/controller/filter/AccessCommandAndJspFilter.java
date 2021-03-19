@@ -4,8 +4,8 @@ import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.User;
 import by.epam.store.util.MessageKey;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The filter for check Access to command and jsp.
+ */
 public class AccessCommandAndJspFilter implements Filter {
     private static final Logger log = LogManager.getLogger(AccessCommandAndJspFilter.class);
     private static final String CONTROLLER_PREFIX = "/controller";
@@ -33,16 +36,16 @@ public class AccessCommandAndJspFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestPath;
-        if (request.getRequestURI().contains(CONTROLLER_PREFIX)) {
-            requestPath = request.getParameter(RequestParameterAndAttribute.COMMAND);
-        } else {
-            requestPath = request.getRequestURI().replace(request.getContextPath(), "");
-        }
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         Result result = new Result();
-        checkMapForPathAndUserRole(user, result, commandRoleAccess, requestPath);
-        checkMapForPathAndUserRole(user, result, jspRoleAccess, requestPath);
+        if (request.getRequestURI().contains(CONTROLLER_PREFIX)) {
+            requestPath = request.getParameter(RequestParameterAndAttribute.COMMAND);
+            checkMapForPathAndUserRole(user, result, commandRoleAccess, requestPath);
+        } else {
+            requestPath = request.getRequestURI().replace(request.getContextPath(), "");
+            checkMapForPathAndUserRole(user, result, jspRoleAccess, requestPath);
+        }
         if (result.isAccess()) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
@@ -78,7 +81,7 @@ public class AccessCommandAndJspFilter implements Filter {
         private boolean isExists;
         private boolean access;
 
-        Result(boolean access, boolean isExists) {
+        private Result(boolean access, boolean isExists) {
             this.isExists = isExists;
             this.access = access;
         }

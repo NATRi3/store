@@ -1,15 +1,23 @@
 package by.epam.store.tag;
 
 import by.epam.store.entity.User;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+/**
+ * The type Access tag.
+ */
 public class AccessTag extends TagSupport {
     private String access;
 
+    /**
+     * Sets access.
+     *
+     * @param access the access
+     */
     public void setAccess(String access) {
         this.access = access;
     }

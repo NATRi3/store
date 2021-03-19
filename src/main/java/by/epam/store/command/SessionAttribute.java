@@ -1,4 +1,4 @@
-package by.epam.store.util;
+package by.epam.store.command;
 
 public class SessionAttribute {
     public static final String LOCALE = "currentLocale";

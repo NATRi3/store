@@ -2,7 +2,6 @@ package by.epam.store.service.impl;
 
 import by.epam.store.dao.DaoCreator;
 import by.epam.store.dao.UserDao;
-import by.epam.store.dao.impl.BaseUserDao;
 import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.entity.User;
@@ -10,8 +9,7 @@ import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.UserService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SendMail;
+import by.epam.store.command.RequestParameterAndAttribute;
 import by.epam.store.validator.FormValidator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Base user service.
+ */
 public class BaseUserService implements UserService {
     private static final UserDao BASE_USER_DAO = DaoCreator.getInstance().getUserDao();
     private final static Logger log = LogManager.getLogger(BaseUserService.class);
@@ -84,8 +85,16 @@ public class BaseUserService implements UserService {
             String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
             if (!BASE_USER_DAO.isEmailExists(email)) {
                 User user;
-                user = new User(name, email, TypeRole.CLIENT, TypeStatus.NONACTIVE);
+                user = User.builder()
+                        .name(name)
+                        .email(email)
+                        .role(TypeRole.CLIENT)
+                        .access(TypeStatus.NONACTIVE)
+                        .build();
                 BASE_USER_DAO.createUser(user, encryption(password));
+                if(user.getId()==0){
+                    throw new ServiceException("DB problems");
+                }
                 SendMail.sendActivationMailTo(email, user.getId());
                 return Optional.empty();
             } else {
@@ -171,7 +180,12 @@ public class BaseUserService implements UserService {
             String password = parameters.get(RequestParameterAndAttribute.PASSWORD);
             if (!BASE_USER_DAO.isEmailExists(email)) {
                 User user;
-                user = new User(name, email, TypeRole.ADMIN, TypeStatus.ACTIVE);
+                user = User.builder()
+                        .name(name)
+                        .email(email)
+                        .role(TypeRole.ADMIN)
+                        .access(TypeStatus.ACTIVE)
+                        .build();
                 BASE_USER_DAO.createUser(user, encryption(password));
                 return Optional.empty();
             } else {

@@ -1,6 +1,8 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import by.epam.store.controller.Router;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
@@ -18,6 +20,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The Upload file command.
+ */
 public class UploadFileCommand implements Command {
     private final static Logger log = LogManager.getLogger(UploadFileCommand.class);
     private static final UserService BASE_USER_SERVICE = ServiceCreator.getInstance().getUserService();
@@ -39,6 +44,17 @@ public class UploadFileCommand implements Command {
         return router;
     }
 
+    /**
+     * Change image var optional.
+     *
+     * @param request      the request
+     * @param imageService the image service
+     * @param id           the id
+     * @return the optional
+     * @throws ServiceException    the service exception
+     * @throws FileUploadException the file upload exception
+     * @throws IOException         the io exception
+     */
     static Optional<String> changeImageVar(HttpServletRequest request,
                                            ImageService imageService,
                                            String id) throws ServiceException, FileUploadException, IOException {

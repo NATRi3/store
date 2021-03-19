@@ -6,7 +6,7 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.NewsService;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +16,9 @@ import java.io.IOException;
 
 import static by.epam.store.command.impl.UploadFileCommand.changeImageVar;
 
+/**
+ * The Change news image command.
+ */
 public class ChangeNewsImageCommand implements Command {
     private final static Logger log = LogManager.getLogger(ChangeNewsImageCommand.class);
     private static final NewsService BASE_NEWS_SERVICE = ServiceCreator.getInstance().getNewsService();

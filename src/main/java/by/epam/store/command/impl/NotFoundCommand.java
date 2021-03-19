@@ -6,6 +6,9 @@ import by.epam.store.util.PagePath;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The Not found command.
+ */
 public class NotFoundCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {

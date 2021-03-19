@@ -3,7 +3,7 @@ package by.epam.store.service.impl;
 import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.UserService;
-import by.epam.store.util.EntityValidator;
+import by.epam.store.validator.UserValidator;
 import by.epam.store.util.MessageKey;
 import by.epam.store.validator.FormValidator;
 import by.epam.store.validator.NumberValidator;
@@ -15,11 +15,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Validation user service.
+ */
 public class ValidationUserService implements UserService {
     private static final Logger log = LogManager.getLogger(ValidationUserService.class);
 
     private final BaseUserService baseUserService;
 
+    /**
+     * Instantiates a new Validation user service.
+     *
+     * @param baseUserService the base user service
+     */
     public ValidationUserService(BaseUserService baseUserService) {
         this.baseUserService = baseUserService;
     }
@@ -63,7 +71,7 @@ public class ValidationUserService implements UserService {
 
     @Override
     public boolean updateById(User user) throws ServiceException {
-        if (EntityValidator.isUserValid(user)) {
+        if (UserValidator.isUserValid(user)) {
             return baseUserService.updateById(user);
         } else {
             throw new ServiceException(MessageKey.ERROR_MESSAGE_INVALID_PARAM);

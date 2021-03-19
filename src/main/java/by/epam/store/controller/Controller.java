@@ -5,8 +5,8 @@ import by.epam.store.command.CommandProvider;
 import by.epam.store.command.TypeCommand;
 import by.epam.store.pool.CustomConnectionPool;
 import by.epam.store.pool.NoSQLConnectionPool;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,9 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The type Controller.
+ */
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
-    public static final Logger logger = LogManager.getLogger(Controller.class);
+    private static final Logger logger = LogManager.getLogger(Controller.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,7 +1,7 @@
 package by.epam.store.tag;
 
 import by.epam.store.util.MessageCreator;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +10,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
+/**
+ * The type Message tag.
+ */
 public class MessageTag extends TagSupport {
     private static final Logger log = LogManager.getLogger(MessageTag.class);
 
@@ -19,7 +22,7 @@ public class MessageTag extends TagSupport {
         String messageKey = (String) request.getAttribute(RequestParameterAndAttribute.MESSAGE);
         try {
             if (messageKey != null) {
-                String message = MessageCreator.getMessageFromBundleByLocale(messageKey, request);
+                String message = MessageCreator.instance.getMessageFromBundleByLocale(messageKey, request);
                 if (messageKey.contains("success")) {
                     pageContext.getOut().print(
                             "<div class='messages' style='position: fixed; top: 80px; right: 15px; width: 250px; z-index: 100;'>" +

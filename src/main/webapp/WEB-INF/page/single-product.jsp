@@ -85,7 +85,7 @@
                         <div class="col-md-6 col-xs-12 col-md-offset-3">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">//FEEDBACK</h3>
+                                    <h3 class="panel-title"><fmt:message key="" </h3>
                                 </div>
                                 <div class="panel-body">
                                     <form action="${pageContext.request.contextPath}/controller" method="post">

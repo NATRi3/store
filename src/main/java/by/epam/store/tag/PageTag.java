@@ -1,12 +1,15 @@
 package by.epam.store.tag;
 
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+/**
+ * The type Page tag.
+ */
 public class PageTag extends TagSupport {
     private static final String WEB_INF_PREFIX = "/WEB-INF/";
 

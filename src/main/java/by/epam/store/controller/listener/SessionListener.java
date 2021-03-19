@@ -5,7 +5,7 @@ import by.epam.store.entity.User;
 import by.epam.store.entity.TypeRole;
 import by.epam.store.entity.TypeStatus;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.annotation.WebListener;
@@ -16,11 +16,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+/**
+ * The type Session listener.
+ */
 @WebListener
 public class SessionListener implements HttpSessionListener {
     private static final Logger log = LogManager.getLogger(SessionListener.class);
-    public static final User defaultUser =
-            new User(-1,"default",TypeRole.GUEST,"default","default.jpg", TypeStatus.NONACTIVE,new Date());
+    private final User defaultUser =
+            User.builder().id(-1).role(TypeRole.GUEST).access(TypeStatus.NONACTIVE).build();
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         HttpSession session = se.getSession();

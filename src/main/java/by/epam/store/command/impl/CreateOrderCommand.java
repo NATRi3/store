@@ -1,6 +1,8 @@
 package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import by.epam.store.controller.Router;
 import by.epam.store.entity.Cart;
 import by.epam.store.entity.User;
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The Create order command.
+ */
 public class CreateOrderCommand implements Command {
     private final static Logger log = LogManager.getLogger(CreateOrderCommand.class);
     private static final OrderService BASE_ORDER_SERVICE = ServiceCreator.getInstance().getOrderService();

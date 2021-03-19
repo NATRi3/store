@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * The type Xss protect filter.
+ */
 public class XSSProtectFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

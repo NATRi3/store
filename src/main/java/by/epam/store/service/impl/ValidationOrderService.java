@@ -13,10 +13,18 @@ import by.epam.store.validator.TypeValidator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Validation order service.
+ */
 public class ValidationOrderService implements OrderService {
 
     private final BaseOrderService service;
 
+    /**
+     * Instantiates a new Validation order service.
+     *
+     * @param service the service
+     */
     public ValidationOrderService(BaseOrderService service) {
         this.service = service;
     }

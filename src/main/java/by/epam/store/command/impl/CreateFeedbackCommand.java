@@ -9,9 +9,8 @@ import by.epam.store.service.FeedbackService;
 import by.epam.store.service.ProductService;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.RequestUtil;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +19,9 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The Create feedback command.
+ */
 public class CreateFeedbackCommand implements Command {
     private final static Logger log = LogManager.getLogger(CreateFeedbackCommand.class);
     private static final FeedbackService BASE_FEEDBACK_SERVICE = ServiceCreator.getInstance().getFeedbackService();

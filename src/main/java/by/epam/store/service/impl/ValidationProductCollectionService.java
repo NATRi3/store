@@ -13,10 +13,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Validation product collection service.
+ */
 public class ValidationProductCollectionService implements CollectionService {
 
     private final BaseProductCollectionService service;
 
+    /**
+     * Instantiates a new Validation product collection service.
+     *
+     * @param service the service
+     */
     public ValidationProductCollectionService(BaseProductCollectionService service) {
         this.service = service;
     }

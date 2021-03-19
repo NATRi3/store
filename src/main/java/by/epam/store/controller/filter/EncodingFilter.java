@@ -4,6 +4,9 @@ import javax.servlet.*;
 import java.io.IOException;
 
 
+/**
+ * The UTF-8 Encoding filter.
+ */
 public class EncodingFilter implements Filter {
     private String encoding;
 

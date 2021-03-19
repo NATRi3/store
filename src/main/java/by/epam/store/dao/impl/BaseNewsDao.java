@@ -12,13 +12,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Base news dao.
+ */
 public class BaseNewsDao implements by.epam.store.dao.NewsDao {
     private final static Logger log = LogManager.getLogger(BaseNewsDao.class);
-    public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    public static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
+    private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
+    private static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
             "SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
                     "ORDER BY date DESC LIMIT ?;";
-    public static final String SQL_SELECT_AMOUNT_SORT_NEWS =
+    private static final String SQL_SELECT_AMOUNT_SORT_NEWS =
             "SELECT id_news, title,info,date,image FROM l4tsmab3ywpoc8m0.news ORDER BY %s LIMIT ? OFFSET ?;";
     private static final String SQL_DELETE_BY_ID = "DELETE FROM l4tsmab3ywpoc8m0.news WHERE id_news=?";
     private static final String SQL_CREATE = "INSERT INTO l4tsmab3ywpoc8m0.news (title, info, date) VALUES (?,?,?) ";
@@ -30,7 +33,7 @@ public class BaseNewsDao implements by.epam.store.dao.NewsDao {
 
     @Override
     public List<News> findAll() throws DaoException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class BaseNewsDao implements by.epam.store.dao.NewsDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                optionalNews = getNewsFromResultSet(resultSet);
+                optionalNews = Optional.of(getNewsFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             log.error(e);
@@ -103,7 +106,7 @@ public class BaseNewsDao implements by.epam.store.dao.NewsDao {
             ResultSet resultSet = statement.executeQuery();
             List<News> result = new ArrayList<>();
             while (resultSet.next()) {
-                getNewsFromResultSet(resultSet).ifPresent(result::add);
+                result.add(getNewsFromResultSet(resultSet));
             }
             return result;
         } catch (SQLException e) {
@@ -122,7 +125,7 @@ public class BaseNewsDao implements by.epam.store.dao.NewsDao {
             ResultSet resultSet = statement.executeQuery();
             List<News> result = new ArrayList<>();
             while (resultSet.next()) {
-                getNewsFromResultSet(resultSet).ifPresent(result::add);
+                result.add(getNewsFromResultSet(resultSet));
             }
             return result;
         } catch (SQLException e) {
@@ -144,17 +147,14 @@ public class BaseNewsDao implements by.epam.store.dao.NewsDao {
         }
     }
 
-    private Optional<News> getNewsFromResultSet(ResultSet resultSet) throws SQLException {
-        if (resultSet.getString(DataBaseColumn.ID_NEWS) != null) {
-            long id = resultSet.getLong(DataBaseColumn.ID_NEWS);
-            String title = resultSet.getString(DataBaseColumn.NEWS_TITLE);
-            String info = resultSet.getString(DataBaseColumn.NEWS_INFO);
-            Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
-            String image = resultSet.getString(DataBaseColumn.NEWS_IMAGE);
-            News news = new News(id, title, info, image, date);
-            return Optional.of(news);
-        } else {
-            return Optional.empty();
-        }
+    private News getNewsFromResultSet(ResultSet resultSet) throws SQLException {
+        return News
+                .builder()
+                .idNews(resultSet.getLong(DataBaseColumn.ID_NEWS))
+                .title(resultSet.getString(DataBaseColumn.NEWS_TITLE))
+                .info(resultSet.getString(DataBaseColumn.NEWS_INFO))
+                .date(new Date(resultSet.getLong(DataBaseColumn.DATE)))
+                .imageName(resultSet.getString(DataBaseColumn.NEWS_IMAGE))
+                .build();
     }
 }

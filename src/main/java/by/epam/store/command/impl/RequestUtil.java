@@ -1,4 +1,4 @@
-package by.epam.store.util;
+package by.epam.store.command.impl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static by.epam.store.util.RequestParameterAndAttribute.*;
+import static by.epam.store.command.RequestParameterAndAttribute.*;
 
 public class RequestUtil {
 
@@ -15,14 +15,14 @@ public class RequestUtil {
             INFO_PRODUCT, PRICE_PRODUCT, CHANGE_PASSWORD_OLD, TYPE_SORT,
             ID_COLLECTION, BEGIN_PAGINATION, PRODUCT_AMOUNT, ID_PRODUCT, TYPE_STATUS, NEWS_AMOUNT, ID_NEWS, NEWS_TITLE,
             NEWS_INFO, PHONE, ADDRESS, EVALUATION, INFO_COLLECTION, NAME_COLLECTION, ID_USER, ID_FEEDBACK,
-            CLIENT_TOKEN, SEARCH
+            CLIENT_TOKEN, SEARCH, FEEDBACK, MESSAGE, PRODUCT
     );
 
-    public static Map<String, String> getAllParametersFrom(HttpServletRequest request) {
+    static Map<String, String> getAllParametersFrom(HttpServletRequest request) {
         return getAllParametersFrom(request, setParametersName);
     }
 
-    public static Map<String, String> getAllParametersFrom(HttpServletRequest request,
+    static Map<String, String> getAllParametersFrom(HttpServletRequest request,
                                                            Set<String> setParametersName) {
         Map<String, String> parameters = new HashMap<>();
         Enumeration<String> parameterNames = request.getParameterNames();

@@ -55,14 +55,6 @@
                                         <option value="priceDESC"><fmt:message key='sort.price_desc' bundle='${text}'/></option>
                                     </select>
                                 </label>
-                                <label>
-                                    <select onchange="changeStatus(this.value)" name="typeStatus" size=1>
-                                        <option value="WAIT"><fmt:message key='sort.wait' bundle='${text}'/></option>
-                                        <option value="COMPLETED"><fmt:message key='sort.complited' bundle='${text}'/></option>
-                                        <option value="INPROGRESS"><fmt:message key='sort.inprodress' bundle='${text}'/></option>
-                                        <option value="DECLINE"><fmt:message key='sort.decline' bundle='${text}'/></option>
-                                    </select>
-                                </label>
                             </div>
                             <div id="CONTENT">
 
@@ -85,11 +77,6 @@
     let sorting = 'date';
     function changeSorting(sort){
         sorting = sort;
-        getListNews(0);
-    }
-    let status = 'WAIT';
-    function changeStatus(newStatus){
-        status = newStatus;
         getListNews(0);
     }
     function getListNews(begin){
@@ -146,13 +133,13 @@
                         "</div>"+
                         "</div>";
                     contentID.appendChild(newTBDiv);
-                    for(var i = 0; i<order.product.length;i++){
+                    for(var i = 0; i<order.productList.length;i++){
                         var divElement = document.createElement("tr");
                         divElement.innerHTML =
-                            "<td scope='row'><img width='50' height='50' src='"+order.product[i].imageName+"' </td>"+
-                            "<td><a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+order.product[i].id+"'>"+order.product[i].name+"</a></td>"+
-                            "<td>"+order.product[i].price+"</td>"+
-                            "<td>"+order.product[i].amount+"</td>";
+                            "<td scope='row'><img width='50' height='50' src='"+order.productList[i].imageName+"' </td>"+
+                            "<td><a href='${pageContext.request.contextPath}/controller?command=redirect_to_single_product&id_product="+order.productList[i].id+"'>"+order.productList[i].name+"</a></td>"+
+                            "<td>"+order.productList[i].price+"</td>"+
+                            "<td>"+order.productList[i].countInOrder+"</td>";
                         document.getElementById("order"+order.id+"Products").appendChild(divElement);
                     }
                 });

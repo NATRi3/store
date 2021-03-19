@@ -6,8 +6,6 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.service.UserService;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestUtil;
-import by.epam.store.util.RouterResponseHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The Create admin command.
+ */
 public class CreateAdminCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateAdminCommand.class);
     private final UserService baseUserService = ServiceCreator.getInstance().getUserService();

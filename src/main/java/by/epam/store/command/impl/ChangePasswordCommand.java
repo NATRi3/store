@@ -6,8 +6,8 @@ import by.epam.store.entity.User;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.service.UserService;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.SessionAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Change password command.
+ */
 public class ChangePasswordCommand implements Command {
     private static final Logger log = LogManager.getLogger(ChangePasswordCommand.class);
     private static final UserService userService = ServiceCreator.getInstance().getUserService();

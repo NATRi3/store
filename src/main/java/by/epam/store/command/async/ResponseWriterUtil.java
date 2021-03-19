@@ -1,11 +1,15 @@
-package by.epam.store.util;
+package by.epam.store.command.async;
 
+import by.epam.store.util.MessageCreator;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Response writer util.
+ */
 public class ResponseWriterUtil {
 
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(ResponseWriterUtil.class);
@@ -13,9 +17,16 @@ public class ResponseWriterUtil {
     private ResponseWriterUtil() {
     }
 
-    public static void writeTextToResponse(HttpServletRequest request, HttpServletResponse response, String messageKey) {
+    /**
+     * Write text to response.
+     *
+     * @param request    the request
+     * @param response   the response
+     * @param messageKey the message key
+     */
+    static void writeTextToResponse(HttpServletRequest request, HttpServletResponse response, String messageKey) {
         try {
-            String message = MessageCreator.getMessageFromBundleByLocale(messageKey, request);
+            String message = MessageCreator.instance.getMessageFromBundleByLocale(messageKey, request);
             response.setContentType("application/text");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(message);
@@ -24,7 +35,13 @@ public class ResponseWriterUtil {
         }
     }
 
-    public static void writeJsonToResponse(HttpServletResponse response, String json) {
+    /**
+     * Write json to response.
+     *
+     * @param response the response
+     * @param json     the json
+     */
+    static void writeJsonToResponse(HttpServletResponse response, String json) {
         try {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

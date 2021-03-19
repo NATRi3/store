@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * The type No sql connection pool.
+ */
 public class NoSQLConnectionPool {
     private static final Logger log = LogManager.getLogger(NoSQLConnectionPool.class);
     private static final String MONGO_URI = "mongodb+srv://root:admin@cluster0.djvev.mongodb.net/test";
@@ -25,6 +28,9 @@ public class NoSQLConnectionPool {
     private MongoDatabase database;
     private MongoClient client;
 
+    /**
+     * Instantiates a new No sql connection pool.
+     */
     public NoSQLConnectionPool() {
         try {
             CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
@@ -47,6 +53,11 @@ public class NoSQLConnectionPool {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static NoSQLConnectionPool getInstance() {
         if (!isInitialized.get()) {
             locking.lock();
@@ -59,10 +70,18 @@ public class NoSQLConnectionPool {
         return instance;
     }
 
+    /**
+     * Close.
+     */
     public void close() {
         client.close();
     }
 
+    /**
+     * Get order collection mongo collection.
+     *
+     * @return the mongo collection
+     */
     public MongoCollection<Order> getOrderCollection(){
         return database.getCollection("test",Order.class);
     }

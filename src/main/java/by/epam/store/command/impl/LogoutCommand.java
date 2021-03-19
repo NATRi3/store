@@ -9,7 +9,13 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * The Logout command.
+ */
 public class LogoutCommand implements Command {
+    /**
+     * The constant logger.
+     */
     public static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 
     @Override

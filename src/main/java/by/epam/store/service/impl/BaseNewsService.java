@@ -7,7 +7,7 @@ import by.epam.store.exception.DaoException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.NewsService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,14 +15,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Base news service.
+ */
 public class BaseNewsService implements NewsService {
     private static final Logger log = LogManager.getLogger(BaseNewsService.class);
     private final NewsDao newsDao;
 
+    /**
+     * Instantiates a new Base news service.
+     *
+     * @param newsDao the news dao
+     */
     public BaseNewsService(NewsDao newsDao) {
         this.newsDao = newsDao;
     }
 
+    /**
+     * Instantiates a new Base news service.
+     */
     public BaseNewsService() {
         newsDao = DaoCreator.getInstance().getNewsDao();
     }
@@ -67,7 +78,11 @@ public class BaseNewsService implements NewsService {
             Date date = new Date();
             String title = parameters.get(RequestParameterAndAttribute.NEWS_TITLE);
             String info = parameters.get(RequestParameterAndAttribute.NEWS_INFO);
-            News news = new News(title, info, date);
+            News news = News.builder()
+                    .date(date)
+                    .title(title)
+                    .info(info)
+                    .build();
             newsDao.create(news);
             return MessageKey.SUCCESSFUL_NEWS_ADD;
         } catch (DaoException e) {
@@ -99,10 +114,11 @@ public class BaseNewsService implements NewsService {
             long id = Long.parseLong(parameters.get(RequestParameterAndAttribute.ID_NEWS));
             String title = parameters.get(RequestParameterAndAttribute.NEWS_TITLE);
             String info = parameters.get(RequestParameterAndAttribute.NEWS_INFO);
-            News news = new News();
-            news.setInfo(info);
-            news.setTitle(title);
-            news.setIdNews(id);
+            News news = News.builder()
+                    .info(info)
+                    .title(title)
+                    .idNews(id)
+                    .build();
             if (newsDao.update(news)) {
                 resultMessage = MessageKey.SUCCESSFUL_CHANGE;
                 parameters.clear();

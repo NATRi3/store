@@ -11,10 +11,18 @@ import by.epam.store.validator.TypeValidator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Validation news service.
+ */
 public class ValidationNewsService implements NewsService {
 
     private final BaseNewsService service;
 
+    /**
+     * Instantiates a new Validation news service.
+     *
+     * @param service the service
+     */
     public ValidationNewsService(BaseNewsService service) {
         this.service = service;
     }

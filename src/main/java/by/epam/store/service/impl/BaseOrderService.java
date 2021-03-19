@@ -8,20 +8,31 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.OrderService;
 import by.epam.store.service.TypeSort;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+/**
+ * The type Base order service.
+ */
 public class BaseOrderService implements OrderService {
     private final static Logger log = LogManager.getLogger(BaseOrderService.class);
     private final OrderDao orderDao;
 
+    /**
+     * Instantiates a new Base order service.
+     *
+     * @param orderDao the order dao
+     */
     public BaseOrderService(OrderDao orderDao) {
         this.orderDao = orderDao;
     }
 
+    /**
+     * Instantiates a new Base order service.
+     */
     public BaseOrderService() {
         orderDao = DaoCreator.getInstance().getNoSQLOrderDao();
     }
@@ -38,7 +49,15 @@ public class BaseOrderService implements OrderService {
                 product.setCountInOrder(entry.getValue());
                 productList.add(product);
             }
-            Order order = new Order(generateIdLong(), user.getId(), phone, address, cart.getTotalPrice(), new Date(), productList);
+            Order order = Order.builder()
+                    .id(generateIdLong())
+                    .idUser(user.getId())
+                    .phone(phone)
+                    .price(cart.getTotalPrice())
+                    .address(address)
+                    .date(new Date())
+                    .productList(productList)
+                    .build();
             orderDao.create(order);
             cart.clear();
             return MessageKey.SUCCESSFUL_CREATE_ORDER;

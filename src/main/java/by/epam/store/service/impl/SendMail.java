@@ -1,4 +1,4 @@
-package by.epam.store.util;
+package by.epam.store.service.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +8,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+/**
+ * The type Send mail.
+ */
 public class SendMail {
     private final static Logger log = LogManager.getLogger(SendMail.class);
     private static final String SENDER_EMAIL_ADDRESS = "mailforwebproject31@gmail.com";
@@ -29,7 +32,13 @@ public class SendMail {
     private SendMail() {
     }
 
-    public static void sendActivationMailTo(String mail, long id) {
+    /**
+     * Send activation mail to.
+     *
+     * @param mail the mail
+     * @param id   the id
+     */
+    static void sendActivationMailTo(String mail, long id) {
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(SENDER_EMAIL_ADDRESS, SENDER_EMAIL_PASSWORD);
@@ -51,7 +60,13 @@ public class SendMail {
         }
     }
 
-    public static void sendForgotPasswordMessage(String email, String password) {
+    /**
+     * Send forgot password message.
+     *
+     * @param email    the email
+     * @param password the password
+     */
+    static void sendForgotPasswordMessage(String email, String password) {
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(SENDER_EMAIL_ADDRESS, SENDER_EMAIL_PASSWORD);

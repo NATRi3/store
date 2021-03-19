@@ -6,13 +6,15 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.service.UserService;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestParameterAndAttribute;
-import by.epam.store.util.RouterResponseHelper;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The Activation user by id command.
+ */
 public class ActivationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ActivationCommand.class);
     private static final UserService BASE_USER_SERVICE = ServiceCreator.getInstance().getUserService();

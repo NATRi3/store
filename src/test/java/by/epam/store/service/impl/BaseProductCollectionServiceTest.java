@@ -5,7 +5,7 @@ import by.epam.store.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.CollectionService;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.RequestParameterAndAttribute;
+import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mockito.Mockito;

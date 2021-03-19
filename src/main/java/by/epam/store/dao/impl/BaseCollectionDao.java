@@ -13,10 +13,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Base collection dao.
+ */
 public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
-    public static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    public static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
-    public static final String SQL_SELECT_BY_STATUS = "SELECT id_collection, name, info, date, status FROM l4tsmab3ywpoc8m0.collection WHERE status=?";
+    private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
+    private static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
+    private static final String SQL_SELECT_BY_STATUS = "SELECT id_collection, name, info, date, status FROM l4tsmab3ywpoc8m0.collection WHERE status=?";
     private final static Logger log = LogManager.getLogger(BaseCollectionDao.class);
     private static final String SQL_INSERT = "INSERT INTO l4tsmab3ywpoc8m0.collection (`name`,`info`,`date`,`status`) VALUES (?,?,?,?);";
     private static final String SQL_SET_STATUS_BY_ID = "UPDATE l4tsmab3ywpoc8m0.collection SET status=? WHERE id_collection=?";
@@ -40,17 +43,17 @@ public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
 
     @Override
     public Optional<ProductCollection> findEntityById(Long id) throws DaoException {
-        return Optional.empty();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean delete(Long id) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean update(ProductCollection productCollection) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -71,14 +74,6 @@ public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private ProductCollection getProductCollectionFromResultSet(ResultSet resultSet) throws SQLException {
-        long id = resultSet.getLong(DataBaseColumn.ID_COLLECTION);
-        String name = resultSet.getString(DataBaseColumn.COLLECTION_NAME);
-        String info = resultSet.getString(DataBaseColumn.COLLECTION_INFO);
-        Date date = new Date(resultSet.getLong(DataBaseColumn.DATE));
-        return new ProductCollection(id, name, info, date);
     }
 
     @Override
@@ -122,5 +117,15 @@ public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
             log.error(e);
             throw new DaoException(e);
         }
+    }
+
+    private ProductCollection getProductCollectionFromResultSet(ResultSet resultSet) throws SQLException {
+        return ProductCollection
+                .builder()
+                .idCollection(resultSet.getLong(DataBaseColumn.ID_COLLECTION))
+                .name(resultSet.getString(DataBaseColumn.COLLECTION_NAME))
+                .info(resultSet.getString(DataBaseColumn.COLLECTION_INFO))
+                .date(new Date(resultSet.getLong(DataBaseColumn.DATE)))
+                .build();
     }
 }

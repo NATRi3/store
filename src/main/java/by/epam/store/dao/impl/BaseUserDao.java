@@ -15,10 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * The type Base user dao.
+ */
 public class BaseUserDao implements by.epam.store.dao.UserDao {
     private final static Logger log = LogManager.getLogger(BaseUserDao.class);
     private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
-    public static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE email=?";
+    private static final String SQL_SELECT_ID_BY_EMAIL = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE email=?";
     private static final String SQL_SELECT_ALL =
             "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts";
     private static final String SQL_SELECT_EMAIL_BY_EMAIL = "SELECT email FROM l4tsmab3ywpoc8m0.accounts WHERE email = ?";
@@ -27,7 +30,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
     private static final String SQL_INSERT_USER = "INSERT INTO l4tsmab3ywpoc8m0.accounts (`email`, `name`, `register_date`, `password`,`role`,`access`)VALUES (?,?,?,?,?,?);";
     private static final String SQL_DELETE_USER = "DELETE FROM l4tsmab3ywpoc8m0.accounts WHERE email=? AND password=?";
     private static final String SQL_UPDATE = "UPDATE l4tsmab3ywpoc8m0.accounts SET email = ?, name =?, register_date=?, image=?, access = ?, role = ? WHERE id_accounts = ? LIMIT 1;";
-    public static final String SQL_UPDATE_PASSWORD = "UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
+    private static final String SQL_UPDATE_PASSWORD = "UPDATE l4tsmab3ywpoc8m0.accounts SET password = ? WHERE id_accounts = ? LIMIT 1";
     private static final String SQL_SELECT_BY_ROLE_STATUS = "SELECT id_accounts, name, email, register_date, image, access, role FROM l4tsmab3ywpoc8m0.accounts WHERE access=?  LIMIT 10 OFFSET ?";
     private static final String SQL_SET_STATUS_FROM_TO = "UPDATE l4tsmab3ywpoc8m0.accounts SET access=? WHERE id_accounts=? and access=? LIMIT 1";
     private static final String SQL_SET_IMAGE_BY_ID = "UPDATE l4tsmab3ywpoc8m0.accounts SET image=? WHERE id_accounts=? LIMIT 1";
@@ -36,7 +39,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
     @Override
     public List<User> findAll() throws DaoException {
         List<User> result = new ArrayList<>();
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ALL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -51,7 +54,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public boolean isEmailExists(String email) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_EMAIL_BY_EMAIL)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
@@ -64,7 +67,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
     @Override
     public Optional<User> findEntityByEmailAndPassword(String email, String pass) throws DaoException {
         Optional<User> result = Optional.empty();
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_EMAIL_AND_PASSWORD)) {
             statement.setString(1, email);
             statement.setString(2, pass);
@@ -81,7 +84,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public Optional<User> findEntityById(Long id) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -103,7 +106,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public boolean delete(String email, String password) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE_USER)) {
             statement.setString(1, email);
             statement.setString(2, password);
@@ -117,7 +120,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public User createUser(User user, String password) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getName());
@@ -156,7 +159,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public void updatePassword(User user, String password) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PASSWORD)) {
             statement.setString(1, password);
             statement.setLong(2, user.getId());
@@ -169,7 +172,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public List<User> findUserByRoleAndStatus(TypeStatus status, int begin) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ROLE_STATUS)) {
             statement.setString(1, status.toString());
             statement.setInt(2, begin);
@@ -187,7 +190,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public boolean changeStatus(long id, TypeStatus statusFrom, TypeStatus statusTo) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_STATUS_FROM_TO)) {
             statement.setString(1, statusTo.toString());
             statement.setLong(2, id);
@@ -201,7 +204,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public boolean changeImageById(long id, String imageName) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_IMAGE_BY_ID)) {
             statement.setString(1, imageName);
             statement.setLong(2, id);
@@ -214,7 +217,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public boolean changePassword(long userId, String newPassword, String oldPassword) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_PASSWORD_BY_ID_PASSWORD)) {
             statement.setString(1, newPassword);
             statement.setLong(2, userId);
@@ -228,7 +231,7 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
 
     @Override
     public boolean update(User user) throws DaoException {
-        try (Connection connection = getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getName());
@@ -249,19 +252,22 @@ public class BaseUserDao implements by.epam.store.dao.UserDao {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Create user form result set.
+     *
+     * @param resultSet the result set
+     * @return the user
+     * @throws SQLException the sql exception
+     */
     static User createUserFormResultSet(ResultSet resultSet) throws SQLException {
-        User user = new User();
-        user.setId(resultSet.getInt(DataBaseColumn.ID_ACCOUNT));
-        user.setName(resultSet.getString(DataBaseColumn.ACCOUNT_NAME));
-        user.setEmail(resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL));
-        user.setImageName(resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE));
-        user.setAccess(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS)));
-        user.setRole(TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE)));
-        user.setRegisterDate(new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE)));
-        return user;
-    }
-
-    private Connection getConnection() throws SQLException {
-        return connectionPool.getConnection();
+        return User.builder()
+                .id(resultSet.getInt(DataBaseColumn.ID_ACCOUNT))
+                .name(resultSet.getString(DataBaseColumn.ACCOUNT_NAME))
+                .email(resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL))
+                .imageName(resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE))
+                .access(TypeStatus.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ACCESS)))
+                .role(TypeRole.valueOf(resultSet.getString(DataBaseColumn.ACCOUNT_ROLE)))
+                .registerDate(new Date(resultSet.getLong(DataBaseColumn.ACCOUNT_REGISTER_DATE)))
+                .build();
     }
 }

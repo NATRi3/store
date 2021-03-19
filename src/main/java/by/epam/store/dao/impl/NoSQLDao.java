@@ -14,17 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type No sql dao.
+ */
 public class NoSQLDao implements OrderDao {
     private static final Logger log = LogManager.getLogger(NoSQLDao.class);
-    private final NoSQLConnectionPool connectionPool;
-
-    public NoSQLDao(){
-        connectionPool = NoSQLConnectionPool.getInstance();
-    }
-
-    public NoSQLDao(NoSQLConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+    private final NoSQLConnectionPool connectionPool = NoSQLConnectionPool.getInstance();
 
     @Override
     public List<Order> findAll() throws DaoException {
@@ -65,7 +60,6 @@ public class NoSQLDao implements OrderDao {
             for (Order order : connectionPool.getOrderCollection().find(query)) {
                 result.add(order);
             }
-            System.out.println(result);
             return result;
         } catch (MongoException e) {
             log.error(e);
@@ -77,8 +71,8 @@ public class NoSQLDao implements OrderDao {
     public List<Order> findOrdersByStatusAndSort(int beginPagination, TypeSort typeSort) throws DaoException {
         try {
             List<Order> result = new ArrayList<>();
-            BasicDBObject query = new BasicDBObject(typeSort.getString(),(typeSort.isDesc()?-1:1));
-            for (Order order : connectionPool.getOrderCollection().find(query)) {
+            BasicDBObject sort = new BasicDBObject(typeSort.getString(),(typeSort.isDesc()?-1:1));
+            for (Order order : connectionPool.getOrderCollection().find().sort(sort).limit(10).skip(beginPagination)) {
                 result.add(order);
             }
             return result;

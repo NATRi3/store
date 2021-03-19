@@ -9,6 +9,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * The type Connection creator.
+ */
 public class ConnectionCreator {
     private static final Logger log = LogManager.getLogger(ConnectionCreator.class);
     private static final String DB_PROPERTIES_FILE = "property/config.properties";
@@ -35,6 +38,12 @@ public class ConnectionCreator {
     private ConnectionCreator() {
     }
 
+    /**
+     * Gets connection.
+     *
+     * @return the connection
+     * @throws SQLException the sql exception
+     */
     static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, user, pass);
     }

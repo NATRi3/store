@@ -8,6 +8,9 @@ import by.epam.store.dao.impl.BaseOrderDao;
 import by.epam.store.dao.impl.BaseProductDao;
 import by.epam.store.dao.impl.BaseUserDao;
 
+/**
+ * The type Dao creator.
+ */
 public class DaoCreator {
     private static final DaoCreator instance = new DaoCreator();
     private final NewsDao newsDao = new BaseNewsDao();
@@ -21,34 +24,74 @@ public class DaoCreator {
     private DaoCreator() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static DaoCreator getInstance() {
         return instance;
     }
 
+    /**
+     * Gets news dao.
+     *
+     * @return the news dao
+     */
     public NewsDao getNewsDao() {
         return newsDao;
     }
 
+    /**
+     * Gets user dao.
+     *
+     * @return the user dao
+     */
     public UserDao getUserDao() {
         return userDao;
     }
 
+    /**
+     * Gets product dao.
+     *
+     * @return the product dao
+     */
     public ProductDao getProductDao() {
         return productDao;
     }
 
+    /**
+     * Gets no sql order dao.
+     *
+     * @return the no sql order dao
+     */
     public OrderDao getNoSQLOrderDao() {
         return noSQLOrderDao;
     }
 
+    /**
+     * Gets order dao.
+     *
+     * @return the order dao
+     */
     public OrderDao getOrderDao() {
         return orderDao;
     }
 
+    /**
+     * Gets feedback dao.
+     *
+     * @return the feedback dao
+     */
     public FeedbackDao getFeedbackDao() {
         return feedbackDao;
     }
 
+    /**
+     * Gets collection dao.
+     *
+     * @return the collection dao
+     */
     public CollectionDao getCollectionDao() {
         return collectionDao;
     }

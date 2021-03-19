@@ -6,6 +6,9 @@ import by.epam.store.entity.TypeRole;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * The map which contains role and available async commands.
+ */
 public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
     private static AsyncCommandAccessMap INSTANCE;
 
@@ -44,6 +47,11 @@ public class AsyncCommandAccessMap extends HashMap<TypeRole, Set<String>> {
                 TypeCommandAsync.GET_FRESH_NEWS.name().toLowerCase()));
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static AsyncCommandAccessMap getINSTANCE() {
         if (INSTANCE == null) {
             INSTANCE = new AsyncCommandAccessMap();

@@ -8,10 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.*;
 
+/**
+ * The type Request wrapper.
+ */
 public class RequestWrapper extends HttpServletRequestWrapper {
     private static final Logger log = LogManager.getLogger("RequestWrapper");
     private final Map<String, String> params = new HashMap<>();
 
+    /**
+     * Instantiates a new Request wrapper.
+     *
+     * @param request the request
+     */
     public RequestWrapper(HttpServletRequest request) {
         super(request);
     }
@@ -57,6 +65,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
+    /**
+     * Sets parameter.
+     *
+     * @param name      the name
+     * @param parameter the parameter
+     */
     public void setParameter(String name, String parameter) {
         if (super.getParameter(name) == null || !super.getParameter(name).equals(parameter)) {
             params.put(name, parameter);

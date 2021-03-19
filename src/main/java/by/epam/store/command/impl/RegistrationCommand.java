@@ -6,8 +6,6 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ServiceCreator;
 import by.epam.store.service.UserService;
 import by.epam.store.util.PagePath;
-import by.epam.store.util.RequestUtil;
-import by.epam.store.util.RouterResponseHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 
 
+/**
+ * The Registration command.
+ */
 public class RegistrationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegistrationCommand.class);
     private static final UserService BASE_USER_SERVICE = ServiceCreator.getInstance().getUserService();

@@ -12,10 +12,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Validation feedback service.
+ */
 public class ValidationFeedbackService implements FeedbackService {
 
     private final BaseFeedbackService service;
 
+    /**
+     * Instantiates a new Validation feedback service.
+     *
+     * @param service the service
+     */
     public ValidationFeedbackService(BaseFeedbackService service) {
         this.service = service;
     }

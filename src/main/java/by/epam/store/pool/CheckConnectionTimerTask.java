@@ -6,6 +6,10 @@ import org.apache.logging.log4j.Logger;
 import java.sql.SQLException;
 import java.util.TimerTask;
 
+/**
+ * The type Check connection timer task.
+ * Timer task which generate lost connections
+ */
 public class CheckConnectionTimerTask extends TimerTask {
     private static final Logger log = LogManager.getLogger(CheckConnectionTimerTask.class);
 
