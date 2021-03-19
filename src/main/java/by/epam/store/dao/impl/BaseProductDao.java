@@ -224,7 +224,7 @@ public class BaseProductDao implements by.epam.store.dao.ProductDao {
                 .price(resultSet.getBigDecimal(DataBaseColumn.PRODUCT_PRICE))
                 .imageName(resultSet.getString(DataBaseColumn.PRODUCT_IMAGE))
                 .idCollection(resultSet.getLong(DataBaseColumn.PRODUCT_ID_COLLECTION))
-                .rating(evaluation != null?evaluation:"Нет оценок")
+                .rating(evaluation != null?evaluation.substring(0,2):"Нет оценок")
                 .build();
     }
 }

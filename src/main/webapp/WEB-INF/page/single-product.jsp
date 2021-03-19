@@ -85,7 +85,7 @@
                         <div class="col-md-6 col-xs-12 col-md-offset-3">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"><fmt:message key="" </h3>
+                                    <h3 class="panel-title"><fmt:message key="singe.feedback" bundle="${text}"/> </h3>
                                 </div>
                                 <div class="panel-body">
                                     <form action="${pageContext.request.contextPath}/controller" method="post">
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                     <div class="col-md-12 ">
-                        <h3 class="text-center mt-4 pt-5">Recommended products</h3>
+                        <h3 class="text-center mt-4 pt-5"><fmt:message key="single.recommended" bundle="${text}"/></h3>
                         <div class="row mt-5 mb-4" id="recommended">
 
                         </div>
