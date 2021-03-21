@@ -1,9 +1,9 @@
 package by.epam.store.service.impl;
 
+import by.epam.store.command.RequestParameterAndAttribute;
 import by.epam.store.dao.impl.BaseNewsDao;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.NewsService;
-import by.epam.store.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mockito.Mockito;
@@ -16,20 +16,32 @@ import java.util.Map;
 
 import static org.testng.Assert.*;
 
+/**
+ * The type Base news service test.
+ */
 public class BaseNewsServiceTest {
     private static final Logger log = LogManager.getLogger(BaseNewsServiceTest.class);
     private NewsService service;
 
+    /**
+     * Sets up.
+     */
     @BeforeMethod
     public void setUp() {
         BaseNewsDao dao = Mockito.mock(BaseNewsDao.class);
         service = new BaseNewsService(dao);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterMethod
     public void tearDown() {
     }
 
+    /**
+     * Test find fresh news.
+     */
     @Test
     public void testFindFreshNews() {
         try {
@@ -40,6 +52,9 @@ public class BaseNewsServiceTest {
         }
     }
 
+    /**
+     * Test find sort news.
+     */
     @Test
     public void testFindSortNews() {
         try {
@@ -50,6 +65,9 @@ public class BaseNewsServiceTest {
         }
     }
 
+    /**
+     * Test delete news.
+     */
     @Test
     public void testDeleteNews() {
         try {
@@ -60,6 +78,9 @@ public class BaseNewsServiceTest {
         }
     }
 
+    /**
+     * Test create news.
+     */
     @Test
     public void testCreateNews() {
         Map<String,String> params = new HashMap<>();
@@ -73,6 +94,9 @@ public class BaseNewsServiceTest {
         }
     }
 
+    /**
+     * Test change image.
+     */
     @Test
     public void testChangeImage() {
         try {
@@ -83,6 +107,9 @@ public class BaseNewsServiceTest {
         }
     }
 
+    /**
+     * Test change news.
+     */
     @Test
     public void testChangeNews() {
         Map<String,String> params = new HashMap<>();

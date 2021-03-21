@@ -1,5 +1,8 @@
 package by.epam.store.command;
 
+/**
+ * The type Request parameter and attribute.
+ */
 public class RequestParameterAndAttribute {
     /**
      * Request parameters names:

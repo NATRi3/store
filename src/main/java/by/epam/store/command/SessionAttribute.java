@@ -1,6 +1,12 @@
 package by.epam.store.command;
 
+/**
+ * The type Session attribute.
+ */
 public class SessionAttribute {
+    /**
+     * The session attribute names:
+     */
     public static final String LOCALE = "currentLocale";
     public static final String USER = "currentUser";
     public static final String SERVER_TOKEN = "stoken";

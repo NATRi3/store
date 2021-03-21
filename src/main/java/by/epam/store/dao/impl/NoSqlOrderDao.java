@@ -17,28 +17,28 @@ import java.util.Optional;
 /**
  * The type No sql dao.
  */
-public class NoSQLDao implements OrderDao {
-    private static final Logger log = LogManager.getLogger(NoSQLDao.class);
+public class NoSqlOrderDao implements OrderDao {
+    private static final Logger log = LogManager.getLogger(NoSqlOrderDao.class);
     private final NoSQLConnectionPool connectionPool = NoSQLConnectionPool.getInstance();
 
     @Override
     public List<Order> findAll() throws DaoException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Optional<Order> findEntityById(Long id) throws DaoException {
-        return Optional.empty();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean delete(Long id) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean update(Order order) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override

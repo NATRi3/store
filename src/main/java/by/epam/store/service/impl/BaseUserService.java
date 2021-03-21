@@ -24,15 +24,23 @@ import java.util.Optional;
  * The type Base user service.
  */
 public class BaseUserService implements UserService {
-    private static final UserDao BASE_USER_DAO = DaoCreator.getInstance().getUserDao();
     private final static Logger log = LogManager.getLogger(BaseUserService.class);
+    private final UserDao BASE_USER_DAO;
+
+    public BaseUserService() {
+        BASE_USER_DAO = DaoCreator.getInstance().getUserDao();
+    }
+
+    public BaseUserService(UserDao BASE_USER_DAO) {
+        this.BASE_USER_DAO = BASE_USER_DAO;
+    }
 
     @Override
     public String activate(String code) throws ServiceException {
         try {
             long id = Long.parseLong(code);
             if (BASE_USER_DAO.changeStatus(id, TypeStatus.NONACTIVE, TypeStatus.ACTIVE)) {
-                log.info(code + "ACTIVATE");
+                log.info(code + " ACTIVATE ACCOUNT");
                 return MessageKey.SUCCESSFUL_ACTIVATION;
             } else {
                 return MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT;
@@ -91,7 +99,7 @@ public class BaseUserService implements UserService {
                         .role(TypeRole.CLIENT)
                         .access(TypeStatus.NONACTIVE)
                         .build();
-                BASE_USER_DAO.createUser(user, encryption(password));
+                user = BASE_USER_DAO.createUser(user, encryption(password));
                 if(user.getId()==0){
                     throw new ServiceException("DB problems");
                 }
@@ -135,6 +143,7 @@ public class BaseUserService implements UserService {
                     String newPassword = generatePassword();
                     BASE_USER_DAO.updatePassword(user, encryption(newPassword));
                     SendMail.sendForgotPasswordMessage(email, newPassword);
+                    return Optional.empty();
                 } else {
                     return Optional.of(MessageKey.ERROR_MESSAGE_USER_NOT_FOUNT);
                 }
@@ -210,17 +219,8 @@ public class BaseUserService implements UserService {
                 return MessageKey.ERROR_MESSAGE_INVALID_PARAM;
             }
         } catch (DaoException e) {
-            log.error(e);
             throw new ServiceException(e);
         }
-    }
-
-    private String encryption(String pass) {
-        return DigestUtils.md5Hex(pass);
-    }
-
-    private String generatePassword() {
-        return RandomStringUtils.random(8, 0, 27, true, true, "QqWwEeRrTtSsHhMmCc123456789".toCharArray());
     }
 
     @Override
@@ -236,5 +236,13 @@ public class BaseUserService implements UserService {
             throw new ServiceException(e);
         }
         return message;
+    }
+
+    private String encryption(String pass) {
+        return DigestUtils.md5Hex(pass);
+    }
+
+    private String generatePassword() {
+        return RandomStringUtils.random(8, 0, 27, true, true, "QqWwEeRrTtSsHhMmCc123456789".toCharArray());
     }
 }

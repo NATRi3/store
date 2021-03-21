@@ -18,21 +18,33 @@ import java.util.Optional;
 
 import static org.testng.Assert.*;
 
+/**
+ * The type Base feedback service test.
+ */
 public class BaseFeedbackServiceTest {
     private static final Logger log = LogManager.getLogger(BaseFeedbackService.class);
     private FeedbackService feedbackService;
 
+    /**
+     * Sets up.
+     */
     @BeforeMethod
     public void setUp() {
         BaseFeedbackDao mockito = Mockito.mock(BaseFeedbackDao.class);
         feedbackService = new BaseFeedbackService(mockito);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterMethod
     public void tearDown() {
 
     }
 
+    /**
+     * Test get feedback by id product.
+     */
     @Test
     public void testGetFeedbackByIdProduct() {
         try {
@@ -42,6 +54,9 @@ public class BaseFeedbackServiceTest {
         }
     }
 
+    /**
+     * Test create feedback.
+     */
     @Test
     public void testCreateFeedback() {
         Map<String, String> params = new HashMap<>();
@@ -59,6 +74,9 @@ public class BaseFeedbackServiceTest {
         }
     }
 
+    /**
+     * Test delete feedback.
+     */
     @Test
     public void testDeleteFeedback() {
         try {

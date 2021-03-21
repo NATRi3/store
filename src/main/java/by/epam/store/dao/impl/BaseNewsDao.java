@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 public class BaseNewsDao implements by.epam.store.dao.NewsDao {
     private final static Logger log = LogManager.getLogger(BaseNewsDao.class);
-    private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
+    private final CustomConnectionPool connectionPool;
     private static final String SQL_SELECT_AMOUNT_FRESH_NEWS =
             "SELECT id_news,title,info,date,image FROM l4tsmab3ywpoc8m0.news " +
                     "ORDER BY date DESC LIMIT ?;";
@@ -30,6 +30,13 @@ public class BaseNewsDao implements by.epam.store.dao.NewsDao {
     private static final String SQL_UPDATE_IMAGE_BY_ID = "UPDATE l4tsmab3ywpoc8m0.news SET image = ? WHERE id_news = ? LIMIT 1";
     private static final String SQL_SELECT_BY_ID = "SELECT id_news, title, info, date, image FROM l4tsmab3ywpoc8m0.news WHERE id_news=?";
 
+    public BaseNewsDao() {
+        connectionPool = CustomConnectionPool.getInstance();
+    }
+
+    public BaseNewsDao(CustomConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
     public List<News> findAll() throws DaoException {

@@ -17,20 +17,32 @@ import java.util.Map;
 
 import static org.testng.Assert.*;
 
+/**
+ * The type Base product service test.
+ */
 public class BaseProductServiceTest {
     private static final Logger log = LogManager.getLogger(BaseProductServiceTest.class);
     private ProductService service;
 
+    /**
+     * Sets up.
+     */
     @BeforeMethod
     public void setUp() {
         BaseProductDao dao = Mockito.mock(BaseProductDao.class);
         service = new BaseProductService(dao);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterMethod
     public void tearDown() {
     }
 
+    /**
+     * Test find product by id.
+     */
     @Test
     public void testFindProductById() {
         try {
@@ -41,6 +53,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test save product.
+     */
     @Test
     public void testSaveProduct() {
         Map<String,String> parameters = new HashMap<>();
@@ -56,6 +71,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test change status.
+     */
     @Test
     public void testChangeStatus() {
         try{
@@ -66,6 +84,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test find product by collection and sort.
+     */
     @Test
     public void testFindProductByCollectionAndSort() {
         try{
@@ -76,6 +97,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test find random product.
+     */
     @Test
     public void testFindRandomProduct() {
         try{
@@ -86,6 +110,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test change product.
+     */
     @Test
     public void testChangeProduct() {
         Map<String,String> parameters = new HashMap<>();
@@ -100,6 +127,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test change image.
+     */
     @Test
     public void testChangeImage() {
         try {
@@ -110,6 +140,9 @@ public class BaseProductServiceTest {
         }
     }
 
+    /**
+     * Test search product.
+     */
     @Test
     public void testSearchProduct() {
         try{

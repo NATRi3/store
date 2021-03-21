@@ -18,20 +18,32 @@ import java.util.Map;
 
 import static org.testng.Assert.*;
 
+/**
+ * The type Base product collection service test.
+ */
 public class BaseProductCollectionServiceTest {
     private static final Logger log = LogManager.getLogger(BaseProductCollectionServiceTest.class);
     private CollectionService service;
 
+    /**
+     * Sets up.
+     */
     @BeforeMethod
     public void setUp() {
         BaseCollectionDao dao = Mockito.mock(BaseCollectionDao.class);
         service = new BaseProductCollectionService(dao);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterMethod
     public void tearDown() {
     }
 
+    /**
+     * Test find all product collections by status.
+     */
     @Test
     public void testFindAllProductCollectionsByStatus() {
         try {
@@ -42,6 +54,9 @@ public class BaseProductCollectionServiceTest {
         }
     }
 
+    /**
+     * Test find all product collections.
+     */
     @Test
     public void testFindAllProductCollections() {
         try {
@@ -52,6 +67,9 @@ public class BaseProductCollectionServiceTest {
         }
     }
 
+    /**
+     * Test create collection.
+     */
     @Test
     public void testCreateCollection() {
         Map<String,String> parameters = new HashMap<>();
@@ -65,6 +83,9 @@ public class BaseProductCollectionServiceTest {
         }
     }
 
+    /**
+     * Test change status.
+     */
     @Test
     public void testChangeStatus() {
         try {
@@ -75,6 +96,9 @@ public class BaseProductCollectionServiceTest {
         }
     }
 
+    /**
+     * Test change info.
+     */
     @Test
     public void testChangeInfo() {
         Map<String,String> parameters = new HashMap<>();

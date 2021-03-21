@@ -17,13 +17,21 @@ import java.util.Optional;
  * The type Base collection dao.
  */
 public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
-    private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
+    private final static Logger log = LogManager.getLogger(BaseCollectionDao.class);
+    private final CustomConnectionPool connectionPool;
     private static final String SQL_SELECT_ALL = "SELECT id_collection, name, info, date FROM l4tsmab3ywpoc8m0.collection";
     private static final String SQL_SELECT_BY_STATUS = "SELECT id_collection, name, info, date, status FROM l4tsmab3ywpoc8m0.collection WHERE status=?";
-    private final static Logger log = LogManager.getLogger(BaseCollectionDao.class);
     private static final String SQL_INSERT = "INSERT INTO l4tsmab3ywpoc8m0.collection (`name`,`info`,`date`,`status`) VALUES (?,?,?,?);";
     private static final String SQL_SET_STATUS_BY_ID = "UPDATE l4tsmab3ywpoc8m0.collection SET status=? WHERE id_collection=?";
     private static final String SQL_SET_INFO_BY_ID = "UPDATE l4tsmab3ywpoc8m0.collection SET info=? WHERE id_collection=?";
+
+    public BaseCollectionDao() {
+        connectionPool = CustomConnectionPool.getInstance();
+    }
+
+    public BaseCollectionDao(CustomConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
     public List<ProductCollection> findAll() throws DaoException {
@@ -71,9 +79,9 @@ public class BaseCollectionDao implements by.epam.store.dao.CollectionDao {
             }
             return productCollection;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
+            throw new DaoException();
         }
-        return null;
     }
 
     @Override

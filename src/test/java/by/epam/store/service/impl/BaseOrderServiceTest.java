@@ -18,20 +18,32 @@ import java.util.*;
 
 import static org.testng.Assert.*;
 
+/**
+ * The type Base order service test.
+ */
 public class BaseOrderServiceTest {
     private static final Logger log = LogManager.getLogger(BaseFeedbackService.class);
     private OrderService service;
 
+    /**
+     * Sets up.
+     */
     @BeforeMethod
     public void setUp() {
         BaseOrderDao mockito = Mockito.mock(BaseOrderDao.class);
         service = new BaseOrderService(mockito);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterMethod
     public void tearDown() {
     }
 
+    /**
+     * Test create order.
+     */
     @Test
     public void testCreateOrder() {
         Map<String,String> params = new HashMap<>();
@@ -49,6 +61,9 @@ public class BaseOrderServiceTest {
         }
     }
 
+    /**
+     * Test find user orders.
+     */
     @Test
     public void testFindUserOrders() {
         try {
@@ -59,6 +74,9 @@ public class BaseOrderServiceTest {
         }
     }
 
+    /**
+     * Test find order list.
+     */
     @Test
     public void testFindOrderList() {
         try {

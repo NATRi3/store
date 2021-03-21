@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
     private final static Logger log = LogManager.getLogger(BaseFeedbackDao.class);
-    private static final CustomConnectionPool connectionPool = CustomConnectionPool.getInstance();
+    private final CustomConnectionPool connectionPool;
     private static final String SQL_SELECT_ALL =
             "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account";
     private static final String SQL_SELECT_ALL_BY_PRODUCT_ID =
@@ -31,6 +31,14 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
             "DELETE FROM l4tsmab3ywpoc8m0.feedback WHERE id_feedback=?";
     private static final String SQL_CREATE =
             "INSERT INTO feedback SET feedback=?, evaluation=?, id_product=?, id_account=?, date=?";
+
+    public BaseFeedbackDao() {
+        connectionPool = CustomConnectionPool.getInstance();
+    }
+
+    public BaseFeedbackDao(CustomConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
     public List<Feedback> findAll() throws DaoException {
@@ -126,7 +134,7 @@ public class BaseFeedbackDao implements by.epam.store.dao.FeedbackDao{
                 .idProduct(resultSet.getLong(DataBaseColumn.FEEDBACK_ID_PRODUCT))
                 .user(User
                         .builder()
-                        .id(resultSet.getInt(DataBaseColumn.ID_ACCOUNT))
+                        .id(resultSet.getLong(DataBaseColumn.ID_ACCOUNT))
                         .name(resultSet.getString(DataBaseColumn.ACCOUNT_NAME))
                         .email(resultSet.getString(DataBaseColumn.ACCOUNT_EMAIL))
                         .imageName(resultSet.getString(DataBaseColumn.ACCOUNT_IMAGE))

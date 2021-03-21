@@ -17,6 +17,10 @@
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>by.epam.store.controller.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>requestEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
     </filter>
     <filter>
         <filter-name>XSSProtectFilter</filter-name>

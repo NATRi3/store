@@ -19,7 +19,7 @@ public class DaoCreator {
     private final OrderDao orderDao = new BaseOrderDao();
     private final FeedbackDao feedbackDao = new BaseFeedbackDao();
     private final CollectionDao collectionDao = new BaseCollectionDao();
-    private final OrderDao noSQLOrderDao = new NoSQLDao();
+    private final OrderDao noSQLOrderDao = new NoSqlOrderDao();
 
     private DaoCreator() {
     }
