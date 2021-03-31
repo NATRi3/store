@@ -5,6 +5,7 @@ import by.epam.store.command.RequestParameterAndAttribute;
 import by.epam.store.command.SessionAttribute;
 import by.epam.store.controller.Router;
 import by.epam.store.entity.User;
+import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.ImageService;
 import by.epam.store.service.ServiceCreator;
@@ -37,7 +38,7 @@ public class UploadFileCommand implements Command {
         try {
             Optional<String> fileName = changeImageVar(request, BASE_USER_SERVICE, String.valueOf(user.getId()));
             fileName.ifPresent(user::setImageName);
-        } catch (ServiceException | IOException | FileUploadException e) {
+        } catch (CommandException e) {
             log.error(e);
             router = Router.redirectTo(PagePath.PAGE_500, request);
         }
@@ -57,15 +58,20 @@ public class UploadFileCommand implements Command {
      */
     static Optional<String> changeImageVar(HttpServletRequest request,
                                            ImageService imageService,
-                                           String id) throws ServiceException, FileUploadException, IOException {
-        ServletFileUpload upload = FileUtil.createUpload();
-        Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
-        if (optionalFileName.isPresent()) {
-            String message = imageService.changeImage(id, optionalFileName.get());
-            request.setAttribute(RequestParameterAndAttribute.MESSAGE, message);
-        } else {
-            request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE);
+                                           String id) throws CommandException {
+        try {
+            ServletFileUpload upload = FileUtil.createUpload();
+            Optional<String> optionalFileName = FileUtil.saveFile(upload.parseRequest(request));
+            if (optionalFileName.isPresent()) {
+                String message = imageService.changeImage(id, optionalFileName.get());
+                request.setAttribute(RequestParameterAndAttribute.MESSAGE, message);
+            } else {
+                request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.ERROR_MESSAGE_WRONG_FILE_TYPE);
+            }
+            return optionalFileName;
+        } catch (FileUploadException | ServiceException | IOException e) {
+            log.error(e);
+            throw new CommandException(e);
         }
-        return optionalFileName;
     }
 }

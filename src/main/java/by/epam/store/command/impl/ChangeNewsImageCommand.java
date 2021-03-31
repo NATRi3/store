@@ -2,6 +2,7 @@ package by.epam.store.command.impl;
 
 import by.epam.store.command.Command;
 import by.epam.store.controller.Router;
+import by.epam.store.exception.CommandException;
 import by.epam.store.exception.ServiceException;
 import by.epam.store.service.NewsService;
 import by.epam.store.service.ServiceCreator;
@@ -29,7 +30,7 @@ public class ChangeNewsImageCommand implements Command {
         String id = request.getParameter(RequestParameterAndAttribute.ID_NEWS);
         try {
             changeImageVar(request, BASE_NEWS_SERVICE, id);
-        } catch (ServiceException | FileUploadException | IOException e) {
+        } catch (CommandException e) {
             log.error(e);
             page = Router.redirectTo(PagePath.PAGE_500, request);
         }

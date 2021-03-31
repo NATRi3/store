@@ -13,6 +13,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The type Base order service.
@@ -43,12 +46,9 @@ public class BaseOrderService implements OrderService {
             String phone = parameters.get(RequestParameterAndAttribute.PHONE);
             String address = parameters.get(RequestParameterAndAttribute.ADDRESS);
             Map<Product, Integer> cartMap = cart.getProducts();
-            List<Product> productList = new ArrayList<>();
-            for (Map.Entry<Product, Integer> entry : cartMap.entrySet()) {
-                Product product = entry.getKey();
-                product.setCountInOrder(entry.getValue());
-                productList.add(product);
-            }
+            List<Product> productList = cartMap.entrySet().stream()
+                    .peek(entry -> entry.getKey().setIdCollection(entry.getValue()))
+                    .map(Map.Entry::getKey).collect(Collectors.toList());
             Order order = Order.builder()
                     .id(generateIdLong())
                     .idUser(user.getId())

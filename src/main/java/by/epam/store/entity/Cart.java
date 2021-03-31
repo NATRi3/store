@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * The type Cart.
  */
-public class Cart {
+public class Cart{
     private Map<Product, Integer> products;
     private int totalAmount;
     private BigDecimal totalPrice;
