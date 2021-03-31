@@ -1,7 +1,6 @@
 package by.epam.store.validator;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 /**
  * The type Form validator.
@@ -29,9 +28,11 @@ public class FormValidator {
      */
     static final int MAX_INFO_500_SIZE = 500;
 
+
     private static final String EMAIL_REGEX = "([\\w]+\\.)*[\\w]+@[\\w]+(\\.[\\w]+)*\\.[\\w]{2,6}";
     private static final String PASSWORD_REGEX = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9@#$%]).{8,40}";
     private static final String PHONE_REGEX = "\\+375\\(\\d{2}\\)\\d{3}-\\d{2}-\\d{2}";
+    private static final EnumSet<ValidationFields> VALIDATION_FIELDS = EnumSet.allOf(ValidationFields.class);
 
     /**
      * Validate parameters in map. Remove invalid fields.
@@ -42,8 +43,7 @@ public class FormValidator {
     public static boolean isFormValid(Map<String, String> dataMap) {
         boolean valid = true;
         List<String> removeKeyList = new ArrayList<>();
-        EnumSet<ValidationFields> enumSet = EnumSet.allOf(ValidationFields.class);
-        enumSet.stream()
+        VALIDATION_FIELDS.stream()
                 .filter(e->dataMap.containsKey(e.name().toLowerCase()))
                 .filter(e->!e.isValid(dataMap.get(e.name().toLowerCase())))
                 .forEach(e->removeKeyList.add(e.name().toLowerCase()));
