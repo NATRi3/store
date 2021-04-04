@@ -1,18 +1,17 @@
 package by.epam.store.controller.listener;
 
-import by.epam.store.entity.Cart;
-import by.epam.store.entity.User;
-import by.epam.store.entity.TypeRole;
-import by.epam.store.entity.TypeStatus;
-import by.epam.store.util.PagePath;
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.model.entity.Cart;
+import by.epam.store.model.entity.User;
+import by.epam.store.model.entity.TypeRole;
+import by.epam.store.model.entity.TypeStatus;
+import by.epam.store.controller.command.PagePath;
+import by.epam.store.controller.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 

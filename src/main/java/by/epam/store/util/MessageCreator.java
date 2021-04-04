@@ -1,6 +1,6 @@
 package by.epam.store.util;
 
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.controller.command.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;

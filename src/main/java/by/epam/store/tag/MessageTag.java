@@ -1,7 +1,7 @@
 package by.epam.store.tag;
 
 import by.epam.store.util.MessageCreator;
-import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.controller.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,6 +1,6 @@
 package by.epam.store.util;
 
-import by.epam.store.entity.Product;
+import by.epam.store.model.entity.Product;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;

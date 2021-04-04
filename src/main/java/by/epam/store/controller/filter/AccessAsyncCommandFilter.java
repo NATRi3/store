@@ -1,11 +1,11 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.entity.TypeRole;
-import by.epam.store.entity.User;
+import by.epam.store.model.entity.TypeRole;
+import by.epam.store.model.entity.User;
 import by.epam.store.util.MessageCreator;
 import by.epam.store.util.MessageKey;
-import by.epam.store.command.RequestParameterAndAttribute;
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.controller.command.RequestParameterAndAttribute;
+import by.epam.store.controller.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,7 +1,7 @@
 package by.epam.store.tag;
 
-import by.epam.store.entity.User;
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.model.entity.User;
+import by.epam.store.controller.command.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;

@@ -1,9 +1,9 @@
 package by.epam.store.controller;
 
-import by.epam.store.command.CommandAsync;
-import by.epam.store.command.CommandProviderAsync;
+import by.epam.store.controller.command.CommandAsync;
+import by.epam.store.controller.command.CommandProviderAsync;
 import by.epam.store.exception.CommandException;
-import by.epam.store.command.RequestParameterAndAttribute;
+import by.epam.store.controller.command.RequestParameterAndAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

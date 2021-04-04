@@ -1,7 +1,7 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.command.RequestParameterAndAttribute;
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.controller.command.RequestParameterAndAttribute;
+import by.epam.store.controller.command.SessionAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The type Double posting preventing filter.
@@ -30,18 +30,18 @@ public class DoublePostingPreventingFilter implements Filter {
         HttpSession session;
         if (request.getMethod().equals("GET")) {
             session = request.getSession(true);
-            session.setAttribute(SessionAttribute.SERVER_TOKEN, new Random().nextInt(10000));
+            session.setAttribute(SessionAttribute.SERVER_TOKEN, ThreadLocalRandom.current().nextInt(10000));
             chain.doFilter(req, res);
         } else {
             session = request.getSession();
             int serverToken = (Integer) session.getAttribute(SessionAttribute.SERVER_TOKEN);
             if (req.getParameter(RequestParameterAndAttribute.CLIENT_TOKEN) != null &&
                     serverToken == Integer.parseInt(req.getParameter(RequestParameterAndAttribute.CLIENT_TOKEN))) {
-                session.setAttribute(SessionAttribute.SERVER_TOKEN, new Random().nextInt(10000));
+                session.setAttribute(SessionAttribute.SERVER_TOKEN, ThreadLocalRandom.current().nextInt(10000));
                 chain.doFilter(req, res);
             } else {
                 log.info("Tokens: " + serverToken + "-" + req.getParameter(RequestParameterAndAttribute.CLIENT_TOKEN));
-                session.setAttribute(SessionAttribute.SERVER_TOKEN, new Random().nextInt(10000));
+                session.setAttribute(SessionAttribute.SERVER_TOKEN, ThreadLocalRandom.current().nextInt(10000));
                 HttpServletResponse response = (HttpServletResponse) res;
                 response.sendRedirect(request.getContextPath() + session.getAttribute(SessionAttribute.PAGE));
             }

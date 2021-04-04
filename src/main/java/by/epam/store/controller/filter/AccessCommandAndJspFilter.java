@@ -1,11 +1,11 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.entity.TypeRole;
-import by.epam.store.entity.User;
+import by.epam.store.controller.command.RequestParameterAndAttribute;
+import by.epam.store.controller.command.SessionAttribute;
+import by.epam.store.model.entity.TypeRole;
+import by.epam.store.model.entity.User;
 import by.epam.store.util.MessageKey;
-import by.epam.store.util.PagePath;
-import by.epam.store.command.RequestParameterAndAttribute;
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.controller.command.PagePath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,13 +38,13 @@ public class AccessCommandAndJspFilter implements Filter {
         String requestPath;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        Result result = new Result();
+        Result result;
         if (request.getRequestURI().contains(CONTROLLER_PREFIX)) {
             requestPath = request.getParameter(RequestParameterAndAttribute.COMMAND);
-            checkMapForPathAndUserRole(user, result, commandRoleAccess, requestPath);
+            result = checkMapForPathAndUserRole(user, commandRoleAccess, requestPath);
         } else {
             requestPath = request.getRequestURI().replace(request.getContextPath(), "");
-            checkMapForPathAndUserRole(user, result, jspRoleAccess, requestPath);
+            result = checkMapForPathAndUserRole(user, jspRoleAccess, requestPath);
         }
         if (result.isAccess()) {
             filterChain.doFilter(servletRequest, servletResponse);
@@ -66,27 +66,29 @@ public class AccessCommandAndJspFilter implements Filter {
         }
     }
 
-    private void checkMapForPathAndUserRole(User user, Result result, Map<TypeRole, Set<String>> map, String path) {
+    private Result checkMapForPathAndUserRole(User user, Map<TypeRole, Set<String>> map, String path) {
+        Result.ResultBuilder builder = Result.builder();
         for (Map.Entry<TypeRole, Set<String>> entry : map.entrySet()) {
             if (entry.getValue().contains(path)) {
                 if (user.getRole().equals(entry.getKey())) {
-                    result.setAccess(true);
+                    builder.access(true);
                 }
-                result.setExists(true);
+                builder.isExists(true);
             }
         }
+        return builder.build();
     }
-
     private static class Result {
         private boolean isExists;
         private boolean access;
 
-        private Result(boolean access, boolean isExists) {
+        public Result(boolean isExists, boolean access) {
             this.isExists = isExists;
             this.access = access;
         }
 
-        private Result() {
+        public static ResultBuilder builder() {
+            return new ResultBuilder();
         }
 
         private void setExists(boolean exists) {
@@ -103,6 +105,32 @@ public class AccessCommandAndJspFilter implements Filter {
 
         private boolean isAccess() {
             return access;
+        }
+
+        public static class ResultBuilder {
+            private boolean isExists = false;
+            private boolean access = false;
+
+            ResultBuilder() {
+            }
+
+            public ResultBuilder isExists(boolean isExists) {
+                this.isExists = isExists;
+                return this;
+            }
+
+            public ResultBuilder access(boolean access) {
+                this.access = access;
+                return this;
+            }
+
+            public Result build() {
+                return new Result(isExists, access);
+            }
+
+            public String toString() {
+                return "AccessCommandAndJspFilter.Result.ResultBuilder(isExists=" + this.isExists + ", access=" + this.access + ")";
+            }
         }
     }
 

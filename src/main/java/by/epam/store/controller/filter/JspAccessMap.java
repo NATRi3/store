@@ -1,7 +1,7 @@
 package by.epam.store.controller.filter;
 
-import by.epam.store.entity.TypeRole;
-import by.epam.store.util.PagePath;
+import by.epam.store.model.entity.TypeRole;
+import by.epam.store.controller.command.PagePath;
 
 import java.util.HashMap;
 import java.util.Set;

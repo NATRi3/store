@@ -1,183 +1,43 @@
 <%--
   Created by IntelliJ IDEA.
   User: ssykh
-  Date: 07.02.2021
-  Time: 19:10
+  Date: 11.02.2021
+  Time: 14:20
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-    <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:100,200,300,400" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
-<body class="loading">
-<h1>500</h1>
-<h2>Unexpected Error <b>:(</b></h2>
-<div class="gears">
-    <div class="gear one">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
-    <div class="gear two">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
-    <div class="gear three">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    500</h1>
+                <h2>
+                    Oops! SomeThing go wrong</h2>
+                <div class="error-details">
+                    Sorry, try again later.
+                </div>
+                <div class="error-actions">
+                    <a href="${pageContext.request.contextPath}/jsp/guest/shop.jsp" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+                        Take Me Shop </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script >
-    $(function() {
-    setTimeout(function(){
-        $('body').removeClass('loading');
-    }, 1000);
-});
-</script>
 </body>
 <style>
-    :root {
-        --main-color: #eaeaea;
-        --stroke-color: black;
-
-    }
-    /**/
-    body {
-        background: var(--main-color);
-    }
-    h1 {
-        margin: 100px auto 0 auto;
-        color: var(--stroke-color);
-        font-family: 'Encode Sans Semi Condensed', Verdana, sans-serif;
-        font-size: 10rem; line-height: 10rem;
-        font-weight: 200;
-        text-align: center;
-    }
-    h2 {
-        margin: 20px auto 30px auto;
-        font-family: 'Encode Sans Semi Condensed', Verdana, sans-serif;
-        font-size: 1.5rem;
-        font-weight: 200;
-        text-align: center;
-    }
-    h1, h2 {
-        -webkit-transition: opacity 0.5s linear, margin-top 0.5s linear; /* Safari */
-        transition: opacity 0.5s linear, margin-top 0.5s linear;
-    }
-    .loading h1, .loading h2 {
-        margin-top: 0px;
-        opacity: 0;
-    }
-    .gears {
-        position: relative;
-        margin: 0 auto;
-        width: auto; height: 0;
-    }
-    .gear {
-        position: relative;
-        z-index: 0;
-        width: 120px; height: 120px;
-        margin: 0 auto;
-        border-radius: 50%;
-        background: var(--stroke-color);
-    }
-    .gear:before{
-        position: absolute; left: 5px; top: 5px; right: 5px; bottom: 5px;
-        z-index: 2;
-        content: "";
-        border-radius: 50%;
-        background: var(--main-color);
-    }
-    .gear:after {
-        position: absolute; left: 25px; top: 25px;
-        z-index: 3;
-        content: "";
-        width: 70px; height: 70px;
-        border-radius: 50%;
-        border: 5px solid var(--stroke-color);
-        box-sizing: border-box;
-        background: var(--main-color);
-    }
-    .gear.one {
-        left: -130px;
-    }
-    .gear.two {
-        top: -75px;
-    }
-    .gear.three {
-        top: -235px;
-        left: 130px;
-    }
-    .gear .bar {
-        position: absolute; left: -15px; top: 50%;
-        z-index: 0;
-        width: 150px; height: 30px;
-        margin-top: -15px;
-        border-radius: 5px;
-        background: var(--stroke-color);
-    }
-    .gear .bar:before {
-        position: absolute; left: 5px; top: 5px; right: 5px; bottom: 5px;
-        z-index: 1;
-        content: "";
-        border-radius: 2px;
-        background: var(--main-color);
-    }
-    .gear .bar:nth-child(2) {
-        transform: rotate(60deg);
-        -webkit-transform: rotate(60deg);
-    }
-    .gear .bar:nth-child(3) {
-        transform: rotate(120deg);
-        -webkit-transform: rotate(120deg);
-    }
-    @-webkit-keyframes clockwise {
-        0% { -webkit-transform: rotate(0deg);}
-        100% { -webkit-transform: rotate(360deg);}
-    }
-    @-webkit-keyframes anticlockwise {
-        0% { -webkit-transform: rotate(360deg);}
-        100% { -webkit-transform: rotate(0deg);}
-    }
-    @-webkit-keyframes clockwiseError {
-        0% { -webkit-transform: rotate(0deg);}
-        20% { -webkit-transform: rotate(30deg);}
-        40% { -webkit-transform: rotate(25deg);}
-        60% { -webkit-transform: rotate(30deg);}
-        100% { -webkit-transform: rotate(0deg);}
-    }
-    @-webkit-keyframes anticlockwiseErrorStop {
-        0% { -webkit-transform: rotate(0deg);}
-        20% { -webkit-transform: rotate(-30deg);}
-        60% { -webkit-transform: rotate(-30deg);}
-        100% { -webkit-transform: rotate(0deg);}
-    }
-    @-webkit-keyframes anticlockwiseError {
-        0% { -webkit-transform: rotate(0deg);}
-        20% { -webkit-transform: rotate(-30deg);}
-        40% { -webkit-transform: rotate(-25deg);}
-        60% { -webkit-transform: rotate(-30deg);}
-        100% { -webkit-transform: rotate(0deg);}
-    }
-    .gear.one {
-        -webkit-animation: anticlockwiseErrorStop 2s linear infinite;
-    }
-    .gear.two {
-        -webkit-animation: anticlockwiseError 2s linear infinite;
-    }
-    .gear.three {
-        -webkit-animation: clockwiseError 2s linear infinite;
-    }
-    .loading .gear.one, .loading .gear.three {
-        -webkit-animation: clockwise 3s linear infinite;
-    }
-    .loading .gear.two {
-        -webkit-animation: anticlockwise 3s linear infinite;
-    }
+    body { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8yOS8xMiKqq3kAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABHklEQVRIib2Vyw6EIAxFW5idr///Qx9sfG3pLEyJ3tAwi5EmBqRo7vHawiEEERHS6x7MTMxMVv6+z3tPMUYSkfTM/R0fEaG2bbMv+Gc4nZzn+dN4HAcREa3r+hi3bcuu68jLskhVIlW073tWaYlQ9+F9IpqmSfq+fwskhdO/AwmUTJXrOuaRQNeRkOd5lq7rXmS5InmERKoER/QMvUAPlZDHcZRhGN4CSeGY+aHMqgcks5RrHv/eeh455x5KrMq2yHQdibDO6ncG/KZWL7M8xDyS1/MIO0NJqdULLS81X6/X6aR0nqBSJcPeZnlZrzN477NKURn2Nus8sjzmEII0TfMiyxUuxphVWjpJkbx0btUnshRihVv70Bv8ItXq6Asoi/ZiCbU6YgAAAABJRU5ErkJggg==);}
+    .error-template {padding: 40px 15px;text-align: center;}
+    .error-actions {margin-top:15px;margin-bottom:15px;}
+    .error-actions .btn { margin-right:10px; }
 </style>
 </html>

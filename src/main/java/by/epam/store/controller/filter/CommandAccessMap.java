@@ -1,7 +1,7 @@
 package by.epam.store.controller.filter;
 
-import static by.epam.store.command.TypeCommand.*;
-import by.epam.store.entity.TypeRole;
+import static by.epam.store.controller.command.TypeCommand.*;
+import by.epam.store.model.entity.TypeRole;
 
 import java.util.HashMap;
 import java.util.Set;

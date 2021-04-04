@@ -1,12 +1,10 @@
 package by.epam.store.controller;
 
-import by.epam.store.command.Command;
-import by.epam.store.command.CommandProvider;
-import by.epam.store.command.TypeCommand;
-import by.epam.store.pool.CustomConnectionPool;
-import by.epam.store.pool.NoSQLConnectionPool;
-import by.epam.store.command.RequestParameterAndAttribute;
-import by.epam.store.command.SessionAttribute;
+import by.epam.store.controller.command.Command;
+import by.epam.store.controller.command.CommandProvider;
+import by.epam.store.controller.command.RequestParameterAndAttribute;
+import by.epam.store.controller.command.SessionAttribute;
+import by.epam.store.annotation.DependencyInjector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,6 +24,7 @@ import java.util.Optional;
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(Controller.class);
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
@@ -39,7 +38,7 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandName = request.getParameter(RequestParameterAndAttribute.COMMAND);
         Optional<Command> optionalCommand = CommandProvider.commandDefine(commandName);
-        Command command = optionalCommand.orElse(TypeCommand.ERROR_NOT_FOUND.getCommand());
+        Command command = optionalCommand.get();
         Router router = command.execute(request);
         setPageToSession(request, router.getPage());
         if (router.isRedirect()) {
@@ -50,14 +49,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-        CustomConnectionPool.getInstance().closePool();
-        NoSQLConnectionPool.getInstance().close();
-    }
-
-     private void setPageToSession(HttpServletRequest request, String page) {
+    private void setPageToSession(HttpServletRequest request, String page) {
         if (request.getSession(false) != null) {
             if (page.contains("/WEB-INF/")) {
                 request.getSession().setAttribute(SessionAttribute.PAGE, request.getRequestURI() + "?" + request.getQueryString());
