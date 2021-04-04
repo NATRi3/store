@@ -4,14 +4,28 @@
 Guest can find what he wants to buy. Then register and receive activation link on email. Then guest singing in and their status changes on user.User adding products to cart, manage their account and leave feedbacks on products.Admin can create new products, news, collections, admins. Admin can veiw orders and manage their.
 ## Project features:
 * User friendly URL
-* Localization: en_EN, ru_BY
 * 3 roles
-* custom tags
+* 3 custom tags
 * Custom connection pool and proxy connections
 * Transactions
 * XSS and Double submit peventing filters
 * Timer task for recover connections
 * NoSQL and SQL database
+* Custom annotation
+* Custom application container
+* Ajax
+* Uploading images to Cloudinary
+* Using database service JawsDB Mysql
+* Deploying to Heroku
+* JSP
+* Maven
+* JSTL
+* Log4j2
+* Pagination
+* Double validation
+* Sending email via SMTP
+* Localization: EN, RU
+* TestNG
 
 function | ADMIN’S SCOPE | CLIENT’S SCOPE | GUEST’S SCOPE
 ---------| --------------|----------------|---------------
