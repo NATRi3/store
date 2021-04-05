@@ -17,11 +17,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChangeUserStatusCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(ChangeUserStatusCommand.class);
-    private UserService BASE_USER_SERVICE;
+    private UserService userService;
 
     @Autowired
-    public void setBASE_USER_SERVICE(UserService BASE_USER_SERVICE) {
-        this.BASE_USER_SERVICE = BASE_USER_SERVICE;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ChangeUserStatusCommand implements CommandAsync {
         String statusFrom = request.getParameterValues(RequestParameterAndAttribute.TYPE_STATUS)[0];
         String statusTo = request.getParameterValues(RequestParameterAndAttribute.TYPE_STATUS)[1];
         try {
-            String messageKey = BASE_USER_SERVICE.changeStatusFromTo(id, statusFrom, statusTo);
+            String messageKey = userService.changeStatusFromTo(id, statusFrom, statusTo);
             ResponseWriterUtil.writeTextToResponse(request, response, messageKey);
         } catch (ServiceException e) {
             log.error(e);

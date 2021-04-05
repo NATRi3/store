@@ -20,10 +20,10 @@ import java.util.List;
  */
 public class GetListUsersByRoleAndStatus implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListUsersByRoleAndStatus.class);
-    private UserService BASE_USER_SERVICE;
+    private UserService userService;
     @Autowired
-    public void setBASE_USER_SERVICE(UserService BASE_USER_SERVICE) {
-        this.BASE_USER_SERVICE = BASE_USER_SERVICE;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class GetListUsersByRoleAndStatus implements CommandAsync {
         String begin = request.getParameter(RequestParameterAndAttribute.BEGIN_PAGINATION);
         String status = request.getParameter(RequestParameterAndAttribute.TYPE_STATUS);
         try {
-            List<User> userList = BASE_USER_SERVICE.findUsersByRoleAndStatus(status, begin);
+            List<User> userList = userService.findUsersByRoleAndStatus(status, begin);
             String json = new Gson().toJson(userList);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

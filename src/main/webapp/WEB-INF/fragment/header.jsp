@@ -15,11 +15,6 @@
                     <fmt:message key="header.shop" bundle="${text}"/>
                 </a>
             </li>
-            <li class="nav-item">
-                <A class="nav-link" href="#">
-                    <fmt:message key="header.about" bundle="${text}"/>
-                </A>
-            </li>
             <c:choose>
                 <c:when test="${!sessionScope.currentUser.role.toString().equals('GUEST')}">
                     <li class="nav-item dropdown">

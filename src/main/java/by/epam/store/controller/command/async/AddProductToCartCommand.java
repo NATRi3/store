@@ -23,11 +23,11 @@ import java.util.Optional;
  */
 public class AddProductToCartCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(AddProductToCartCommand.class);
-    private ProductService BASE_PRODUCT_SERVICE;
+    private ProductService productService;
 
     @Autowired
-    public void setBASE_PRODUCT_SERVICE(ProductService BASE_PRODUCT_SERVICE) {
-        this.BASE_PRODUCT_SERVICE = BASE_PRODUCT_SERVICE;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class AddProductToCartCommand implements CommandAsync {
         String idStr = request.getParameter(RequestParameterAndAttribute.ID_PRODUCT);
         String messageKey;
         try {
-            Optional<Product> optionalProduct = BASE_PRODUCT_SERVICE.findProductById(idStr);
+            Optional<Product> optionalProduct = productService.findProductById(idStr);
             if (optionalProduct.isPresent()) {
                 if (optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
                     HttpSession session = request.getSession();
                     Cart cart = (Cart) session.getAttribute(SessionAttribute.CART);
-                    cart.addProduct(optionalProduct.get());
+                    cart.replaceProduct(optionalProduct.get());
                     session.setAttribute(SessionAttribute.CART, cart);
                     messageKey = MessageKey.SUCCESSFUL_ADD_TO_CART;
                 } else {

@@ -1,21 +1,21 @@
 package by.epam.store.model.service.impl;
 
+import by.epam.store.annotation.Autowired;
+import by.epam.store.annotation.Bean;
 import by.epam.store.controller.command.RequestParameterAndAttribute;
+import by.epam.store.exception.DaoException;
+import by.epam.store.exception.ServiceException;
 import by.epam.store.model.dao.OrderDao;
 import by.epam.store.model.entity.Cart;
 import by.epam.store.model.entity.Order;
 import by.epam.store.model.entity.Product;
 import by.epam.store.model.entity.User;
-import by.epam.store.exception.DaoException;
-import by.epam.store.exception.ServiceException;
 import by.epam.store.model.service.OrderService;
 import by.epam.store.model.service.TypeSort;
-import by.epam.store.annotation.Autowired;
-import by.epam.store.annotation.Bean;
-import by.epam.store.util.MessageKey;
 import by.epam.store.model.validator.NumberValidator;
 import by.epam.store.model.validator.TypeValidator;
 import by.epam.store.model.validator.ValidationFields;
+import by.epam.store.util.MessageKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +57,7 @@ public class BaseOrderService implements OrderService {
 
     @Override
     public String createOrder(Map<String, String[]> parameters, User user, Cart cart) throws ServiceException {
-        if (cart.getProducts().isEmpty()) {
+        if (cart.getProducts().isEmpty() || cart.getProducts().containsValue(0)) {
             return MessageKey.ERROR_MESSAGE_EMPTY_CART;
         }
         if (!ValidationFields.isMapParametersValid(parameters) ||
@@ -70,8 +70,10 @@ public class BaseOrderService implements OrderService {
             String address = parameters.get(RequestParameterAndAttribute.ADDRESS)[0];
             Map<Product, Integer> cartMap = cart.getProducts();
             List<Product> productList = cartMap.entrySet().stream()
-                    .peek(entry -> entry.getKey().setIdCollection(entry.getValue()))
-                    .map(Map.Entry::getKey).collect(Collectors.toList());
+                    .map(entry -> {
+                        entry.getKey().setCountInOrder(entry.getValue());
+                        return entry.getKey();
+                    }).collect(Collectors.toList());
             Order order = Order.builder()
                     .id(generateIdLong())
                     .idUser(user.getId())

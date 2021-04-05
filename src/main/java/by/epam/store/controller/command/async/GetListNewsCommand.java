@@ -20,11 +20,11 @@ import java.util.List;
  */
 public class GetListNewsCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListNewsCommand.class);
-    private NewsService BASE_NEWS_SERVICE;
+    private NewsService newsService;
 
     @Autowired
-    public void setBASE_NEWS_SERVICE(NewsService BASE_NEWS_SERVICE) {
-        this.BASE_NEWS_SERVICE = BASE_NEWS_SERVICE;
+    public void setNewsService(NewsService newsService) {
+        this.newsService = newsService;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class GetListNewsCommand implements CommandAsync {
         String typeSort = request.getParameter(RequestParameterAndAttribute.TYPE_SORT);
         String begin = request.getParameter(RequestParameterAndAttribute.BEGIN_PAGINATION);
         try {
-            List<News> productList = BASE_NEWS_SERVICE.findSortNews(typeSort, begin);
+            List<News> productList = newsService.findSortNews(typeSort, begin);
             String json = new Gson().toJson(productList);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

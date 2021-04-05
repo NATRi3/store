@@ -46,7 +46,6 @@
                         <div class="col-md-7">
 
                             <h5>${requestScope.product.name}</h5>
-                            <p class="mb-2 text-muted text-uppercase small">(brand)</p>
                             <p><span class="mr-1"><strong>$${requestScope.product.price}</strong></span></p>
                             <p class="pt-1">${requestScope.product.info}</p>
                             <div class="table-responsive">
@@ -93,7 +92,7 @@
                                             <input type="hidden" name="command" value="create_feedback">
                                             <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                                             <input type="hidden" name="id_product" value="${requestScope.product.id}">
-                                            <textarea name="feedback" class="form-control" placeholder="Enter here for tweet..." rows="3">${requestScope.feedback}</textarea>
+                                            <textarea name="feedback" class="form-control" placeholder="<fmt:message key="single.text" bundle="${text}"/>" rows="3">${requestScope.feedback}</textarea>
                                         </div>
                                         <input type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light" value="Tweet">
                                         <div class="clearfix"><div class="form-group" id="rating-ability-wrapper">

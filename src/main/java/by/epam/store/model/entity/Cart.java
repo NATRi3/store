@@ -14,19 +14,6 @@ public class Cart{
     private BigDecimal totalPrice;
 
     /**
-     * Instantiates a new Cart.
-     *
-     * @param products    the products
-     * @param totalAmount the total amount
-     * @param totalPrice  the total price
-     */
-    private Cart(Map<Product, Integer> products, int totalAmount, BigDecimal totalPrice) {
-        this.products = products;
-        this.totalAmount = totalAmount;
-        this.totalPrice = totalPrice;
-    }
-
-    /**
      * Instantiates a new empty Cart.
      */
     public Cart() {
@@ -36,21 +23,12 @@ public class Cart{
     }
 
     /**
-     * Builder cart builder.
-     *
-     * @return the cart builder
-     */
-    public static CartBuilder builder() {
-        return new CartBuilder();
-    }
-
-    /**
      * Add amount product to Map cart.
      *
      * @param product the product
      * @param amount  the amount of product
      */
-    public void addProduct(Product product, int amount) {
+    public void replaceProduct(Product product, int amount) {
         Integer oldProductAmount = products.put(product, amount);
         oldProductAmount = oldProductAmount == null ? 0 : oldProductAmount;
         BigDecimal sumProduct = product.getPrice().multiply(BigDecimal.valueOf(amount - oldProductAmount));
@@ -63,14 +41,10 @@ public class Cart{
      *
      * @param product the product
      */
-    public void addProduct(Product product) {
-        if (products.containsKey(product)) {
-            products.replace(product, products.get(product) + 1);
-        } else {
-            products.put(product, 1);
-        }
+    public void replaceProduct(Product product) {
+        products.merge(product,1,Integer::sum);
         totalPrice = totalPrice.add(product.getPrice());
-        recalculateTotalAmount();
+        totalAmount++;
     }
 
     /**
@@ -196,69 +170,12 @@ public class Cart{
 
     private void recalculateTotalAmount() {
         totalAmount = 0;
-        for (Integer value : products.values()) {
-            totalAmount += value;
-        }
-    }
-
-    /**
-     * The type Cart builder.
-     */
-    public static class CartBuilder {
-        private Map<Product, Integer> products;
-        private int totalAmount;
-        private BigDecimal totalPrice;
-
-        /**
-         * Instantiates a new Cart builder.
-         */
-        CartBuilder() {
-        }
-
-        /**
-         * Products cart builder.
-         *
-         * @param products the products
-         * @return the cart builder
-         */
-        public CartBuilder products(Map<Product, Integer> products) {
-            this.products = products;
-            return this;
-        }
-
-        /**
-         * Total amount cart builder.
-         *
-         * @param totalAmount the total amount
-         * @return the cart builder
-         */
-        public CartBuilder totalAmount(int totalAmount) {
-            this.totalAmount = totalAmount;
-            return this;
-        }
-
-        /**
-         * Total price cart builder.
-         *
-         * @param totalPrice the total price
-         * @return the cart builder
-         */
-        public CartBuilder totalPrice(BigDecimal totalPrice) {
-            this.totalPrice = totalPrice;
-            return this;
-        }
-
-        /**
-         * Build cart.
-         *
-         * @return the cart
-         */
-        public Cart build() {
-            return new Cart(products, totalAmount, totalPrice);
-        }
-
-        public String toString() {
-            return "Cart.CartBuilder(products=" + this.products + ", totalAmount=" + this.totalAmount + ", totalPrice=" + this.totalPrice + ")";
+        for (Map.Entry<Product,Integer> entry : products.entrySet()) {
+            if(entry.getValue()==null || entry.getValue()==0){
+                products.remove(entry.getKey());
+            }else {
+                totalAmount += entry.getValue();
+            }
         }
     }
 }

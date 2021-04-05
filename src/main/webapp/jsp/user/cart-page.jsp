@@ -83,7 +83,7 @@
                                                             <input type="hidden" name="command" value="add_amount_product_to_cart">
                                                             <input type="hidden" name="id_product" value="${product.id}">
                                                             <input class="quantity" min="0" name="amount_product" value="${sessionScope.cart.products.get(product)}" type="number">
-                                                            <button type="submit" class="btn-primary">Submit</button>
+                                                            <button type="submit" class="btn-primary"><fmt:message key="button.save_changes" bundle="${text}"/></button>
                                                         </div>
                                                         </form>
                                                     </div>
@@ -92,7 +92,7 @@
                                                     <div>
                                                         <a href="${pageContext.request.contextPath}/controller?command=remove_product_from_cart&id_product=${product.id}"
                                                            type="button" class="card-link-secondary small text-uppercase mr-3"><i
-                                                                class="fas fa-trash-alt mr-1"></i> Remove item </a>
+                                                                class="fas fa-trash-alt mr-1"></i> <fmt:message key="button.delete" bundle="${text}"/></a>
                                                     </div>
                                                     <p class="mb-0"><span><strong>${product.price}$</strong></span></p>
                                                 </div>
@@ -101,8 +101,6 @@
                                     </div>
                                     </c:forEach>
                                     <hr class="mb-4">
-                                    <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
-                                        items to your cart does not mean booking them.</p>
 
                                 </div>
                             </div>
@@ -123,21 +121,21 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                                             <div>
-                                                <strong>The total amount of</strong>
+                                                <strong><fmt:message key="admin.price" bundle="${text}"/></strong>
                                             </div>
                                             <span><strong>$${sessionScope.cart.totalPrice}</strong></span>
                                         </li>
                                     </ul>
 
                                     <button type="button" class="btn btn-primary btn-block waves-effect waves-light" data-toggle="modal" data-target="#exampleModal">
-                                        Create order
+                                        <fmt:message key="create.order" bundle="${text}"/>
                                     </button>
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="${pageContext.request.contextPath}/controller" method="post">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel"><fmt:message key="create.order" bundle="${text}"/></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -146,8 +144,14 @@
                                                 </div>
                                                     <input type="hidden" name="command" value="create_order">
                                                     <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
-                                                    <input type="text" class="form-control" name="address" value="${requestScope.address}">
-                                                    <input type="tel" class="form-control" id="phone" name="phone" value="${requestScope.phone}" placeholder="+375 (99) 99 99 999">
+                                                    <label>
+                                                        <fmt:message key="cart.adderss" bundle="${text}"/>
+                                                        <input type="text" class="form-control" name="address" value="${requestScope.address}">
+                                                    </label>
+                                                    <label for="phone">
+                                                        <fmt:message key="cart.phone" bundle="${text}"/>
+                                                        <input type="tel" class="form-control" id="phone" name="phone" value="${requestScope.phone}" placeholder="+375 (99) 99 99 999">
+                                                    </label>
                                                     <script src="${pageContext.request.contextPath}/js/jquery.maskedinput.zip"></script>
                                                     <script>
                                                         $(function(){
@@ -155,8 +159,8 @@
                                                         });
                                                     </script>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><fmt:message key="button.close" bundle="${text}"/></button>
+                                                    <button type="submit" class="btn btn-primary"><fmt:message key="button.save" bundle="${text}"/></button>
                                                 </div>
                                                 </form>
                                             </div>
@@ -168,13 +172,8 @@
                     </c:when>
                 </c:choose>
                 </div>
-                <!--Grid column-->
-
             </div>
-            <!--Grid row-->
-
         </section>
-        <!--Section: Block Content-->
 </div>
 </body>
 <script type="text/javascript">

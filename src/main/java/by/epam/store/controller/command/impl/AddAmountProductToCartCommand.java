@@ -43,7 +43,7 @@ public class AddAmountProductToCartCommand implements Command {
                 Optional<Product> optionalProduct = productService.findProductById(idStr);
                 if (optionalProduct.isPresent()) {
                     if (optionalProduct.get().getStatus().equals(TypeStatus.ACTIVE)) {
-                        cart.addProduct(optionalProduct.get(), Integer.parseInt(amount));
+                        cart.replaceProduct(optionalProduct.get(), Integer.parseInt(amount));
                         session.setAttribute(SessionAttribute.CART, cart);
                         request.setAttribute(RequestParameterAndAttribute.MESSAGE, MessageKey.SUCCESSFUL_ADD_TO_CART);
                     } else {

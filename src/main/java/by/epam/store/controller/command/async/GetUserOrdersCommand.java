@@ -1,5 +1,6 @@
 package by.epam.store.controller.command.async;
 
+import by.epam.store.annotation.Autowired;
 import by.epam.store.controller.command.CommandAsync;
 import by.epam.store.model.entity.Order;
 import by.epam.store.model.entity.User;
@@ -21,10 +22,11 @@ import java.util.List;
  */
 public class GetUserOrdersCommand implements CommandAsync {
     private static final Logger log = LogManager.getLogger(GetUserOrdersCommand.class);
-    private OrderService BASE_ORDER_SERVICE;
+    private OrderService orderService;
 
-    public void setBASE_ORDER_SERVICE(OrderService BASE_ORDER_SERVICE) {
-        this.BASE_ORDER_SERVICE = BASE_ORDER_SERVICE;
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class GetUserOrdersCommand implements CommandAsync {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
         try {
-            List<Order> orderList = BASE_ORDER_SERVICE.findUserOrders(user.getId());
+            List<Order> orderList = orderService.findUserOrders(user.getId());
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(orderList);
             ResponseWriterUtil.writeJsonToResponse(response, json);

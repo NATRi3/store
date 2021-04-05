@@ -17,7 +17,7 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         sce.getServletContext().setAttribute(APPLICATION_CONTAINER, DependencyInjector.getApplicationContainer());
-        log.info("Dependency inject successful " + DependencyInjector.getApplicationContainer());
+        log.info("Dependency inject successful");
     }
 
     @Override

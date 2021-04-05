@@ -20,11 +20,11 @@ import java.util.List;
  */
 public class GetListOrdersCommand implements CommandAsync {
     private static final Logger log = LogManager.getLogger(GetListOrdersCommand.class);
-    private OrderService BASE_ORDER_SERVICE;
+    private OrderService orderService;
 
     @Autowired
-    public void setBASE_ORDER_SERVICE(OrderService BASE_ORDER_SERVICE) {
-        this.BASE_ORDER_SERVICE = BASE_ORDER_SERVICE;
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class GetListOrdersCommand implements CommandAsync {
         String sort = request.getParameter(RequestParameterAndAttribute.TYPE_SORT);
         String begin = request.getParameter(RequestParameterAndAttribute.BEGIN_PAGINATION);
         try {
-            List<Order> orderList = BASE_ORDER_SERVICE.findOrderList(begin, sort);
+            List<Order> orderList = orderService.findOrderList(begin, sort);
             String json = new Gson().toJson(orderList);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

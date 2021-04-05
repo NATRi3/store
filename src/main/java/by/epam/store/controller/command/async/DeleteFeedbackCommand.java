@@ -17,18 +17,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteFeedbackCommand implements CommandAsync {
     private static final Logger log = LogManager.getLogger(DeleteFeedbackCommand.class);
-    private FeedbackService BASE_FEEDBACK_SERVICE;
+    private FeedbackService feedbackService;
 
     @Autowired
-    public void setBASE_FEEDBACK_SERVICE(FeedbackService BASE_FEEDBACK_SERVICE) {
-        this.BASE_FEEDBACK_SERVICE = BASE_FEEDBACK_SERVICE;
+    public void setFeedbackService(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String idFeedback = request.getParameter(RequestParameterAndAttribute.ID_FEEDBACK);
         try {
-            String messageKey = BASE_FEEDBACK_SERVICE.deleteFeedback(idFeedback);
+            String messageKey = feedbackService.deleteFeedback(idFeedback);
             ResponseWriterUtil.writeTextToResponse(request, response, messageKey);
         } catch (ServiceException e) {
             log.error(e);

@@ -18,18 +18,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeactivateProductCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(DeactivateProductCommand.class);
-    private ProductService BASE_PRODUCT_SERVICE;
+    private ProductService productService;
 
     @Autowired
-    public void setBASE_PRODUCT_SERVICE(ProductService BASE_PRODUCT_SERVICE) {
-        this.BASE_PRODUCT_SERVICE = BASE_PRODUCT_SERVICE;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             String id = request.getParameter(RequestParameterAndAttribute.ID_PRODUCT);
-            String messageKey = BASE_PRODUCT_SERVICE.changeStatus(id, TypeStatus.NONACTIVE);
+            String messageKey = productService.changeStatus(id, TypeStatus.NONACTIVE);
             ResponseWriterUtil.writeTextToResponse(request, response, messageKey);
         } catch (ServiceException e) {
             log.error(e);

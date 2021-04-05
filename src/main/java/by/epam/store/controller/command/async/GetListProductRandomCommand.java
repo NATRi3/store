@@ -20,17 +20,17 @@ import java.util.List;
  */
 public class GetListProductRandomCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListProductRandomCommand.class);
-    private ProductService BASE_PRODUCT_SERVICE;
+    private ProductService productService;
     @Autowired
-    public void setBASE_PRODUCT_SERVICE(ProductService BASE_PRODUCT_SERVICE) {
-        this.BASE_PRODUCT_SERVICE = BASE_PRODUCT_SERVICE;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             String amount = request.getParameter(RequestParameterAndAttribute.PRODUCT_AMOUNT);
-            List<Product> randomProduct = BASE_PRODUCT_SERVICE.findRandomProduct(amount);
+            List<Product> randomProduct = productService.findRandomProduct(amount);
             String json = new Gson().toJson(randomProduct);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {

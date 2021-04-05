@@ -20,17 +20,17 @@ import java.util.List;
  */
 public class GetListProductFeedbackCommand implements CommandAsync {
     private final static Logger log = LogManager.getLogger(GetListProductFeedbackCommand.class);
-    private FeedbackService BASE_FEEDBACK_SERVICE;
+    private FeedbackService feedbackService;
     @Autowired
-    public void setBASE_FEEDBACK_SERVICE(FeedbackService BASE_FEEDBACK_SERVICE) {
-        this.BASE_FEEDBACK_SERVICE = BASE_FEEDBACK_SERVICE;
+    public void setFeedbackService(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String id = request.getParameter(RequestParameterAndAttribute.ID_PRODUCT);
         try {
-            List<Feedback> feedbacks = BASE_FEEDBACK_SERVICE.getFeedbackByIdProduct(id);
+            List<Feedback> feedbacks = feedbackService.getFeedbackByIdProduct(id);
             String json = new Gson().toJson(feedbacks);
             ResponseWriterUtil.writeJsonToResponse(response, json);
         } catch (ServiceException e) {
