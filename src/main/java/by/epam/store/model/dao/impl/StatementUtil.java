@@ -8,11 +8,19 @@ import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+/**
+ * The type Statement util.
+ */
 public class StatementUtil {
-    public static final Logger log = LogManager.getLogger(StatementUtil.class);
-    public static final Map<Class<?>, Method> STATEMENT_METHOD_MAP = new HashMap<>();
-    public static Map<Class<?>, Method> WRAPPER_AND_PRIMITIVE;
+    private static final Logger log = LogManager.getLogger(StatementUtil.class);
+    private static final Map<Class<?>, Method> STATEMENT_METHOD_MAP = new HashMap<>();
+    private static Map<Class<?>, Method> WRAPPER_AND_PRIMITIVE;
+    private static final Set<String> UNUSABLE_METHODS = Set.of("setNull",
+            "setTimestamp", "setTime", "setObject", "setNCharacterStream",
+            "setCharacterStream", "setClob"
+    );
 
     static {
         try {
@@ -28,33 +36,41 @@ public class StatementUtil {
             log.error(e);
         }
         for (Method method : PreparedStatement.class.getMethods()) {
-            Class<?>[] paramsClass = method.getParameterTypes();
-            if (paramsClass.length == 2 && paramsClass[0].equals(int.class)) {
-                Class<?> classParam = paramsClass[1];
-                if (classParam.isPrimitive()) {
-                    if (int.class.equals(classParam)) {
-                        classParam = Integer.class;
-                    } else if (long.class.equals(classParam)) {
-                        classParam = Long.class;
-                    } else if (byte.class.equals(classParam)) {
-                        classParam = Byte.class;
-                    } else if (boolean.class.equals(classParam)) {
-                        classParam = Boolean.class;
-                    } else if (short.class.equals(classParam)) {
-                        classParam = Short.class;
-                    } else if (char.class.equals(classParam)) {
-                        classParam = Character.class;
-                    } else if (float.class.equals(classParam)) {
-                        classParam = Float.class;
-                    } else if (double.class.equals(classParam)) {
-                        classParam = Double.class;
+            if (!UNUSABLE_METHODS.contains(method.getName())) {
+                Class<?>[] paramsClass = method.getParameterTypes();
+                if (paramsClass.length == 2 && paramsClass[0].equals(int.class)) {
+                    Class<?> classParam = paramsClass[1];
+                    if (classParam.isPrimitive()) {
+                        if (int.class.equals(classParam)) {
+                            classParam = Integer.class;
+                        } else if (long.class.equals(classParam)) {
+                            classParam = Long.class;
+                        } else if (byte.class.equals(classParam)) {
+                            classParam = Byte.class;
+                        } else if (boolean.class.equals(classParam)) {
+                            classParam = Boolean.class;
+                        } else if (short.class.equals(classParam)) {
+                            classParam = Short.class;
+                        } else if (char.class.equals(classParam)) {
+                            classParam = Character.class;
+                        } else if (float.class.equals(classParam)) {
+                            classParam = Float.class;
+                        } else if (double.class.equals(classParam)) {
+                            classParam = Double.class;
+                        }
                     }
+                    STATEMENT_METHOD_MAP.put(classParam, method);
                 }
-                STATEMENT_METHOD_MAP.put(classParam, method);
             }
         }
     }
 
+    /**
+     * Sets statement parameters.
+     *
+     * @param statement the statement
+     * @param objects   the objects
+     */
     static void setStatementParameters(PreparedStatement statement, Object... objects) {
         int i = 0;
         for (Object object : objects) {
