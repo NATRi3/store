@@ -1,5 +1,6 @@
 package by.epam.store.model.pool;
 
+import java.lang.ref.Cleaner;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;

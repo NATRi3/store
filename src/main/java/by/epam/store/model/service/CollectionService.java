@@ -3,7 +3,6 @@ package by.epam.store.model.service;
 import by.epam.store.model.entity.ProductCollection;
 import by.epam.store.model.entity.TypeStatus;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.Map;
 /**
  * The interface Collection service.
  */
-@Dependency
 public interface CollectionService {
 
     /**

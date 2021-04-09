@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static by.epam.store.model.dao.impl.StatementUtil.setStatementParameters;
+
 /**
  * The type Base news dao.
  */
@@ -78,9 +80,10 @@ public class BaseNewsDao implements by.epam.store.model.dao.NewsDao {
     public boolean update(News news) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_BY_ID)) {
-            statement.setString(1, news.getTitle());
-            statement.setString(2, news.getInfo());
-            statement.setLong(3, news.getIdNews());
+            setStatementParameters(statement,
+                    news.getTitle(),
+                    news.getInfo(),
+                    news.getIdNews());
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);
@@ -92,9 +95,10 @@ public class BaseNewsDao implements by.epam.store.model.dao.NewsDao {
     public News create(News news) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, news.getTitle());
-            statement.setString(2, news.getInfo());
-            statement.setLong(3, news.getDate().getTime());
+            setStatementParameters(statement,
+                    news.getTitle(),
+                    news.getInfo(),
+                    news.getDate().getTime());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -129,8 +133,7 @@ public class BaseNewsDao implements by.epam.store.model.dao.NewsDao {
         String sql = String.format(SQL_SELECT_AMOUNT_SORT_NEWS, typeSort);
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, count);
-            statement.setInt(2, begin);
+            setStatementParameters(statement, count, begin);
             ResultSet resultSet = statement.executeQuery();
             List<News> result = new ArrayList<>();
             while (resultSet.next()) {
@@ -147,8 +150,7 @@ public class BaseNewsDao implements by.epam.store.model.dao.NewsDao {
     public boolean changeImage(long id, String image) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_IMAGE_BY_ID)) {
-            statement.setString(1, image);
-            statement.setLong(2, id);
+            setStatementParameters(statement, image, id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);

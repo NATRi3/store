@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static by.epam.store.model.dao.impl.StatementUtil.setStatementParameters;
+
 /**
  * The type Base collection dao.
  */
@@ -70,10 +72,11 @@ public class BaseCollectionDao implements by.epam.store.model.dao.CollectionDao 
     public ProductCollection create(ProductCollection productCollection) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, productCollection.getName());
-            statement.setString(2, productCollection.getInfo());
-            statement.setLong(3, productCollection.getDate().getTime());
-            statement.setString(4, TypeStatus.ACTIVE.toString());
+            setStatementParameters(statement,
+                    productCollection.getName(),
+                    productCollection.getInfo(),
+                    productCollection.getDate().getTime(),
+                    TypeStatus.ACTIVE.toString());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -107,8 +110,7 @@ public class BaseCollectionDao implements by.epam.store.model.dao.CollectionDao 
     public boolean updateStatus(long idCollection, TypeStatus status) throws DaoException {
         try (Connection collection = connectionPool.getConnection();
              PreparedStatement statement = collection.prepareStatement(SQL_SET_STATUS_BY_ID)) {
-            statement.setString(1, status.toString());
-            statement.setLong(2, idCollection);
+            setStatementParameters(statement,status.toString(), idCollection);
             return 1 == statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e);
@@ -120,8 +122,7 @@ public class BaseCollectionDao implements by.epam.store.model.dao.CollectionDao 
     public boolean updateInfo(Long id, String info) throws DaoException {
         try (Connection collection = connectionPool.getConnection();
              PreparedStatement statement = collection.prepareStatement(SQL_SET_INFO_BY_ID)) {
-            statement.setString(1, info);
-            statement.setLong(2, id);
+            setStatementParameters(statement, info, id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);

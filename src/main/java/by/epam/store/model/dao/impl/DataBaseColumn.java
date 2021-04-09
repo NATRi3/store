@@ -58,3 +58,44 @@ public class DataBaseColumn {
     private DataBaseColumn() {
     }
 }
+    /*int i = 0;
+        for (Object object : objects) {
+                Class<?> objectClass = object.getClass();
+        if(WRAPPER_AND_PRIMITIVE.containsKey(objectClass)){
+        Method method = WRAPPER_AND_PRIMITIVE.get(objectClass);
+        method.setAccessible(true);
+        }
+        Method method = STATEMENT_METHOD_MAP.get();
+        if (method != null) {
+        method.setAccessible(true);
+        try {
+        method.invoke(statement, ++i, classParam.cast(object));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new RuntimeException(e);
+        }
+        } else {
+        throw new IllegalArgumentException("Illegal argument in state " + object.getClass().getName());
+        }
+        }
+        System.out.println(statement.toString());
+
+        try {
+            WRAPPER_AND_PRIMITIVE = Map.of(
+                    Integer.class, Number.class.getMethod("intValue"),
+                    Byte.class,  Number.class.getMethod("byteValue"),
+                    Short.class,  Number.class.getMethod("shortValue"),
+                    Long.class,  Number.class.getMethod("longValue"),
+                    Double.class,  Number.class.getMethod("doubleValue"),
+                    Float.class,  Number.class.getMethod("floatValue")
+            );
+        } catch (NoSuchMethodException e) {
+            log.error(e);
+            throw new InitializationException(e);
+        }
+        for (Method method : PreparedStatement.class.getMethods()) {
+            Class<?>[] paramsClass = method.getParameterTypes();
+            if (paramsClass.length == 2 && paramsClass[0].equals(int.class)) {
+                Class<?> classParam = paramsClass[1];
+                STATEMENT_METHOD_MAP.put(classParam, method);
+            }
+        }*/

@@ -3,7 +3,6 @@ package by.epam.store.model.dao;
 import by.epam.store.model.entity.TypeStatus;
 import by.epam.store.model.entity.User;
 import by.epam.store.exception.DaoException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +10,6 @@ import java.util.Optional;
 /**
  * The interface User dao.
  */
-@Dependency
 public interface UserDao extends BaseDao<User> {
     /**
      * Is email exists boolean.

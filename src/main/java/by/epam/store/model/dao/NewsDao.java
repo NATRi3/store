@@ -2,14 +2,12 @@ package by.epam.store.model.dao;
 
 import by.epam.store.model.entity.News;
 import by.epam.store.exception.DaoException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 
 /**
  * The interface News dao.
  */
-@Dependency
 public interface NewsDao extends BaseDao<News> {
     /**
      * Find fresh news list.

@@ -1,12 +1,12 @@
 package by.epam.store.model.dao.impl;
 
+import by.epam.store.annotation.Bean;
+import by.epam.store.exception.DaoException;
 import by.epam.store.model.entity.Feedback;
 import by.epam.store.model.entity.TypeRole;
 import by.epam.store.model.entity.TypeStatus;
 import by.epam.store.model.entity.User;
-import by.epam.store.exception.DaoException;
 import by.epam.store.model.pool.CustomConnectionPool;
-import by.epam.store.annotation.Bean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +16,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static by.epam.store.model.dao.impl.StatementUtil.setStatementParameters;
+
 /**
  * The type Base feedback dao.
  */
 @Bean
-public class BaseFeedbackDao implements by.epam.store.model.dao.FeedbackDao{
+public class BaseFeedbackDao implements by.epam.store.model.dao.FeedbackDao {
     private final static Logger log = LogManager.getLogger(BaseFeedbackDao.class);
-    private final CustomConnectionPool connectionPool;
     private static final String SQL_SELECT_ALL =
             "SELECT id_feedback, feedback, evaluation, id_product, date, id_accounts, email, name, role, image, access, register_date FROM l4tsmab3ywpoc8m0.feedback JOIN l4tsmab3ywpoc8m0.accounts a on a.id_accounts = feedback.id_account";
     private static final String SQL_SELECT_ALL_BY_PRODUCT_ID =
@@ -33,6 +34,7 @@ public class BaseFeedbackDao implements by.epam.store.model.dao.FeedbackDao{
             "DELETE FROM l4tsmab3ywpoc8m0.feedback WHERE id_feedback=?";
     private static final String SQL_CREATE =
             "INSERT INTO feedback SET feedback=?, evaluation=?, id_product=?, id_account=?, date=?";
+    private final CustomConnectionPool connectionPool;
 
     public BaseFeedbackDao() {
         connectionPool = CustomConnectionPool.getInstance();
@@ -94,7 +96,6 @@ public class BaseFeedbackDao implements by.epam.store.model.dao.FeedbackDao{
 
     @Override
     public boolean delete(Long id) throws DaoException {
-        Optional<Feedback> optionalFeedback = Optional.empty();
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
             statement.setLong(1, id);
@@ -114,11 +115,12 @@ public class BaseFeedbackDao implements by.epam.store.model.dao.FeedbackDao{
     public Feedback create(Feedback feedback) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statementUpdate = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
-            statementUpdate.setString(1, feedback.getFeedback());
-            statementUpdate.setInt(2, feedback.getEvaluation());
-            statementUpdate.setLong(3, feedback.getIdProduct());
-            statementUpdate.setLong(4, feedback.getUser().getId());
-            statementUpdate.setLong(5, feedback.getDate().getTime());
+            setStatementParameters(statementUpdate,
+                    feedback.getFeedback(),
+                    feedback.getEvaluation(),
+                    feedback.getIdProduct(),
+                    feedback.getUser().getId(),
+                    feedback.getDate().getTime());
             statementUpdate.executeUpdate();
             return feedback;
         } catch (SQLException e) {
@@ -147,4 +149,5 @@ public class BaseFeedbackDao implements by.epam.store.model.dao.FeedbackDao{
                 .date(new Date(resultSet.getLong(DataBaseColumn.DATE)))
                 .build();
     }
+
 }

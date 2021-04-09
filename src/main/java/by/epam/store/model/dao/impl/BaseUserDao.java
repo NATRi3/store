@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static by.epam.store.model.dao.impl.StatementUtil.setStatementParameters;
+
 
 /**
  * The type Base user dao.
@@ -71,8 +73,7 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
         Optional<User> result = Optional.empty();
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_EMAIL_AND_PASSWORD)) {
-            statement.setString(1, email);
-            statement.setString(2, pass);
+            setStatementParameters(statement, email, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 result = Optional.of(createUserFormResultSet(resultSet));
@@ -110,8 +111,7 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public boolean delete(String email, String password) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE_USER)) {
-            statement.setString(1, email);
-            statement.setString(2, password);
+            setStatementParameters(statement, email, password);
             return statement.executeUpdate() == 1;
 
         } catch (SQLException e) {
@@ -124,12 +124,13 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public User createUser(User user, String password) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getName());
-            statement.setLong(3, new Date().getTime());
-            statement.setString(4, password);
-            statement.setString(5, user.getRole().name());
-            statement.setString(6,user.getAccess().name());
+            setStatementParameters(statement,
+                    user.getEmail(),
+                    user.getName(),
+                    System.currentTimeMillis(),
+                    password,
+                    user.getRole().name(),
+                    user.getAccess().name());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -163,8 +164,7 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public void updatePassword(User user, String password) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PASSWORD)) {
-            statement.setString(1, password);
-            statement.setLong(2, user.getId());
+            setStatementParameters(statement, password, user.getId());
             statement.executeUpdate();
         } catch (SQLException ex) {
             log.error(ex);
@@ -176,8 +176,7 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public List<User> findUserByRoleAndStatus(TypeStatus status, int begin) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ROLE_STATUS)) {
-            statement.setString(1, status.toString());
-            statement.setInt(2, begin);
+            setStatementParameters(statement, status.toString(), begin);
             ResultSet resultSet = statement.executeQuery();
             List<User> resultUserFromDB = new ArrayList<>();
             while (resultSet.next()) {
@@ -194,9 +193,10 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public boolean changeStatus(long id, TypeStatus statusFrom, TypeStatus statusTo) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_STATUS_FROM_TO)) {
-            statement.setString(1, statusTo.toString());
-            statement.setLong(2, id);
-            statement.setString(3, statusFrom.toString());
+            setStatementParameters(statement,
+                    statusTo.toString(),
+                    id,
+                    statusFrom.toString());
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);
@@ -208,8 +208,7 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public boolean changeImageById(long id, String imageName) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_IMAGE_BY_ID)) {
-            statement.setString(1, imageName);
-            statement.setLong(2, id);
+            setStatementParameters(statement, imageName, id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);
@@ -221,9 +220,7 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public boolean changePassword(long userId, String newPassword, String oldPassword) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SET_PASSWORD_BY_ID_PASSWORD)) {
-            statement.setString(1, newPassword);
-            statement.setLong(2, userId);
-            statement.setString(3, oldPassword);
+            setStatementParameters(statement, newPassword, userId, oldPassword);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);
@@ -235,13 +232,14 @@ public class BaseUserDao implements by.epam.store.model.dao.UserDao {
     public boolean update(User user) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getName());
-            statement.setLong(3, user.getRegisterDate().getTime());
-            statement.setString(4, user.getImageName());
-            statement.setString(5, user.getAccess().toString());
-            statement.setString(6, user.getRole().toString());
-            statement.setLong(7, user.getId());
+            setStatementParameters(statement,
+                    user.getEmail(),
+                    user.getName(),
+                    user.getRegisterDate().getTime(),
+                    user.getImageName(),
+                    user.getAccess().toString(),
+                    user.getRole().toString(),
+                    user.getId());
             return statement.executeUpdate() == 1;
         } catch (SQLException ex) {
             log.error(ex);

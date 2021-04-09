@@ -145,7 +145,7 @@
                                                     <input type="hidden" name="command" value="create_order">
                                                     <input type="hidden" name="ctoken" value="${sessionScope.stoken}">
                                                     <label>
-                                                        <fmt:message key="cart.adderss" bundle="${text}"/>
+                                                        <fmt:message key="cart.address" bundle="${text}"/>
                                                         <input type="text" class="form-control" name="address" value="${requestScope.address}">
                                                     </label>
                                                     <label for="phone">

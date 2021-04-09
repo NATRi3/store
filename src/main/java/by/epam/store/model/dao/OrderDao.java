@@ -3,14 +3,12 @@ package by.epam.store.model.dao;
 import by.epam.store.model.entity.Order;
 import by.epam.store.exception.DaoException;
 import by.epam.store.model.service.TypeSort;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 
 /**
  * The interface Order dao.
  */
-@Dependency
 public interface OrderDao extends BaseDao<Order> {
     /**
      * Find user orders list.

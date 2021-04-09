@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static by.epam.store.model.dao.impl.StatementUtil.setStatementParameters;
+
 /**
  * The type Base product dao.
  */
@@ -40,8 +42,6 @@ public class BaseProductDao implements by.epam.store.model.dao.ProductDao {
             "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM products LEFT JOIN" +
                     "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from l4tsmab3ywpoc8m0.feedback GROUP BY id_product)as t1)" +
                     "as f on f.id_product=id_products WHERE status=? and id_collection LIKE ? order by %s limit 12 offset ?";
-    private static final String SQL_SELECT_SORTED_COLLECTION_PRODUCT_COUNT =
-            "SELECT count() FROM l4tsmab3ywpoc8m0.products WHERE status=? and id_collection LIKE ?";
     private static final String SQL_SELECT_RANDOM_PRODUCT =
             "SELECT id_products,name,info,image, id_collection,status,price,evaluation FROM l4tsmab3ywpoc8m0.products LEFT JOIN" +
                     "(SELECT id_product,evaluation from (SELECT id_product,AVG(evaluation) as evaluation from l4tsmab3ywpoc8m0.feedback GROUP BY id_product)as t1)" +
@@ -93,8 +93,7 @@ public class BaseProductDao implements by.epam.store.model.dao.ProductDao {
         boolean result = false;
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_STATUS_BY_ID)) {
-            statement.setString(1, status.toString());
-            statement.setLong(2, id);
+            setStatementParameters(statement, status.toString(), id);
             if (statement.executeUpdate() == 1) {
                 result = true;
             }
@@ -112,9 +111,7 @@ public class BaseProductDao implements by.epam.store.model.dao.ProductDao {
         List<Product> result = new ArrayList<>();
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, status.toString());
-            statement.setString(2, idCollection);
-            statement.setInt(3, begin);
+            setStatementParameters(statement, status.toString(), idCollection, begin);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 result.add(getProductFormResultSet(resultSet));
@@ -186,10 +183,11 @@ public class BaseProductDao implements by.epam.store.model.dao.ProductDao {
     public Product create(Product product) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT_PRODUCT)) {
-            statement.setString(1, product.getName());
-            statement.setString(2, product.getInfo());
-            statement.setBigDecimal(3, product.getPrice());
-            statement.setLong(4, product.getIdCollection());
+            setStatementParameters(statement,
+                    product.getName(),
+                    product.getInfo(),
+                    product.getPrice(),
+                    product.getIdCollection());
             statement.executeUpdate();
             return product;
         } catch (SQLException e) {
@@ -202,12 +200,13 @@ public class BaseProductDao implements by.epam.store.model.dao.ProductDao {
     public boolean update(Product product) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PRODUCT_BY_ID)) {
-            statement.setString(1, product.getName());
-            statement.setString(2, product.getInfo());
-            statement.setBigDecimal(3, product.getPrice());
-            statement.setString(4, String.valueOf(product.getStatus()));
-            statement.setString(5, product.getImageName());
-            statement.setLong(6, product.getId());
+            setStatementParameters(statement,
+                    product.getName(),
+                    product.getInfo(),
+                    product.getPrice(),
+                    String.valueOf(product.getStatus()),
+                    product.getImageName(),
+                    product.getId());
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             log.error(e);

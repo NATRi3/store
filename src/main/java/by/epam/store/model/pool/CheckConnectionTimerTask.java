@@ -12,7 +12,7 @@ import java.util.TimerTask;
  */
 public class CheckConnectionTimerTask extends TimerTask {
     private static final Logger log = LogManager.getLogger(CheckConnectionTimerTask.class);
-    // Может засунуть анонимным классом в конекшен пул?
+
     @Override
     public void run() {
         CustomConnectionPool instance = CustomConnectionPool.getInstance();

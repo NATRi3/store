@@ -1,9 +1,11 @@
 package by.epam.store.model.pool;
 
+import by.epam.store.annotation.DependencyInjector;
 import by.epam.store.exception.InitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.ref.Cleaner;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -22,7 +24,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * The type Custom connection pool.
  */
-public class CustomConnectionPool {
+public class CustomConnectionPool implements AutoCloseable {
     private static final Logger log = LogManager.getLogger(CustomConnectionPool.class);
     private static final Lock locking = new ReentrantLock();
     private static final AtomicBoolean isInitialized = new AtomicBoolean(false);
@@ -62,12 +64,15 @@ public class CustomConnectionPool {
      */
     public static CustomConnectionPool getInstance() {
         if (!isInitialized.get()) {
-            locking.lock();
-            if (instance == null) {
-                instance = new CustomConnectionPool();
-                isInitialized.set(true);
+            try {
+                locking.lock();
+                if (instance == null) {
+                    instance = new CustomConnectionPool();
+                    isInitialized.set(true);
+                }
+            } finally {
+                locking.unlock();
             }
-            locking.unlock();
         }
         return instance;
     }
@@ -115,7 +120,8 @@ public class CustomConnectionPool {
     /**
      * Close pool.
      */
-    public void closePool() {
+    @Override
+    public void close() {
         for (int i = 0; i < getSize(); i++) {
             try {
                 ProxyConnection proxyConnection = freeConnections.take();

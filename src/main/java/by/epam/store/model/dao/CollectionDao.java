@@ -3,14 +3,12 @@ package by.epam.store.model.dao;
 import by.epam.store.model.entity.ProductCollection;
 import by.epam.store.model.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 
 /**
  * The interface Collection dao.
  */
-@Dependency
 public interface CollectionDao extends BaseDao<ProductCollection> {
     /**
      * Find collections by status.

@@ -1,8 +1,8 @@
 package by.epam.store.controller.listener;
 
+import by.epam.store.annotation.DependencyInjector;
 import by.epam.store.model.pool.CustomConnectionPool;
 import by.epam.store.model.pool.NoSQLConnectionPool;
-import by.epam.store.annotation.DependencyInjector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,8 +22,9 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        CustomConnectionPool.getInstance().closePool();
+        DependencyInjector.getApplicationContainer().close();
         NoSQLConnectionPool.getInstance().close();
+        CustomConnectionPool.getInstance().close();
         log.info("Connection SQL and NoSQL pool closed successful");
     }
 }

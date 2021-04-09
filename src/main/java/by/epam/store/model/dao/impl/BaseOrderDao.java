@@ -11,6 +11,8 @@ import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
+import static by.epam.store.model.dao.impl.StatementUtil.setStatementParameters;
+
 /**
  * The type Base order dao.
  */
@@ -49,50 +51,36 @@ public class BaseOrderDao implements by.epam.store.model.dao.OrderDao {
 
     @Override
     public Order create(Order order) throws DaoException {
-        Connection connection = null;
-        PreparedStatement statementCreateOrder = null;
-        PreparedStatement statementCreateOrderProduct = null;
-        try {
-            try {
-                connection = connectionPool.getConnection();
+        Connection connection = connectionPool.getConnection();
+            try (PreparedStatement statementCreateOrderProduct = connection.prepareStatement(SQL_INSERT_ORDER_PRODUCT);
+                PreparedStatement statementCreateOrder = connection.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
                 connection.setAutoCommit(false);
-                statementCreateOrder = connection.prepareStatement(SQL_INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
-                statementCreateOrderProduct = connection.prepareStatement(SQL_INSERT_ORDER_PRODUCT);
-                statementCreateOrder.setLong(1, order.getIdUser());
-                statementCreateOrder.setBigDecimal(2, order.getPrice());
-                statementCreateOrder.setString(3, order.getPhone());
-                statementCreateOrder.setString(4, order.getAddress());
-                statementCreateOrder.setLong(5, order.getDate().getTime());
+                setStatementParameters(statementCreateOrder,
+                        order.getIdUser(),
+                        order.getPrice(),
+                        order.getPhone(),
+                        order.getAddress(),
+                        order.getDate().getTime());
                 statementCreateOrder.executeUpdate();
                 ResultSet resultSet = statementCreateOrder.getGeneratedKeys();
                 if (resultSet.next()) {
                     order.setId(resultSet.getLong(1));
                 }
                 for (Map.Entry<Product, Integer> product : order.getProduct().entrySet()) {
-                    statementCreateOrderProduct.setLong(1, order.getId());
-                    statementCreateOrderProduct.setLong(2, product.getKey().getId());
-                    statementCreateOrderProduct.setInt(3, product.getValue());
+                    setStatementParameters(statementCreateOrderProduct,
+                            order.getId(),
+                            product.getKey().getId(),
+                            product.getValue());
                     statementCreateOrderProduct.executeUpdate();
                 }
                 connection.commit();
             } catch (SQLException e) {
-                if (connection != null) {
-                    connection.rollback();
-                }
+                rollback(connection);
                 log.error(e);
                 throw new DaoException(e);
             } finally {
-                assert connection != null;
-                connection.setAutoCommit(true);
+                close(connection);
             }
-        } catch (SQLException e) {
-            log.error(e);
-            throw new DaoException(e);
-        } finally {
-            close(statementCreateOrder);
-            close(statementCreateOrderProduct);
-            close(connection);
-        }
         return order;
     }
 

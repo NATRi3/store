@@ -9,18 +9,21 @@ import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The type Dependency injector.
  */
-public class DependencyInjector {
+public class DependencyInjector implements AutoCloseable {
     private static final Logger log = LogManager.getLogger(DependencyInjector.class);
     private static DependencyInjector applicationContainer;
-    private final Map<Class<?>, Object> classObjectMap = new HashMap<>();
+    private static final AtomicBoolean isInit = new AtomicBoolean(false);
+    private final Set<Object> classObjectMap = new HashSet<>();
 
     private DependencyInjector() {
         Reflections reflections = new Reflections("by.epam.store.model", new SubTypesScanner(false));
@@ -29,16 +32,19 @@ public class DependencyInjector {
             if (!c.isInterface()) {
                 if (c.isAnnotationPresent(Bean.class)) {
                     try {
-                        Object obj = c.getConstructor().newInstance();
+                        Constructor<?> constructor = c.getConstructor();
+                        constructor.setAccessible(true);
+                        Object obj = constructor.newInstance();
                         addObject(obj);
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (Throwable e) {
+                        System.out.println(c);
                         log.fatal(e);
                         throw new InitializationException(e);
                     }
                 }
             }
         }
-        autowiredObjectsCollection(classObjectMap.values());
+        autowiredObjectsCollection(classObjectMap);
         autowiredObjectsCollection(getListCommandsFromMassive(TypeCommand.values()));
         autowiredObjectsCollection(getListCommandsFromMassive(TypeCommandAsync.values()));
         log.info("Container generated: " + classObjectMap.toString());
@@ -50,8 +56,9 @@ public class DependencyInjector {
      * @return the dependency injector
      */
     public static DependencyInjector getApplicationContainer() {
-        if (applicationContainer == null) {
+        if (!isInit.get()) {
             synchronized (DependencyInjector.class) {
+                isInit.set(true);
                 applicationContainer = new DependencyInjector();
             }
         }
@@ -61,36 +68,58 @@ public class DependencyInjector {
     /**
      * Add object to container by @Dependency Class.
      *
-     * @throws IllegalArgumentException when Class not implement
-     * interface with annotation @Dependency.
      * @param o the o
+     * @throws IllegalArgumentException when Class not implement interface with annotation @Dependency.
      */
     public void addObject(Object o) {
-        Class<?> objectClass = o.getClass();
-        Class<?>[] interfaces = objectClass.getInterfaces();
-        for (Class<?> c : interfaces) {
-            if (c.isAnnotationPresent(Dependency.class)) {
-                classObjectMap.put(c, o);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Illegal object " + o.getClass().getName());
+        classObjectMap.add(o);
     }
 
     /**
      * Get object from container of parameter Class.
      *
-     * @throws IllegalArgumentException when Class not annotated by Dependency
-     * or Class not found.
      * @param <T> the type Class
      * @param c   the Class
      * @return the T object from container
+     * @throws IllegalArgumentException when Class not annotated by Dependency or Class not found.
      */
+    @SuppressWarnings("unchecked")
     public <T> T getObject(Class<T> c) {
-        if (c.isAnnotationPresent(Dependency.class) && classObjectMap.containsKey(c)) {
-            return (T) classObjectMap.get(c);
-        } else {
-            throw new IllegalArgumentException("Illegal dependency " + c.getName());
+        T result = null;
+        for(Object object : classObjectMap){
+            Class<?> objClass = object.getClass();
+            if (c.equals(objClass)) {
+                result = (T) object;
+            }
+            Class<?>[] implClasses = objClass.getInterfaces();
+            for (Class<?> impl : implClasses){
+                if(impl.equals(c)){
+                    if(result==null){
+                        result = (T) object;
+                    } else {
+                        throw new InitializationException("Two object with same implementation " + c.getName());
+                    }
+                }
+            }
+        }
+        if(result==null){
+            throw new InitializationException("Object not found " + c.getName());
+        }
+        return result;
+    }
+
+    @Override
+    public void close(){
+        for(Object o : classObjectMap){
+            for(Class<?> objInterface : o.getClass().getInterfaces()){
+                if(objInterface.equals(AutoCloseable.class)){
+                    try {
+                        ((AutoCloseable) o ).close();
+                    } catch (Exception e) {
+                        log.error(e);
+                    }
+                }
+            }
         }
     }
 
@@ -124,7 +153,7 @@ public class DependencyInjector {
     }
 
     private <T> List<T> getListCommandsFromMassive(TypeCommandInterface<T>[] typeCommandInterface) {
-        List<T> collection = new ArrayList<T>();
+        List<T> collection = new ArrayList<>();
         for (TypeCommandInterface<T> t : typeCommandInterface) {
             collection.add(t.getCommand());
         }

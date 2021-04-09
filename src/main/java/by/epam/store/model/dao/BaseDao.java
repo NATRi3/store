@@ -1,7 +1,6 @@
 package by.epam.store.model.dao;
 
 import by.epam.store.exception.DaoException;
-import by.epam.store.annotation.Dependency;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
  *
  * @param <K> the type parameter
  */
-@Dependency
 public interface BaseDao<K> {
     /**
      * The constant logger.
@@ -91,6 +89,16 @@ public interface BaseDao<K> {
         try {
             if (connection != null) {
                 connection.close();
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+    }
+
+    default void rollback(Connection connection){
+        try {
+            if (connection != null) {
+                connection.rollback();
             }
         } catch (SQLException e) {
             logger.error(e);

@@ -3,7 +3,6 @@ package by.epam.store.model.service;
 import by.epam.store.model.entity.Feedback;
 import by.epam.store.model.entity.User;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.Optional;
 /**
  * The interface Feedback service.
  */
-@Dependency
 public interface FeedbackService {
 
     /**

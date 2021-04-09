@@ -2,7 +2,6 @@ package by.epam.store.model.service;
 
 import by.epam.store.model.entity.News;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import java.util.Map;
 /**
  * The interface News service.
  */
-@Dependency
 public interface NewsService extends ImageService {
 
     /**

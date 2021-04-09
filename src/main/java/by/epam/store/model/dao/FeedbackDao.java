@@ -2,14 +2,12 @@ package by.epam.store.model.dao;
 
 import by.epam.store.model.entity.Feedback;
 import by.epam.store.exception.DaoException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 
 /**
  * The interface Feedback dao.
  */
-@Dependency
 public interface FeedbackDao extends BaseDao<Feedback> {
     /**
      * Find all by product id list.

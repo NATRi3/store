@@ -1,12 +1,10 @@
 package by.epam.store.model.service;
 
 import by.epam.store.exception.ServiceException;
-import by.epam.store.annotation.Dependency;
 
 /**
  * The interface Image service.
  */
-@Dependency
 public interface ImageService {
 
     /**

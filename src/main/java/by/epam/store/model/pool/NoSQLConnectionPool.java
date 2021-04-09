@@ -1,5 +1,6 @@
 package by.epam.store.model.pool;
 
+import by.epam.store.annotation.DependencyInjector;
 import by.epam.store.model.entity.Order;
 import by.epam.store.model.entity.Product;
 import by.epam.store.exception.InitializationException;
@@ -20,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * The type No sql connection pool.
  */
-public class NoSQLConnectionPool {
+public class NoSQLConnectionPool implements AutoCloseable {
     private static final Logger log = LogManager.getLogger(NoSQLConnectionPool.class);
     private static final String MONGO_URI = "mongodb+srv://root:admin@cluster0.djvev.mongodb.net/test";
     private static final Lock locking = new ReentrantLock();
@@ -45,9 +46,7 @@ public class NoSQLConnectionPool {
                     )
             );
             client = new MongoClient(new MongoClientURI(MONGO_URI));
-            database = client
-                    .getDatabase("test")
-                    .withCodecRegistry(codecRegistry);
+            database = client.getDatabase("test").withCodecRegistry(codecRegistry);
         } catch (MongoException e){
             log.error(e);
             throw new InitializationException("Error initialization NoSQL DB");
@@ -71,9 +70,7 @@ public class NoSQLConnectionPool {
         return instance;
     }
 
-    /**
-     * Close.
-     */
+    @Override
     public void close() {
         client.close();
     }

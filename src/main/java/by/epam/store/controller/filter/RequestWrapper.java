@@ -12,7 +12,6 @@ import java.util.*;
  * The type Request wrapper.
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
-    private static final Logger log = LogManager.getLogger("RequestWrapper");
     private final Map<String, String> params = new HashMap<>();
 
     /**
@@ -44,9 +43,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public Enumeration<String> getParameterNames() {
-        Iterator<String> superEnumeration = super.getParameterNames().asIterator();
-        Vector<String> vector = new Vector<String>(params.keySet());
-        superEnumeration.forEachRemaining(vector::add);
+        Enumeration<String> superEnumeration = super.getParameterNames();
+        if(params.isEmpty()){
+            return superEnumeration;
+        }
+        Vector<String> vector = new Vector<>(params.keySet());
+        superEnumeration.asIterator().forEachRemaining((x)->{if(!vector.contains(x))vector.add(x);});
         return vector.elements();
     }
 
@@ -55,9 +57,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
         if (params.get(name) != null) {
             String[] superValues = super.getParameterValues(name);
             String[] strings = new String[superValues.length + 1];
-            for (int i = 0; i < superValues.length; i++) {
-                strings[i] = superValues[i];
-            }
+            System.arraycopy(superValues, 0, strings, 0, superValues.length);
             strings[superValues.length + 1] = params.get(name);
             return strings;
         } else {

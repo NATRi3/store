@@ -4,7 +4,6 @@ import by.epam.store.model.entity.Cart;
 import by.epam.store.model.entity.Order;
 import by.epam.store.model.entity.User;
 import by.epam.store.exception.ServiceException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.Map;
 /**
  * The interface Order service.
  */
-@Dependency
 public interface OrderService {
 
     /**

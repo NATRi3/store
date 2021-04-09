@@ -3,14 +3,12 @@ package by.epam.store.model.dao;
 import by.epam.store.model.entity.Product;
 import by.epam.store.model.entity.TypeStatus;
 import by.epam.store.exception.DaoException;
-import by.epam.store.annotation.Dependency;
 
 import java.util.List;
 
 /**
  * The interface Product dao.
  */
-@Dependency
 public interface ProductDao extends BaseDao<Product> {
     /**
      * Change status boolean.
