@@ -7,7 +7,6 @@ import by.epam.store.exception.ServiceException;
 import by.epam.store.model.service.NewsService;
 import by.epam.store.controller.command.RequestParameterAndAttribute;
 import by.epam.store.annotation.Autowired;
-import by.epam.store.annotation.DependencyInjector;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

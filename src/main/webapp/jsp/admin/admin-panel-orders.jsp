@@ -111,7 +111,7 @@
                         "<div class='card-header' id='heading"+order.id+"'>"+
                         "<h5 class='mb-0'>"+
                         "<button class='btn btn-link' data-toggle='collapse"+order.id+"' data-target='#collapse"+order.id+"'  aria-expanded='true' aria-controls='collapse"+order.id+"'>"+
-                        order.price + order.address + order.phone +
+                        "цена:"+order.price+" адрес:" + order.address + " телефон:" + order.phone +
                         "</button>"+
                         "</h5>"+
                         "</div>"+

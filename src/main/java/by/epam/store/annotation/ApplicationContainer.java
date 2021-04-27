@@ -19,13 +19,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * The type Dependency injector.
  */
-public class DependencyInjector implements AutoCloseable {
-    private static final Logger log = LogManager.getLogger(DependencyInjector.class);
-    private static DependencyInjector applicationContainer;
+public class ApplicationContainer implements AutoCloseable {
+    private static final Logger log = LogManager.getLogger(ApplicationContainer.class);
+    private static ApplicationContainer applicationContainer;
     private static final AtomicBoolean isInit = new AtomicBoolean(false);
     private final Set<Object> classObjectMap = new HashSet<>();
 
-    private DependencyInjector() {
+    private ApplicationContainer() {
         Reflections reflections = new Reflections("by.epam.store.model", new SubTypesScanner(false));
         Set<Class<?>> classes = reflections.getSubTypesOf(Object.class);
         for (Class<?> c : classes) {
@@ -55,11 +55,11 @@ public class DependencyInjector implements AutoCloseable {
      *
      * @return the dependency injector
      */
-    public static DependencyInjector getApplicationContainer() {
+    public static ApplicationContainer getApplicationContainer() {
         if (!isInit.get()) {
-            synchronized (DependencyInjector.class) {
+            synchronized (ApplicationContainer.class) {
                 isInit.set(true);
-                applicationContainer = new DependencyInjector();
+                applicationContainer = new ApplicationContainer();
             }
         }
         return applicationContainer;

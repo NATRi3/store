@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * to the generated Class object on compilation state.
  *
  * @see by.epam.store.annotation.Dependency
- * @see by.epam.store.annotation.DependencyInjector
+ * @see ApplicationContainer
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD,ElementType.METHOD})

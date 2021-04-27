@@ -1,6 +1,5 @@
 package by.epam.store.model.pool;
 
-import by.epam.store.annotation.DependencyInjector;
 import by.epam.store.model.entity.Order;
 import by.epam.store.model.entity.Product;
 import by.epam.store.exception.InitializationException;

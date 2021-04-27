@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * in the app container.
  * @apiNote Class must contain constructor
  *
- * @see by.epam.store.annotation.DependencyInjector
+ * @see ApplicationContainer
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

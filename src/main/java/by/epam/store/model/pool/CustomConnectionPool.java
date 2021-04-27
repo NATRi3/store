@@ -1,11 +1,9 @@
 package by.epam.store.model.pool;
 
-import by.epam.store.annotation.DependencyInjector;
 import by.epam.store.exception.InitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.ref.Cleaner;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
