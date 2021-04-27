@@ -29,6 +29,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/fragment/header.jsp" %>
+<cus:setCurrentPage/>
 <div>
     <div class="container">
         <div class="row">

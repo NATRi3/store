@@ -5,7 +5,7 @@
   Time: 22:27
   To change this template use File | Settings | File Templates.
 --%>
-<%@taglib prefix="ctg" uri="customtags" %>
+<%@taglib prefix="cus" uri="customtags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -29,7 +29,8 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/fragment/header.jsp" %>
-<ctg:message/>
+<cus:message/>
+<cus:setCurrentPage/>
 <div>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">

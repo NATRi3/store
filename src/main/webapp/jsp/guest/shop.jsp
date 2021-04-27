@@ -30,6 +30,7 @@
 <body>
 <div class="container">
     <cus:message/>
+    <cus:setCurrentPage/>
     <div class="row">
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <div class="col-lg-12">

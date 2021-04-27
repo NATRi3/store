@@ -31,6 +31,7 @@
 </head>
 <body>
 <div class="container">
+    <cus:setCurrentPage/>
     <cus:message/>
         <%@ include file="/WEB-INF/fragment/header.jsp" %>
         <!--Section: Block Content-->

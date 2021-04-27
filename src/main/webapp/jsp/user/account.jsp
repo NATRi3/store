@@ -40,6 +40,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/fragment/header.jsp" %>
+<cus:setCurrentPage/>
 <cus:message/>
 <div>
     <div class="container emp-profile">
